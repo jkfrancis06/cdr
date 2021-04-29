@@ -1,0 +1,131 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Details du numero{% endblock%}
+
+{% block content %}
+    <div id="number-app">
+        <ul class="uk-breadcrumb" style="margin-top: 3%">
+            <li><a href="/">Tableau de bord</a></li>
+            <li class="uk-disabled"><a>Details de numero</a></li>
+            <li><span>{{ c_number }}</span></li>
+        </ul>
+
+
+        <!-- Modal loader -->
+
+        <div id="modal-center" class="uk-flex-top" uk-modal data-uk-modal="{target:'#modal-center',bgClose:false}">
+            <div style="background: unset" class="uk-flex-middle uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <div id="loading-bar-spinner" class="spinner">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+        </div>
+
+        <article class="uk-article">
+            <div class="uk-child-width-1-1 uk-text-left" uk-grid>
+                <div>
+                    <div class="uk-card uk-background-muted uk-card-default uk-card-body uk-width-1-2">
+                        <div>
+                            <span class="uk-text-bold">Nom:</span>
+                            <span class="uk-text-light">{{ c_name }}</span>
+                        </div>
+
+                        <div style="margin-top: 2%">
+                            <span class="uk-text-bold">Numero:</span>
+                            <span id="c_number" class="uk-text-light">{{ c_number }}</span>
+                        </div>
+
+                        <div style="margin-top: 2%">
+                            <span class="uk-text-bold">Operateur:</span>
+                            <span class="uk-text-light">{{ c_operator }}</span>
+                        </div>
+
+                        <div style="margin-top: 2%">
+                            <span class="uk-text-bold">Fichier CDR:</span>
+                            <span class="uk-text-light">{{ c_file_name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </article>
+
+        <h3>Contacts frequents</h3>
+        <hr>
+        <div class="uk-flex uk-flex-right">
+            <div style="margin-top: 8px; margin-right: 5px">
+                Filtrer:
+            </div>
+            <div class="uk-width-1-3">
+               <input v-model="date_time_range.range" class="uk-input" type="text" name="daterange" />
+            </div>
+        </div>
+        <table class="uk-table uk-table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Numéro</th>
+                <th>Durée totale des communications</th>
+                <th>Nombre de communications</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in frequent_users">
+                <td>${index + 1}</td>
+                <td>${item.num_b}</td>
+                <td>${item.duration}</td>
+                <td>${item.nb}</td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <h3>Liste des communications</h3>
+        <hr>
+
+        <table class="uk-table uk-table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Flux d'appel</th>
+                <th>Date</th>
+                <th>Numero A</th>
+                <th>Numero B</th>
+                <th>Durée</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in pagination_array">
+                <td>${index + 1}</td>
+                <td>${item.dataType}</td>
+                <td>${item.fluxAppel}</td>
+                <td>${item.dayTime}</td>
+                <td>${item.numA}</td>
+                <td>${item.numB}</td>
+                <td>${convert_to_hour(item.duration)}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <v-pagination v-model="currentPage"
+                          :page-count="totalPages"
+                          :classes="bootstrapPaginationClasses"
+                          :labels="paginationAnchorTexts" uk-margin ></v-pagination>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block bottom_js %}
+    <script>
+    </script>
+    <script  src="{{ asset('/build/js/vue/vue-plain-pagination.min.js') }}"></script>
+    <script  src="{{ asset('/build/js/vue/number-details.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Acceuil{% endblock%}
+
+
+{% block content %}
+
+    <div class="uk-section uk-section-default">
+        <div class="uk-container uk-container-large uk-position-relative">
+            <article class="uk-article">
+
+                <h1 class="uk-article-title"><a class="uk-link-reset" href="">Tableau de bord</a></h1>
+
+                <table class="uk-table uk-table-hover uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Numero</th>
+                        <th>Opérateur</th>
+                        <th>Appels Entrants</th>
+                        <th>Appels Sortants</th>
+                        <th>SMS Entrants</th>
+                        <th>SMS Sortants</th>
+                        <th>Total Communications</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for person in response %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ person.c_number }}</td>
+                        <td>{{ person.c_operator }}</td>
+                        <td>{{ person.b_call_count }}</td>
+                        <td>{{ person.a_call_count }}</td>
+                        <td>{{ person.b_sms_count }}</td>
+                        <td>{{ person.a_sms_count }}</td>
+                        <td>{{ person.com_count }}</td>
+                        <td><a href="#">Details <span uk-icon="icon: arrow-right"></span></a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </article>
+        </div>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,167 @@
+{# /templates/produit.html.twig #}
+{% extends '/base.html.twig' %}
+
+{% block titre %}Page Produit{% endblock%}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock%}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock%}
+
+{% block body %}
+
+    <div id="app">
+
+
+        <div id="modal-center" class="uk-flex-top" uk-modal data-uk-modal="{target:'#modal-center',bgClose:false}">
+            <div style="background: unset" class="uk-flex-middle uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                <div id="loading-bar-spinner" class="spinner">
+                    <div class="spinner-icon"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-flex uk-flex-center" style="margin-top: 10%">
+
+            <form class="uk-form-horizontal uk-margin-auto v-on:submit.prevent">
+
+                <div class="uk-card uk-card-default ">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-expand upload-box-title" style="text-align: center">
+                                <h3 class="uk-card-title uk-margin-remove-bottom">ANALYSE CDR</h3>
+                                <p v-if="nb_num == 1" class="uk-text-meta uk-margin-medium-top" style="text-align: center">
+                                    Bienvenue ! Cet assistant va vous guider dans l’insertion des données d’entrées pour effectuer
+                                    l’analyse.
+                                </p>
+                                <p v-else class="uk-text-meta uk-margin-medium-top" style="text-align: center">
+                                    Sujet numero ${nb_num}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-card-body">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="phone_numero">Numéro de telephone</label>
+                            <div class="uk-form-controls">
+                                <input
+                                        v-on:keypress.enter.prevent
+                                        @change="check_number"
+                                        @input="check_number"
+                                        v-model="p_number"
+                                        class="uk-input"
+                                        id="phone_numero"
+                                        type="tel"
+                                        maxlength="7"
+                                >
+                                <span v-if="error_mngt.input_error != 0" class="uk-text-danger">
+                                   ${error_mngt.message}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="operator">Opérateur</label>
+                            <div class="uk-form-controls">
+                                <input v-model="operator"  class="uk-input" id="operator" type="text" disabled>
+                            </div>
+                        </div>
+                        <div class="js-upload uk-placeholder uk-text-center">
+                            <span uk-icon="icon: cloud-upload"></span>
+                            <span class="uk-text-middle">Deposer ici le fichier cdr correspondant (format .csv) ou</span>
+                            <div uk-form-custom>
+                                <input type="file">
+                                <span class="uk-link">selectionner un</span>
+                            </div>
+                        </div>
+                        <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+
+                        <button v-if="upload_success == 1" class="uk-button uk-button-default" style="text-transform: lowercase;" disabled>
+                            <span uk-icon="icon: file-text"></span>
+                            <a v-bind:href="success_data.path">${success_data.file_name}</a> |    <span class="uk-text-success">${success_data.mem_usage} MB |${success_data.nb_rows} lignes importés</span>
+
+                        </button>
+
+                        <button v-if="upload_error == 1" class="uk-button uk-button-default" style="text-transform: lowercase;" disabled>
+                            <span uk-icon="icon: file-text"></span>
+                            <span class="uk-text-danger">Erreur dans le traitement du fichier, veuillez re-verifier les informations </span>
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="uk-flex uk-flex-center uk-card-footer  uk-margin-auto">
+                        <button v-on:click="back_dat" class="uk-button uk-button-secondary" :disabled="nb_num==1">
+                            <span uk-icon="icon: arrow-left"></span>
+                            <span>Precedent</span>
+                        </button>
+                        <button v-on:click="push_data" class="uk-margin-left uk-flex-middle uk-button uk-button-default">
+                            <span uk-icon="icon: arrow-right"></span>
+                            <span>Autre sujet</span>
+                        </button>
+
+                        <button v-on:click="recap_data" class="uk-margin-left uk-flex-middle uk-button uk-button-default" :disabled="nb_num==1">
+                            <span uk-icon="icon: ckeck"></span>
+                            <span>Terminer</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+            <div id="modal-recap" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Recapitulatif des informations</h2>
+                    </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+                        <table class="uk-table uk-table-hover uk-table-divider">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Numéro de telephone</th>
+                                <th>Operateur</th>
+                                <th>Fichier CDR</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in data_push">
+                                <td>${index + 1}</td>
+                                <td>${item.p_number}</td>
+                                <td>${item.operator}</td>
+                                <td><a v-bind:href="success_data.path">${item.file_name}</a> |  <span class="uk-text-success">${item.success_data.nb_rows} lignes importés</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Annuler</button>
+                        <button v-on:click="validate_data" class="uk-button uk-button-primary" type="button">Valider les donnees</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block bottom_js %}
+    <script src="{{ asset('/build/js/vue/wizard-script-vue.js') }}"></script>
+{% endblock %}
+
+
+
+

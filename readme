@@ -1,0 +1,9 @@
+
+
+- Check the creation of directory uplpoad dir
+
+sudo add-apt-repository ppa:deadsnakes/ppa
+
+sudo apt update
+
+sudo apt install python3.8
