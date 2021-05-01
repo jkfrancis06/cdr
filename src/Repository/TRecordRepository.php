@@ -6,6 +6,7 @@ use App\Entity\TRecord;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -30,8 +31,8 @@ class TRecordRepository extends ServiceEntityRepository
         $separator = "\r\n'";
 
         $db = $this->getEntityManager();
-        $query = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel)
-              SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel
+        $query = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
+              SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
               FROM dump_t";
         $stmt = $db->getConnection()->prepare($query);
         $params = array(
@@ -39,6 +40,34 @@ class TRecordRepository extends ServiceEntityRepository
         $qr = $stmt->execute($params);
 
         return $qr;
+
+    }
+
+    // paginator query
+
+    public function paginateMatriceDetails($num_a,$num_b,$start,$end){
+        if ($start == 0 || $end == 0){
+            return $this->createQueryBuilder('trecord')
+                ->select('trecord')
+                ->where('trecord.num_a = :num_a')
+                ->andWhere('trecord.num_b = :num_b')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
+                ]);
+        }else{
+            return $this->createQueryBuilder('trecord')
+                ->select('trecord')
+                ->where('trecord.num_a = :num_a')
+                ->andWhere('trecord.num_b = :num_b')
+                ->andWhere('trecord.day_time BETWEEN :start AND :end')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b,
+                    'start' => $start,
+                    'end' => $end
+                ]);
+        }
 
     }
 
@@ -151,6 +180,7 @@ class TRecordRepository extends ServiceEntityRepository
     }
 
 
+
     // get favorites number
 
     public function getFavoritesNumberDateRange($number,$start,$end) {
@@ -207,6 +237,201 @@ class TRecordRepository extends ServiceEntityRepository
             $res["data"] = 0;
             return $res;
         }
+    }
+
+
+
+
+    // count communications between two numbers
+
+    public function countCommunicationBetween(string $num_a, string $num_b){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('count(t.id)')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->orWhere('t.num_a = :num_a AND t.num_b = :num_b')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
+                ])
+                ->getQuery()
+                ->getSingleScalarResult();
+            $res = [];
+            $res["status"] = 200;
+            $res["data"] = $qr;
+            return $res;
+        }catch (Exception $exception){
+            $res = [];
+            $res["status"] = 500;
+            $res["data"] = 0;
+            return $res;
+        }
+    }
+
+
+    // count communications between two numbers and dates
+
+    public function countCommunicationDateBetween(string $num_a, string $num_b, $start, $end){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('count(t.id)')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.day_time BETWEEN :start AND :end')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b,
+                    'start' => $start,
+                    'end' => $end,
+                ])
+                ->getQuery()
+                ->getSingleScalarResult();
+            $res = [];
+            $res["status"] = 200;
+            $res["data"] = $qr;
+            return $res;
+            return $res;
+        }catch (Exception $exception){
+            $res = [];
+            return $res;
+        }
+    }
+
+
+    // count communications between two numbers and dates
+
+    public function getCommunicationDateBetween(string $num_a, string $num_b, $start, $end){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.day_time BETWEEN :start AND :end')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b,
+                    'start' => $start,
+                    'end' => $end,
+                ])
+                ->getQuery()
+                ->getResult();
+            return $qr;
+        }catch (Exception $exception){
+            $res = [];
+            return $res;
+        }
+    }
+
+
+
+    public function getInCallsDateBetween(string $num_a, string $num_b, $start, $end){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.flux_appel LIKE \'Entrant\'')
+                ->andWhere('t.data_type LIKE \'Voix\'')
+                ->andWhere('t.day_time BETWEEN :start AND :end')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b,
+                    'start' => $start,
+                    'end' => $end,
+                ])
+                ->getQuery()
+                ->getResult();
+            return $qr;
+        }catch (Exception $exception){
+            return [];
+        }
+    }
+
+
+    // count sms between two numbers and dates and criteria
+
+    public function getsmsbetween(string $num_a, string $num_b, $start, $end){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.day_time BETWEEN :start AND :end')
+                ->andWhere('t.data_type LIKE \'SMS\'')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b,
+                    'start' => $start,
+                    'end' => $end,
+                ])
+                ->getQuery()
+                ->getResult();
+            $res = [];
+            return $qr;
+        }catch (Exception $exception){
+            $res = [];
+            return $res;
+        }
+    }
+
+
+    // count success calls between two numbers and dates and criteria
+
+
+    public function getSuccessOutCallsbetween(string $num_a, string $num_b, $start, $end){
+        $db = $this->getEntityManager();
+        $str = 'SELECT trecord.num_a, trecord.num_b, trecord.day_time, trecord.flux_appel, trecord.data_type, trecord.duration
+                FROM trecord
+                INNER JOIN (
+	                select trecord.num_b, trecord.num_a, trecord.day_time, trecord.flux_appel, trecord.data_type, trecord.duration
+	                from trecord
+	                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\' and duration > 0 and flux_appel LIKE \'Entrant\') and day_time between ? and ?
+                ) as qr
+                ON trecord.day_time = qr.day_time and trecord.num_a = qr.num_b and trecord.num_b = qr.num_a
+                where (trecord.num_a = ? and trecord.num_b = ?) and (trecord.data_type = \'Voix\' and trecord.duration > 0 and trecord.flux_appel LIKE \'Sortant\') and trecord.day_time between ? and ? ';
+
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            $num_a,
+            $num_b,
+            $start,
+            $end,
+            $num_a,
+            $num_b,
+            $start,
+            $end,
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
+    }
+
+
+    // count drop calls between two numbers and dates and criteria
+
+    public function getDropOutCallsbetween(string $num_a, string $num_b, $start, $end){
+        $db = $this->getEntityManager();
+        $str = 'select num_a, num_b, day_time, data_type
+                from trecord
+                where (num_a = ? and num_b = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Sortant\')  and day_time between ? and ?
+                except
+                select num_b, num_a, day_time, data_type
+                from trecord
+                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Entrant\') and day_time between ? and ?
+                order by day_time asc ';
+
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            $num_a,
+            $num_b,
+            $start,
+            $end,
+            $num_a,
+            $num_b,
+            $start,
+            $end,
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
     }
 
 

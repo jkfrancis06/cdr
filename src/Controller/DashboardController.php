@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\CPerson;
+use App\Entity\DumpT;
 use App\Entity\TRecord;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,17 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
                 ->countAllSentReceivedCalls($person->getCNumber(),'SMS','Entrant');
             $person_data["b_sms_count"] = $b_sms_count["data"];
 
+            $rep = $this->getDoctrine()->getManager()->getRepository(DumpT::class)
+                ->getNumberName($person->getCNumber());
+
+
+            $person->setANom($rep["data"]["a_nom"]);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $person_data["a_name"] = $rep["data"]["a_nom"];
+
             $person_data["link"] = $person->getCFileName();
             $person_data["c_operator"] = $person->getCOperator();
             $person_data["c_number"] = $person->getCNumber();
@@ -89,7 +101,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
             throw new NotFoundHttpException('Ce numero n\'existe pas');
         }
         return $this->render('home/number_details.html.twig',[
-            'c_name' => "",
+            'c_name' => $db_c_number,
             'c_number' => $db_c_number->getCNumber(),
             'c_operator' => $db_c_number->getCOperator(),
             'c_file_name' => $db_c_number->getCFileName()

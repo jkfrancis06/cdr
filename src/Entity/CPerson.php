@@ -26,6 +26,11 @@ class CPerson
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $a_nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $c_adress;
 
     /**
@@ -88,6 +93,18 @@ class CPerson
     public function setCFileName(string $c_file_name): self
     {
         $this->c_file_name = $c_file_name;
+
+        return $this;
+    }
+
+    public function getANom(): ?string
+    {
+        return $this->a_nom;
+    }
+
+    public function setANom(?string $a_nom): self
+    {
+        $this->a_nom = $a_nom;
 
         return $this;
     }

@@ -40,6 +40,16 @@ class TRecord
     private $num_b;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $a_nom;
+
+    /**
+     * @ORM\Column(type="string", length=255 ,nullable=true)
+     */
+    private $b_nom;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $duration;
@@ -122,6 +132,30 @@ class TRecord
     public function setFluxAppel(string $flux_appel): self
     {
         $this->flux_appel = $flux_appel;
+
+        return $this;
+    }
+
+    public function getANom(): ?string
+    {
+        return $this->a_nom;
+    }
+
+    public function setANom(?string $a_nom): self
+    {
+        $this->a_nom = $a_nom;
+
+        return $this;
+    }
+
+    public function getBNom(): ?string
+    {
+        return $this->b_nom;
+    }
+
+    public function setBNom(?string $b_nom): self
+    {
+        $this->b_nom = $b_nom;
 
         return $this;
     }

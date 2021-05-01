@@ -1,0 +1,115 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Acceuil{% endblock%}
+
+
+{% block content %}
+
+    <ul class="uk-breadcrumb" style="margin-top: 3%">
+        <li><a href="/"></a>Tableau de bord</li>
+        <li class="uk-disabled"><a>Matrice des communications</a></li>
+    </ul>
+
+    <div class="uk-section uk-section-default">
+        <div class="uk-container uk-container-large uk-position-relative">
+            <article class="uk-article">
+
+
+                <h3>
+                    <a class="uk-link-reset" href="">
+                        Matrice des communications
+                        {% if range[0] is defined %}
+                            du le {{ range[0] }} au {{ range[1] }}
+                        {% endif %}
+                    </a>
+                </h3>
+                <hr>
+                <p class="uk-article-meta">Ces numeros ont-ils communiqué entre eux?</p>
+
+                <div class="uk-overflow-auto">
+
+                    <div>
+                        <form class="uk-form-horizontal">
+
+                            <div style="float: left; display: inline-block;margin-right: 2%">
+                                {% if range[0] is defined %}
+                                    {% set value =  range[0]~" - "~range[1] %}
+                                    <div>
+                                        <input value="{{ value }}" name="daterange" class="uk-input" id="form-horizontal-text" type="text" placeholder="Filtrer par date">
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <input name="daterange" class="uk-input" id="form-horizontal-text" type="text" placeholder="Filtrer par date">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <a id="filter" class="uk-button uk-button-default">Filtrer</a>
+
+                        </form>
+                    </div>
+
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            {% for num,person in matrices %}
+                                <th class="uk-table-expand">
+                                    <span >{{ num }}</span>
+                                </th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for num,person in matrices %}
+                            <tr>
+                                <td class="uk-table-expand">
+                                    <span class="" style="font-size: 0.875rem; color: #999999">{{ num }}</span>
+                                </td>
+                                {% for assoc,nb in person %}
+                                    {% if assoc == num %}
+                                        <td class="uk-table-expand">
+                                            <span class="uk-text-danger">N/A</span>
+                                        </td>
+                                    {% else %}
+                                        <td class="uk-table-expand">
+                                            {% set data =  "" %}
+                                            {% set data =  num~"&"~assoc %}
+
+                                            {% if range[0] is defined %}
+                                                <a href="{{ path('matrice_communication_details',{numbers: data,start: range[0], end: range[1]}) }}">{{ nb }}</a>
+                                            {% else %}
+                                                <a href="{{ path('matrice_communication_details',{numbers: data,start: 0, end: 0}) }}">{{ nb }}</a>
+                                            {% endif %}
+                                        </td>
+                                    {% endif%}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bottom_js %}
+<script>
+    jQuery('input[name="daterange"]').daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        applyButtonClasses: 'btn-primary',
+        drops: 'left',
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }
+    }, function(start, end, label) {
+        var send = document.getElementById('filter')
+        r = start.format('YYYY-MM-DD HH:mm:ss') + '&' + end.format('YYYY-MM-DD HH:mm:ss')
+        send.href = '/matrice/communication/'+r
+    });
+</script>
+{% endblock %}

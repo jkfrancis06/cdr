@@ -121,4 +121,28 @@ class DumpTRepository extends ServiceEntityRepository
 
 
     }
+
+
+    public function getNumberName($number){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.a_nom')
+                ->where('t.num_a = :number')
+                ->setParameters([
+                    'number' => $number
+                ])
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleResult();
+            $res = [];
+            $res["status"] = 200;
+            $res["data"] = $qr;
+            return $res;
+        }catch (Exception $exception){
+            $res = [];
+            $res["status"] = 500;
+            $res["data"] = 0;
+            return $res;
+        }
+    }
 }

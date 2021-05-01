@@ -1,0 +1,281 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Acceuil{% endblock%}
+
+
+{% block content %}
+
+    <ul class="uk-breadcrumb" style="margin-top: 3%">
+        <li><a href="/"></a>Tableau de bord</li>
+        <li class="uk-disabled"><a>Matrice des communications</a></li>
+        <li class="uk-disabled"><a> Details </a></li>
+    </ul>
+
+    <div class="uk-section uk-section-default">
+        <div class="uk-container uk-container-large uk-position-relative">
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        Details des communications entre le
+                        {{ data.a_person.cNumber }} ( {{ data.a_person.aNom}}  ) et {{ data.b_person.cNumber }} ( {{ data.b_person.aNom}}  )
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">Appels Entrant</th>
+                            <th class="uk-table-expand">Appels sortants (Reussis)</th>
+                            <th class="uk-table-expand">Repondeur ou echec</th>
+                            <th class="uk-table-expand">SMS</th>
+                            <th class="uk-table-expand">Total des communications</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="uk-table-expand">
+                                    <span class="">{{ data.in_com_count }}</span>
+                                </td>
+                                <td class="uk-table-expand">
+                                    <span class="">{{ data.success_com_count }}</span>
+                                </td>
+                                <td class="uk-table-expand">
+                                    <span class="uk-text-danger">{{ data.drop_com_count }}</span>
+                                </td>
+                                <td class="uk-table-expand">
+                                    <span class="">{{ data.sms_count }}</span>
+                                </td>
+                                <td class="uk-table-expand">
+                                    <span class="">{{ data.all_com_count }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </article>
+
+
+
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        Liste des communications
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            <th class="uk-table-expand">Flux</th>
+                            <th class="uk-table-expand">Type</th>
+                            <th class="uk-table-expand">Numero A</th>
+                            <th class="uk-table-expand">Numero B</th>
+                            <th class="uk-table-expand">Duree en secondes</th>
+                            <th class="uk-table-expand">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,com in page_com_all  %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ com.flux_appel }}</td>
+                                    <td>{{ com.data_type }}</td>
+                                    <td>{{ com.num_a }}</td>
+                                    <td>{{ com.num_b }}</td>
+                                    <td>{{ com.duration| date('H:i:s', '+00:00 GMT')}}</td>
+                                    <td>{{ com.day_time|date('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(page_com_all,'/Paginator/paginator-uikit.html.twig') }}
+                </div>
+
+            </article>
+
+
+
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        Appels Sortants
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            <th class="uk-table-expand">Flux</th>
+                            <th class="uk-table-expand">Type</th>
+                            <th class="uk-table-expand">Numero A</th>
+                            <th class="uk-table-expand">Numero B</th>
+                            <th class="uk-table-expand">Duree en secondes</th>
+                            <th class="uk-table-expand">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key,com in page_com_success  %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ com.flux_appel }}</td>
+                                <td>{{ com.data_type }}</td>
+                                <td>{{ com.num_a }}</td>
+                                <td>{{ com.num_b }}</td>
+                                <td>{{ com.duration| date('H:i:s', '+00:00 GMT')}}</td>
+                                <td>{{ com.day_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(page_com_success,'/Paginator/paginator-uikit.html.twig') }}
+                </div>
+
+            </article>
+
+
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        Appels Entrants
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            <th class="uk-table-expand">Flux</th>
+                            <th class="uk-table-expand">Type</th>
+                            <th class="uk-table-expand">Numero A</th>
+                            <th class="uk-table-expand">Numero B</th>
+                            <th class="uk-table-expand">Duree en secondes</th>
+                            <th class="uk-table-expand">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key,com in page_com_success  %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ com.flux_appel }}</td>
+                                <td>{{ com.data_type }}</td>
+                                <td>{{ com.num_a }}</td>
+                                <td>{{ com.num_b }}</td>
+                                <td>{{ com.duration| date('H:i:s', '+00:00 GMT')}}</td>
+                                <td>{{ com.day_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(page_in_com,'/Paginator/paginator-uikit.html.twig') }}
+                </div>
+
+            </article>
+
+
+
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        Appels Echoués (Repondeur)
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            <th class="uk-table-expand">Type</th>
+                            <th class="uk-table-expand">Numero A</th>
+                            <th class="uk-table-expand">Numero B</th>
+                            <th class="uk-table-expand">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key,com in page_drop_com  %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ com.data_type }}</td>
+                                <td>{{ com.num_a }}</td>
+                                <td>{{ com.num_b }}</td>
+                                <td>{{ com.day_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(page_drop_com,'/Paginator/paginator-uikit.html.twig') }}
+                </div>
+
+            </article>
+
+            <article class="uk-article">
+                <h4>
+                    <a class="uk-link-reset" href="">
+                        SMS
+                    </a>
+                </h4>
+                <hr>
+                <p class="uk-article-meta">Date du {{ data.dates.start }} au {{ data.dates.end }}</p>
+
+                <div class="uk-overflow-auto">
+
+                    <table class="uk-table uk-table-striped uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
+                        <thead>
+                        <tr>
+                            <th class="uk-table-expand">#</th>
+                            <th class="uk-table-expand">Flux</th>
+                            <th class="uk-table-expand">Type</th>
+                            <th class="uk-table-expand">Numero A</th>
+                            <th class="uk-table-expand">Numero B</th>
+                            <th class="uk-table-expand">Duree en secondes</th>
+                            <th class="uk-table-expand">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for key,com in sms_page  %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ com.flux_appel }}</td>
+                                <td>{{ com.data_type }}</td>
+                                <td>{{ com.num_a }}</td>
+                                <td>{{ com.num_b }}</td>
+                                <td>{{ com.duration| date('H:i:s', '+00:00 GMT')}}</td>
+                                <td>{{ com.day_time|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ knp_pagination_render(sms_page,'/Paginator/paginator-uikit.html.twig') }}
+                </div>
+
+            </article>
+
+        </div>
+    </div>
+
+    {{ dump(data) }}
+
+
+{% endblock %}

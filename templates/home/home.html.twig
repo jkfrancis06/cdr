@@ -10,12 +10,14 @@
             <article class="uk-article">
 
                 <h1 class="uk-article-title"><a class="uk-link-reset" href="">Tableau de bord</a></h1>
+                <hr>
 
                 <table class="uk-table uk-table-hover uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
                     <thead>
                     <tr>
                         <th>#</th>
                         <th>Numero</th>
+                        <th>Nom</th>
                         <th>Opérateur</th>
                         <th>Appels Entrants</th>
                         <th>Appels Sortants</th>
@@ -30,6 +32,9 @@
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{ person.c_number }}</td>
+                        <td>
+                            <span class="uk-text-capitalize uk-text-bold">{{ person.a_name }}</span>
+                        </td>
                         <td>{{ person.c_operator }}</td>
                         <td>{{ person.b_call_count }}</td>
                         <td>{{ person.a_call_count }}</td>
@@ -46,6 +51,9 @@
         </div>
     </div>
 
+    {{ dump(response) }}
+
 
 
 {% endblock %}
+
