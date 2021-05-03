@@ -63,12 +63,20 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
                 ->getNumberName($person->getCNumber());
 
 
-            $person->setANom($rep["data"]["a_nom"]);
+            if (sizeof($rep["data"] )!= 0) {
+                $person->setANom($rep["data"][0]["a_nom"]);
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $person_data["a_name"] = $rep["data"]["a_nom"];
+            if (sizeof($rep["data"] )!= 0) {
+                $person_data["a_name"] = $rep["data"][0]["a_nom"];
+            }else{
+                $person_data["a_name"] = "";
+            }
+
+
 
             $person_data["link"] = $person->getCFileName();
             $person_data["c_operator"] = $person->getCOperator();
@@ -80,7 +88,8 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
         }
 
         return $this->render('home/home.html.twig',[
-            "response"=>$res_data_array
+            "response"=>$res_data_array,
+            "is_active"=> "home"
         ]);
     }
 
@@ -101,7 +110,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
             throw new NotFoundHttpException('Ce numero n\'existe pas');
         }
         return $this->render('home/number_details.html.twig',[
-            'c_name' => $db_c_number,
+            'c_name' => $db_c_number->getANom(),
             'c_number' => $db_c_number->getCNumber(),
             'c_operator' => $db_c_number->getCOperator(),
             'c_file_name' => $db_c_number->getCFileName()

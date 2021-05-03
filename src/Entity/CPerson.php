@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\CPersonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=CPersonRepository::class)
+ * @UniqueEntity(fields={"c_number"}, message="Un sujet avec ce numéro a déjé été ajouté!")
  */
 class CPerson
 {
@@ -20,6 +24,7 @@ class CPerson
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $c_number;
 
@@ -42,6 +47,8 @@ class CPerson
      * @ORM\Column(type="string", length=255)
      */
     private $c_file_name;
+
+
 
 
     public function getId(): ?int

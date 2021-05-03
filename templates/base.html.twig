@@ -8,7 +8,9 @@
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
             <link rel="stylesheet" href="{{ asset('/build/css/date-picker/daterangepicker.css') }}" />
-            <link rel="stylesheet" href="{{ asset('/build/css/uikit.css') }}" />
+            <link rel="stylesheet" href="{{ asset('/build/css/bootstrap.css') }}" />
+            <link rel="stylesheet" href="{{ asset('/build/css/icon/all.css') }}" />
+            <link rel="stylesheet" href="{{ asset('/build/css/icon/fontawesome.css') }}" />
             <link rel="stylesheet" href="{{ asset('/build/css/style.css') }}" />
             <style>
                 li.page-item{
@@ -21,18 +23,21 @@
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
             <script  src="{{ asset('/build/js/jquery/jquery.js') }}"></script>
+            <script  src="{{ asset('/build/js/bootstrap.js') }}"></script>
             <script src="{{ asset('/build/js/vue/vue.js') }}"></script>
             <script src="{{ asset('/build/js/vue/axios.min.js') }}"></script>
             <script src="{{ asset('/build/js/uikit/uikit.js') }}"></script>
-            <script  src="{{ asset('/build/js/uikit/uikit-icons.js') }}"></script>
             <script  src="{{ asset('/build/js/date-picker/moment.min.js') }}"></script>
             <script  src="{{ asset('/build/js/date-picker/daterangepicker.js') }}"></script>
         {% endblock %}
     </head>
     <body>
 
-        {% block body %}
-        {% endblock %}
+        <div class="container-fluid">
+            {% block body %}
+            {% endblock %}
+        </div>
+
 
     </body>
     {% block bottom_js %}

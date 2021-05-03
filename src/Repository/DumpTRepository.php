@@ -95,10 +95,10 @@ class DumpTRepository extends ServiceEntityRepository
 
     }
 
-    public function truncateTable(): array
+    public function truncateTable($class): array
     {
         $em = $this->getEntityManager();
-        $classMetaData = $em->getClassMetadata(DumpT::class);
+        $classMetaData = $em->getClassMetadata($class);
         $connection = $em->getConnection();
         $dbPlatform = $connection->getDatabasePlatform();
         $connection->beginTransaction();
@@ -133,7 +133,7 @@ class DumpTRepository extends ServiceEntityRepository
                 ])
                 ->setMaxResults(1)
                 ->getQuery()
-                ->getSingleResult();
+                ->getResult();
             $res = [];
             $res["status"] = 200;
             $res["data"] = $qr;

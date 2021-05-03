@@ -28,10 +28,11 @@ window.onload = function () {
             totalPages: 1,
             pageSize: 15,
             bootstrapPaginationClasses: {
-                ul: 'uk-pagination uk-flex-center',
+                ul: 'pagination',
                 li: 'page-item',
-                liActive: 'uk-active',
-                liDisable: 'uk-disabled',
+                a: 'page-link',
+                liActive: 'active',
+                liDisable: 'disabled',
                 button: 'page-link'
             },
             paginationAnchorTexts: {
@@ -53,6 +54,8 @@ window.onload = function () {
                 start: '',
                 end: ''
             },
+            myModal: ''
+
 
         },
 
@@ -72,7 +75,7 @@ window.onload = function () {
             }
 
             // loader
-            UIkit.modal('#modal-center', {'bgClose':false}).show();
+
 
             // load date picker
             self = this
@@ -96,7 +99,6 @@ window.onload = function () {
 
                     // execute request
 
-                    UIkit.modal('#modal-center', {'bgClose':false}).show();
 
                     axios({
                         method: 'post',
@@ -109,7 +111,6 @@ window.onload = function () {
                         }
                     }).then(function (response){
                         console.log(response)
-                        modal = UIkit.modal('#modal-center', {'bgClose':false}).hide();
                         self.frequent_users = response.data
                     });
 

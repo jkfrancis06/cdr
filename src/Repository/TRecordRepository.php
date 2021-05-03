@@ -268,6 +268,30 @@ class TRecordRepository extends ServiceEntityRepository
         }
     }
 
+    // count communications between two numbers
+
+    public function getCommunicationBetween(string $num_a, string $num_b){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('count(t.id)')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->orWhere('t.num_a = :num_a AND t.num_b = :num_b')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
+                ])
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            return $qr;
+        }catch (Exception $exception){
+            $res = [];
+            $res["status"] = 500;
+            $res["data"] = 0;
+            return $res;
+        }
+    }
+
 
     // count communications between two numbers and dates
 
@@ -289,7 +313,6 @@ class TRecordRepository extends ServiceEntityRepository
             $res["status"] = 200;
             $res["data"] = $qr;
             return $res;
-            return $res;
         }catch (Exception $exception){
             $res = [];
             return $res;
@@ -310,6 +333,24 @@ class TRecordRepository extends ServiceEntityRepository
                     'num_b' => $num_b,
                     'start' => $start,
                     'end' => $end,
+                ])
+                ->getQuery()
+                ->getResult();
+            return $qr;
+        }catch (Exception $exception){
+            $res = [];
+            return $res;
+        }
+    }
+
+    public function getCommunications(string $num_a, string $num_b){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
                 ])
                 ->getQuery()
                 ->getResult();
@@ -345,6 +386,26 @@ class TRecordRepository extends ServiceEntityRepository
     }
 
 
+    public function getInCalls(string $num_a, string $num_b){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.flux_appel LIKE \'Entrant\'')
+                ->andWhere('t.data_type LIKE \'Voix\'')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
+                ])
+                ->getQuery()
+                ->getResult();
+            return $qr;
+        }catch (Exception $exception){
+            return [];
+        }
+    }
+
+
     // count sms between two numbers and dates and criteria
 
     public function getsmsbetween(string $num_a, string $num_b, $start, $end){
@@ -359,6 +420,26 @@ class TRecordRepository extends ServiceEntityRepository
                     'num_b' => $num_b,
                     'start' => $start,
                     'end' => $end,
+                ])
+                ->getQuery()
+                ->getResult();
+            $res = [];
+            return $qr;
+        }catch (Exception $exception){
+            $res = [];
+            return $res;
+        }
+    }
+
+    public function getsms(string $num_a, string $num_b){
+        try {
+            $qr = $this->createQueryBuilder('t')
+                ->select('t.num_a, t.num_b, t.day_time, t.flux_appel, t.data_type, t.duration')
+                ->where('t.num_a = :num_a AND t.num_b = :num_b')
+                ->andWhere('t.data_type LIKE \'SMS\'')
+                ->setParameters([
+                    'num_a' => $num_a,
+                    'num_b' => $num_b
                 ])
                 ->getQuery()
                 ->getResult();
@@ -403,6 +484,31 @@ class TRecordRepository extends ServiceEntityRepository
         return $res;
     }
 
+    public function getSuccessOutCalls(string $num_a, string $num_b){
+        $db = $this->getEntityManager();
+        $str = 'SELECT trecord.num_a, trecord.num_b, trecord.day_time, trecord.flux_appel, trecord.data_type, trecord.duration
+                FROM trecord
+                INNER JOIN (
+	                select trecord.num_b, trecord.num_a, trecord.day_time, trecord.flux_appel, trecord.data_type, trecord.duration
+	                from trecord
+	                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\' and duration > 0 and flux_appel LIKE \'Entrant\') 
+                ) as qr
+                ON trecord.day_time = qr.day_time and trecord.num_a = qr.num_b and trecord.num_b = qr.num_a
+                where (trecord.num_a = ? and trecord.num_b = ?) and (trecord.data_type = \'Voix\' and trecord.duration > 0 and trecord.flux_appel LIKE \'Sortant\') ';
+
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            $num_a,
+            $num_b,
+            $num_a,
+            $num_b
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
+    }
+
 
     // count drop calls between two numbers and dates and criteria
 
@@ -434,6 +540,95 @@ class TRecordRepository extends ServiceEntityRepository
         return $res;
     }
 
+    public function getDropOutCalls(string $num_a, string $num_b){
+        $db = $this->getEntityManager();
+        $str = 'select num_a, num_b, day_time, data_type
+                from trecord
+                where (num_a = ? and num_b = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Sortant\') 
+                except
+                select num_b, num_a, day_time, data_type
+                from trecord
+                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Entrant\') 
+                order by day_time asc ';
+
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            $num_a,
+            $num_b,
+            $num_a,
+            $num_b,
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
+    }
+
+
+
+
+    // get common contacts between two numbers
+
+    public function getCommonContactsBetweenDates($num_a,$num_b,$start,$end){
+        $str = '
+            SELECT t.num_b, t.b_nom
+            FROM trecord t
+            inner JOIN (
+	            select num_b, b_nom
+	            from trecord
+	            where (num_b NOT ILIKE \'401\' and num_b NOT ILIKE \'00403\' and num_b NOT ILIKE \'telma\' and num_b NOT ILIKE \'777\') and num_a = :num_a and day_time between :start and :end
+            ) as qr
+            ON t.num_b = qr.num_b 
+            where (t.num_b NOT ILIKE \'401\' and t.num_b NOT ILIKE \'00403\' and t.num_b NOT ILIKE \'telma\' and t.num_b NOT ILIKE \'777\') and t.num_a = :num_b and t.day_time between :start and :end
+            group by t.num_b, t.b_nom
+        ';
+
+        $db = $this->getEntityManager();
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            'num_a' => $num_a,
+            'num_b' => $num_b,
+            'start' => $start,
+            'end' => $end,
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
+
+    }
+
+
+
+
+    // get common contacts between two numbers
+
+    public function getCommonContacts($num_a,$num_b){
+        $str = '
+            SELECT t.num_b, t.b_nom
+            FROM trecord t
+            inner JOIN (
+	            select num_b, b_nom
+	            from trecord
+	            where (num_b NOT ILIKE \'401\' and num_b NOT ILIKE \'00403\' and num_b NOT ILIKE \'telma\' and num_b NOT ILIKE \'777\') and num_a = :num_a
+            ) as qr
+            ON t.num_b = qr.num_b 
+            where (t.num_b NOT ILIKE \'401\' and t.num_b NOT ILIKE \'00403\' and t.num_b NOT ILIKE \'telma\' and t.num_b NOT ILIKE \'777\') and t.num_a = :num_b
+            group by t.num_b, t.b_nom
+        ';
+
+        $db = $this->getEntityManager();
+
+        $stmt = $db->getConnection()->prepare($str);
+        $params = array(
+            'num_a' => $num_a,
+            'num_b' => $num_b
+        );
+        $qr = $stmt->execute($params);
+        $res = $stmt->fetchAll();
+        return $res;
+
+    }
 
     // /**
     //  * @return TRecord[] Returns an array of TRecord objects

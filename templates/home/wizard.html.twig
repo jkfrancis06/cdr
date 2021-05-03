@@ -13,146 +13,161 @@
 
 {% block body %}
 
-    <div id="app">
+
+    <div class="row">
+        <div id="app">
+
+            <div class="row" style="margin-top: 3%">
+
+                <div class="col col-md-12">
+                    <h3 class="uk-margin-medium-top" style="text-align: center">
+                        ANALYSE CDR
+                    </h3>
+                </div>
+                <div class="col col-md-12">
+                    <p class="uk-text-meta " style="text-align: center">
+                        Bienvenue ! Cet assistant va vous guider dans l’insertion des données d’entrées pour effectuer
+                        l’analyse.
+                    </p>
+                </div>
+
+            </div>
+            <hr>
+
+            {% for message in app.session.flashbag.get('add_c_person') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}!</strong>
+                    <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.session.flashbag.get('remove_c_person') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}!</strong>
+                    <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                </div>
+            {% endfor %}
 
 
-        <div id="modal-center" class="uk-flex-top" uk-modal data-uk-modal="{target:'#modal-center',bgClose:false}">
-            <div style="background: unset" class="uk-flex-middle uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-                <div id="loading-bar-spinner" class="spinner">
-                    <div class="spinner-icon"></div>
+
+            <div class="row">
+                <div class="col col-md-12 col-lg-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-uppercase">AJOUTER UN SUJET</h5>
+                            <hr>
+                            <h6 class="card-subtitle mb-2 text-muted text-center"></h6>
+                            <div class="card-text">
+                                {{ form_start(form) }}
+                                    <div class="row">
+
+                                        <div class="col col-7">
+                                            {{ form_label(form.c_number, "Numéro de telephone", {'label_attr': {'class': 'c_number_input_label', 'maxlength': 7}}) }}
+                                            <div class="input-group input-group-sm mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroup-sizing-sm">+269</span>
+                                                </div>
+                                                {{ form_widget(form.c_number, {'attr': {'class': 'c_number_input'}}) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-12">
+                                            {{ form_label(form.c_file_name, "Fichier CDR", {'label_attr': {'class': 'c_file_name_input_label','accept':'.csv'}}) }}
+                                            <div class="input-group mb-5">
+                                                {{ form_widget(form.c_file_name, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col col-6">
+                                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                                <div class="btn-group mr-6" role="group" aria-label="First group">
+                                                    {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                                                </div>
+                                                <div class="btn-group mr-6" role="group" aria-label="Third group" style="margin-left: 2rem">
+                                                    {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-12 col-lg-7">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h5 class="card-title text-uppercase text-center">Récap des infos saisies</h5>
+                            <hr>
+                            <div class="card-text">
+                                <div class="row">
+                                    <div class="col col-12">
+                                        <table class="table  table-responsive table-bordered table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 20%">Numéro de telephone</th>
+                                                <th>Operateur</th>
+                                                <th style="width: 40%">Fichier CDR</th>
+                                                <th style="width: 20%">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if c_persons | length > 0 %}
+                                                    {% for c_person in c_persons %}
+                                                        <tr>
+                                                            <td>{{ c_person.cNumber }}</td>
+                                                            <td>{{ c_person.cOperator }}</td>
+                                                            <td>{{ c_person.cFileName }}</td>
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col col-lg-6-6">
+                                                                        <button class="btn btn-success">
+                                                                            <a style="color: white" href="{{ path('home_wizard',{c_number: c_person.cNumber}) }}">
+                                                                                <i class="fa fa-pen-fancy">
+                                                                                </i>
+                                                                            </a>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col col-lg-6">
+                                                                        <button class="btn btn-danger">
+                                                                            <a style="color: white" href="{{ path('remove_number_wizard',{c_number: c_person.cNumber}) }}">
+                                                                                <i class="fa fa-trash">
+                                                                                </i>
+                                                                            </a>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <p class="text-center">Aucun numero n'a été ajouté pour l'instant</p>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col col-lg-12">
+                                        {% if c_persons | length > 1 %}
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-outline-info" type="button">
+                                                    <a style="color: inherit; text-decoration: inherit" href="{{ path('dump_data') }}">
+                                                        <span class="text-uppercase">j'ai terminé je passe au traitement</span>
+                                                    </a>
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="uk-flex uk-flex-center" style="margin-top: 10%">
-
-            <form class="uk-form-horizontal uk-margin-auto v-on:submit.prevent">
-
-                <div class="uk-card uk-card-default ">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-expand upload-box-title" style="text-align: center">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">ANALYSE CDR</h3>
-                                <p v-if="nb_num == 1" class="uk-text-meta uk-margin-medium-top" style="text-align: center">
-                                    Bienvenue ! Cet assistant va vous guider dans l’insertion des données d’entrées pour effectuer
-                                    l’analyse.
-                                </p>
-                                <p v-else class="uk-text-meta uk-margin-medium-top" style="text-align: center">
-                                    Sujet numero ${nb_num}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="uk-card-body">
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="phone_numero">Numéro de telephone</label>
-                            <div class="uk-form-controls">
-                                <input
-                                        v-on:keypress.enter.prevent
-                                        @change="check_number"
-                                        @input="check_number"
-                                        v-model="p_number"
-                                        class="uk-input"
-                                        id="phone_numero"
-                                        type="tel"
-                                        maxlength="7"
-                                >
-                                <span v-if="error_mngt.input_error != 0" class="uk-text-danger">
-                                   ${error_mngt.message}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="operator">Opérateur</label>
-                            <div class="uk-form-controls">
-                                <input v-model="operator"  class="uk-input" id="operator" type="text" disabled>
-                            </div>
-                        </div>
-                        <div class="js-upload uk-placeholder uk-text-center">
-                            <span uk-icon="icon: cloud-upload"></span>
-                            <span class="uk-text-middle">Deposer ici le fichier cdr correspondant (format .csv) ou</span>
-                            <div uk-form-custom>
-                                <input type="file">
-                                <span class="uk-link">selectionner un</span>
-                            </div>
-                        </div>
-                        <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
-
-                        <button v-if="upload_success == 1" class="uk-button uk-button-default" style="text-transform: lowercase;" disabled>
-                            <span uk-icon="icon: file-text"></span>
-                            <a v-bind:href="success_data.path">${success_data.file_name}</a> |    <span class="uk-text-success">${success_data.mem_usage} MB |${success_data.nb_rows} lignes importés</span>
-
-                        </button>
-
-                        <button v-if="upload_error == 1" class="uk-button uk-button-default" style="text-transform: lowercase;" disabled>
-                            <span uk-icon="icon: file-text"></span>
-                            <span class="uk-text-danger">Erreur dans le traitement du fichier, veuillez re-verifier les informations </span>
-                        </button>
-
-                    </div>
-
-
-
-                    <div class="uk-flex uk-flex-center uk-card-footer  uk-margin-auto">
-                        <button v-on:click="back_dat" class="uk-button uk-button-secondary" :disabled="nb_num==1">
-                            <span uk-icon="icon: arrow-left"></span>
-                            <span>Precedent</span>
-                        </button>
-                        <button v-on:click="push_data" class="uk-margin-left uk-flex-middle uk-button uk-button-default">
-                            <span uk-icon="icon: arrow-right"></span>
-                            <span>Autre sujet</span>
-                        </button>
-
-                        <button v-on:click="recap_data" class="uk-margin-left uk-flex-middle uk-button uk-button-default" :disabled="nb_num==1">
-                            <span uk-icon="icon: ckeck"></span>
-                            <span>Terminer</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-
-            <div id="modal-recap" uk-modal>
-                <div class="uk-modal-dialog">
-
-                    <div class="uk-modal-header">
-                        <h2 class="uk-modal-title">Recapitulatif des informations</h2>
-                    </div>
-
-                    <div class="uk-modal-body" uk-overflow-auto>
-                        <table class="uk-table uk-table-hover uk-table-divider">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Numéro de telephone</th>
-                                <th>Operateur</th>
-                                <th>Fichier CDR</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, index) in data_push">
-                                <td>${index + 1}</td>
-                                <td>${item.p_number}</td>
-                                <td>${item.operator}</td>
-                                <td><a v-bind:href="success_data.path">${item.file_name}</a> |  <span class="uk-text-success">${item.success_data.nb_rows} lignes importés</span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="uk-modal-footer uk-text-right">
-                        <button class="uk-button uk-button-default uk-modal-close" type="button">Annuler</button>
-                        <button v-on:click="validate_data" class="uk-button uk-button-primary" type="button">Valider les donnees</button>
-                    </div>
-
-                </div>
-            </div>
-
-
-        </div>
     </div>
-
-
 
 
 

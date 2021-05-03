@@ -209,6 +209,16 @@ window.onload = function () {
                     }
                     this.data_push[this.nb_num - 1] = temp_data_object;
 
+                    this.p_number = this.data_push[this.nb_num].p_number;
+                    this.operator = this.data_push[this.nb_num].operator;
+                    this.link = this.data_push[this.nb_num].success_data.link;
+                    this.success_data = this.data_push[this.nb_num].success_data;
+                    if (this.link !== '') {
+                        this.upload_success = 1;
+                    }else {
+                        this.upload_error = 1;
+                    }
+
                     // check if next element exists
 
                     if (typeof this.data_push[this.nb_num] !== 'undefined' && this.data_push[this.nb_num] !== null) {
@@ -253,9 +263,24 @@ window.onload = function () {
 
             },
 
+            new_user: function (event){
+                event.preventDefault()
+                this.p_number = '';
+                this.operator = '';
+                this.link = '';
+                this.success_data = {
+                    'nb_rows': '',
+                    'mem_usage': '',
+                    'file_name': '',
+                    'path': ''
+                };
+                this.upload_error = 0;
+                this.upload_success = 0;
+            },
+
             recap_data: function (event) {
                 this.recap_status = 1;
-                this.push_data(event);
+                event.preventDefault();
                 let modal = UIkit.modal('#modal-recap', {'bgClose':false, 'escClose':false}).show();
             },
 

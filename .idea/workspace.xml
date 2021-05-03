@@ -23,28 +23,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DQL/ToChar.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Paginator/paginator-uikit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/icon/all.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/icon/fontawesome.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/CommonContactController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/PrintController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/cdr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cdr.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/build/js/vue/number-details.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/js/vue/number-details.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/COM-4872820-6089eff82306c.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4302392-6089f0463f1ff.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/js/vue/wizard-script-vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/js/vue/wizard-script-vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/COM-4872820-608c032ad02c7.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4317888-608c03181a98c.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722824-608c03b396a4d.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722939-608c0303bafa3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4808373-608c039c449b9.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4302392-608c0351b94ee.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4355762-608c033deb7f2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4405791-608c0360a0f2e.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4452707-608c037213845.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-608c02ed59f28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4808396-608c038a77615.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/MatriceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MatriceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/CPerson.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/CPerson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/TRecord.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/TRecord.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/home.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/number_details.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/number_details.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/wizard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/wizard.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/details_matrice_communication.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/details_matrice_communication.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,6 +207,16 @@
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-paginator-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
+      <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/vendor/maennchen/zipstream-php" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/php-enum" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/matrix" />
+      <path value="$PROJECT_DIR$/vendor/markbaker/complex" />
+      <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
     </include_path>
   </component>
   <component name="ProjectId" id="1repQkPvvaD28LwwjggQTw1A82x" />
@@ -183,7 +227,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/build/js/date-picker" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/build/css" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -195,17 +239,17 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/build/js/date-picker" />
-      <recent name="$PROJECT_DIR$/public/build/css/date-picker" />
-      <recent name="$PROJECT_DIR$/public/build/js/jquery" />
-      <recent name="$PROJECT_DIR$/public/build/js" />
-      <recent name="$PROJECT_DIR$/public/build/css" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public/build/js/custom" />
       <recent name="$PROJECT_DIR$/public/build/js/jquery" />
       <recent name="$PROJECT_DIR$/public/build/js/uikit" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/build/css" />
+      <recent name="$PROJECT_DIR$/public/build/css/icon" />
+      <recent name="$PROJECT_DIR$/templates/matrices" />
+      <recent name="$PROJECT_DIR$/public/build/js/date-picker" />
+      <recent name="$PROJECT_DIR$/public/build/css/date-picker" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -221,7 +265,7 @@
       <workItem from="1619459784537" duration="20589000" />
       <workItem from="1619514746189" duration="16015000" />
       <workItem from="1619601149993" duration="113754000" />
-      <workItem from="1619818416157" duration="19585000" />
+      <workItem from="1619818416157" duration="80233000" />
     </task>
     <servers />
   </component>
@@ -244,22 +288,22 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="412" y="199" width="598" height="403" key="#com.intellij.fileTypes.FileTypeChooser/50.27.1316.741@50.27.1316.741" timestamp="1619866551135" />
-    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1619808523085">
+    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1619981226395">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/50.27.1316.741@50.27.1316.741" timestamp="1619808523085" />
+    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/50.27.1316.741@50.27.1316.741" timestamp="1619981226395" />
     <state x="291" y="134" width="824" height="533" key="IDE.errors.dialog" timestamp="1619801571455">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="291" y="134" width="824" height="533" key="IDE.errors.dialog/50.27.1316.741@50.27.1316.741" timestamp="1619801571455" />
-    <state x="614" y="140" width="481" height="568" key="NewPhpClassDialog" timestamp="1619869906487">
+    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog" timestamp="1619994466310">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="614" y="140" width="481" height="568" key="NewPhpClassDialog/50.27.1316.741@50.27.1316.741" timestamp="1619869906487" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1619745605086">
+    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog/50.27.1316.741@50.27.1316.741" timestamp="1619994466310" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1620002090536">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1619745605086" />
+    <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1620002090536" />
     <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1619814566377">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
@@ -280,13 +324,13 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="675" y="27" width="625" height="741" key="find.popup/50.27.1316.741@50.27.1316.741" timestamp="1619382426154" />
-    <state x="372" y="174" key="run.anything.popup" timestamp="1619872526748">
+    <state x="372" y="174" key="run.anything.popup" timestamp="1619961983601">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1619872526748" />
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1619871640939">
+    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1619961983601" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620003543707">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1619871640939" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620003543707" />
   </component>
 </project>

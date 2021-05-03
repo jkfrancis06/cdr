@@ -3,138 +3,134 @@
 {% block titre %}Details du numero{% endblock%}
 
 {% block content %}
-    <div id="number-app">
-        <ul class="uk-breadcrumb" style="margin-top: 3%">
-            <li><a href="/">Tableau de bord</a></li>
-            <li class="uk-disabled"><a>Details de numero</a></li>
-            <li><span>{{ c_number }}</span></li>
-        </ul>
+    <div id="number-app" style="margin-top: 4rem">
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Tableau de bord</a></li>
+                <li class="breadcrumb-item">Details</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ c_number }}</li>
+            </ol>
+        </nav>
 
 
         <!-- Modal loader -->
 
-        <div id="modal-center" class="uk-flex-top" uk-modal data-uk-modal="{target:'#modal-center',bgClose:false}">
-            <div style="background: unset" class="uk-flex-middle uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-                <div id="loading-bar-spinner" class="spinner">
-                    <div class="spinner-icon"></div>
-                </div>
-            </div>
+
+        <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+                {% if c_name == 0 or c_name == "" %}
+                    <li class="list-group-item">Nom:  <span class="text-danger text-uppercase">non identifié</span></li>
+                {% else %}
+                    <li class="list-group-item">Nom:  <span class="text-uppercase">{{ c_name }}</span></li>
+                {% endif %}
+                <li class="list-group-item">Numéro : <span id="c_number">{{ c_number }}</span></li>
+                <li class="list-group-item">Opérateur:  <span>{{ c_operator }}</span></li>
+            </ul>
         </div>
 
-        <article class="uk-article">
-            <div class="uk-child-width-1-1 uk-text-left" uk-grid>
-                <div>
-                    <div class="uk-card uk-background-muted uk-card-default uk-card-body uk-width-1-2">
-                        <div>
-                            <span class="uk-text-bold">Nom:</span>
-                            <span class="uk-text-light">{{ c_name }}</span>
-                        </div>
 
-                        <div style="margin-top: 2%">
-                            <span class="uk-text-bold">Numero:</span>
-                            <span id="c_number" class="uk-text-light">{{ c_number }}</span>
-                        </div>
+        <h3 style="margin-top: 4rem">Contacts frequents</h3>
+        <hr>
 
-                        <div style="margin-top: 2%">
-                            <span class="uk-text-bold">Operateur:</span>
-                            <span class="uk-text-light">{{ c_operator }}</span>
-                        </div>
-
-                        <div style="margin-top: 2%">
-                            <span class="uk-text-bold">Fichier CDR:</span>
-                            <span class="uk-text-light">{{ c_file_name }}</span>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col col-5">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Filtrer par date</span>
+                    <input v-model="date_time_range.range" class="form-control" type="text" name="daterange" aria-describedby="basic-addon3"/>
                 </div>
             </div>
 
 
-        </article>
+            <div class="col col-12">
 
-        <h3>Contacts frequents</h3>
-        <hr>
-        <div class="uk-flex uk-flex-right">
-            <div style="margin-top: 8px; margin-right: 5px">
-                Filtrer:
-            </div>
-            <div class="uk-width-1-3">
-               <input v-model="date_time_range.range" class="uk-input" type="text" name="daterange" />
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Numéro</th>
+                        <th>Durée totale des communications</th>
+                        <th>Nombre de communications</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in frequent_users">
+                        <td>${index + 1}</td>
+                        <td>${item.num_b}</td>
+                        <td>${item.duration}</td>
+                        <td>${item.nb}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <table class="uk-table uk-table-striped">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Numéro</th>
-                <th>Durée totale des communications</th>
-                <th>Nombre de communications</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, index) in frequent_users">
-                <td>${index + 1}</td>
-                <td>${item.num_b}</td>
-                <td>${item.duration}</td>
-                <td>${item.nb}</td>
-            </tr>
-            </tbody>
-        </table>
 
 
-
-        <h3>Liste des communications</h3>
+        <h3 style="margin-top: 3rem">Liste des communications</h3>
         <hr>
-        <div style="margin-bottom: 9%">
-            <div style="float: left; display: inline-block">
-                <form class="uk-search uk-search-default">
-                    <span uk-search-icon></span>
+
+        <div class="row">
+            <div class="col col-s12 col-md-4 col-lg-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                     <input @change="filter_by_number"
                            @input="filter_by_number"
                            v-model="number_to_filter"
-                           class="uk-search-input" type="search" placeholder="Filtrer numero"
+                           class="form-control" type="search" placeholder="Filtrer numero"
                     >
-
-                </form>
+                </div>
+            </div>
+            <div class="col col-s12 col-md-4 col-lg-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Filtrer par date</span>
+                    <input v-model="date_time_range_com.range"  placeholder="Filter par periode" class="form-control" type="text" name="daterange_com" />
+                </div>
             </div>
 
-            <div style="float:left; display: inline-block; margin-left: 10%">
-                <input v-model="date_time_range_com.range"  placeholder="Filter par periode" class="uk-input" type="text" name="daterange_com" />
+            <div class="col col-12">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Flux d'appel</th>
+                        <th>Date</th>
+                        <th>Numero A</th>
+                        <th>Numero B</th>
+                        <th>Durée</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in pagination_array">
+                        <td>${index + 1}</td>
+                        <td>${item.dataType}</td>
+                        <td>${item.fluxAppel}</td>
+                        <td>${item.dayTime}</td>
+                        <td>${item.numA}</td>
+                        <td>${item.numB}</td>
+                        <td>${convert_to_hour(item.duration)}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <div class="col col-3"></div>
+            <div class="col col-4">
+                <nav aria-label="Pagination">
+                    <v-pagination v-model="currentPage"
+                                  :page-count="totalPages"
+                                  :classes="bootstrapPaginationClasses"
+                                  :labels="paginationAnchorTexts" uk-margin ></v-pagination>
+                </nav>
+            </div>
+            <div class="col col-5"></div>
+
         </div>
 
 
-        <table class="uk-table uk-table-striped">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Type</th>
-                <th>Flux d'appel</th>
-                <th>Date</th>
-                <th>Numero A</th>
-                <th>Numero B</th>
-                <th>Durée</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, index) in pagination_array">
-                <td>${index + 1}</td>
-                <td>${item.dataType}</td>
-                <td>${item.fluxAppel}</td>
-                <td>${item.dayTime}</td>
-                <td>${item.numA}</td>
-                <td>${item.numB}</td>
-                <td>${convert_to_hour(item.duration)}</td>
-            </tr>
-            </tbody>
-        </table>
 
-        <div>
-            <v-pagination v-model="currentPage"
-                          :page-count="totalPages"
-                          :classes="bootstrapPaginationClasses"
-                          :labels="paginationAnchorTexts" uk-margin ></v-pagination>
-        </div>
+
 
     </div>
 

@@ -3,32 +3,176 @@
 
 namespace App\Controller;
 use App\Entity\CPerson;
+use App\Entity\DumpHuriEntrant;
+use App\Entity\DumpHuriSortant;
 use App\Entity\DumpT;
 use App\Entity\TRecord;
+use App\Form\CPersonType;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 class WizardController extends AbstractController
 {
 
     /**
-     * @Route("/wizard", name="home_wizard")
+     * @Route("/wizard/{c_number?}", name="home_wizard")
      */
-    public function homeWizard(){
+    public function homeWizard(Request  $request, $c_number = null,FileUploader $fileUploader){
 
-        // truncate tables
+        $is_new = true;
+        $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+        if($c_number != null) {
+            $c_person = $repo->findOneBy([
+               'c_number' => $c_number
+            ]);
+            $is_new = false;
+        }else{
+            $c_person = new CPerson();
+        }
+        $c_persons = [];
+        $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
 
-        $data = $this->getDoctrine()
-            ->getRepository(DumpT::class)
-            ->truncateTable();
+        $a_person_serialized = [];
 
-        return $this->render('home/wizard.html.twig',$data);
+        if ($repo->findAll() != null){
+            $c_persons = $repo->findAll();
+            $serializer = new Serializer(array(new ObjectNormalizer()));
+            $a_person_serialized = $serializer->normalize($c_persons, null);
+        }
+
+
+        $form = $this->createForm(CPersonType::class, $c_person);
+
+        $em = $this->getDoctrine()->getManager();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $cdrFile = $form->get('c_file_name')->getData();
+
+            $form_c_number = $form->get('c_number')->getData();
+            $firstCharacter = substr($form_c_number, 0, 1);
+            switch($firstCharacter) {
+                case "3":
+                    $c_person->setCOperator("HURI");
+                    break;
+                case "4":
+                    $c_person->setCOperator("TELMA");
+                    break;
+                case "7":
+                    $c_person->setCOperator("HURI");
+                    break;
+            }
+
+            if($cdrFile != null){
+                $uploadedFileName = $fileUploader->upload($cdrFile);
+                $c_person->setCFileName($uploadedFileName);
+            }
+
+
+
+            if ($is_new == false) {
+                $em->flush();
+            }else{
+                $em->persist($c_person);
+                $em->flush();
+            }
+
+            $request->getSession()->getFlashBag()->add('add_c_person', 'Le sujet a été ajouté avec succès');
+
+            $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+
+            if ($repo->findAll() != null){
+                $c_persons = $repo->findAll();
+                $serializer = new Serializer(array(new ObjectNormalizer()));
+                $a_person_serialized = $serializer->normalize($c_persons, null);
+            }
+
+
+        }
+
+        return $this->render('home/wizard.html.twig',[
+            'form' => $form->createView(),
+            'c_persons' => $a_person_serialized
+        ]);
     }
 
+    /**
+     * @Route("/wizard-remove/{c_number}", name="remove_number_wizard")
+     */
+    public function removeNumber($c_number, Request $request){
+        $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+        $c_person = $repo->findOneBy([
+            'c_number' => $c_number
+        ]);
+        try {
+            unlink($this->getParameter('targetdirectory').'/'.$c_person->getCFileName());
+        }catch (\Exception $exception){
+
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($c_person);
+        $em->flush();
+
+        $request->getSession()->getFlashBag()->add('remove_c_person', 'Le sujet a été supprimé avec succès');
+
+        return $this->redirectToRoute('home_wizard');
+
+
+
+    }
+
+
+    /**
+     * @Route("/wizard-validate/dump-data", name="dump_data")
+     */
+
+    public function dumpWizardData(Request $request){
+
+        // Truncate tables
+
+        $this->getDoctrine()
+            ->getRepository(DumpT::class)
+            ->truncateTable(DumpT::class);
+
+        $this->getDoctrine()
+            ->getRepository(DumpT::class)
+            ->truncateTable(TRecord::class);
+
+        $this->getDoctrine()
+            ->getRepository(DumpT::class)
+            ->truncateTable(DumpHuriEntrant::class);
+
+        $this->getDoctrine()
+            ->getRepository(DumpT::class)
+            ->truncateTable(DumpHuriSortant::class);
+
+        $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+        $persons = $repo->findAll();
+
+        if ($persons != null) {
+            foreach ($persons as $person){
+                $res = $this->getDoctrine()
+                    ->getRepository(DumpT::class)
+                    ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+            }
+            $this->getDoctrine()
+                ->getRepository(TRecord::class)
+                ->dumpAll();
+        }
+        $request->getSession()->getFlashBag()->add('dump_success', 'Donnees traitees avec succès');
+
+        return $this->redirectToRoute('home');
+
+    }
 
 
 

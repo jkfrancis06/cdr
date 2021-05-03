@@ -46,7 +46,8 @@ class MatriceController extends AbstractController
         }
         return $this->render('matrices/matrice_communication.html.twig',[
             "matrices" => $com_data,
-            "range" => $date_range
+            "range" => $date_range,
+            "is_active" => "matrice_communication"
         ]);
     }
 
@@ -65,47 +66,90 @@ class MatriceController extends AbstractController
             $num_a = $part1[0];
             $num_b = $part2[0];
 
-            $queryBuilder = $this->getDoctrine()->getRepository(TRecord::class)
-                                ->paginateMatriceDetails($num_a,$num_b,$start,$end);
+            if (\DateTime::createFromFormat('Y-m-d H:i:s', $start) == false || \DateTime::createFromFormat('Y-m-d H:i:s', $end) == false) {
 
 
-            $cp_repo = $this->getDoctrine()->getRepository(CPerson::class);
-            $a_person = $cp_repo->findOneBy([
-                'c_number' => $num_a
-            ]);
-            $b_person = $cp_repo->findOneBy([
-                'c_number' => $num_b
-            ]);
+                $cp_repo = $this->getDoctrine()->getRepository(CPerson::class);
+                $a_person = $cp_repo->findOneBy([
+                    'c_number' => $num_a
+                ]);
+                $b_person = $cp_repo->findOneBy([
+                    'c_number' => $num_b
+                ]);
 
-            $serializer = new Serializer(array(new ObjectNormalizer()));
-            $a_person_serialized = $serializer->normalize($a_person, null);
-            $b_person_serialized = $serializer->normalize($b_person, null);
+                $serializer = new Serializer(array(new ObjectNormalizer()));
+                $a_person_serialized = $serializer->normalize($a_person, null);
+                $b_person_serialized = $serializer->normalize($b_person, null);
 
-            // compter toutes les communications
+                // compter toutes les communications
 
-            $com = $this->getDoctrine()->getRepository(TRecord::class)
-                             ->getCommunicationDateBetween($num_a,$num_b,$start,$end);
+                $com = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getCommunications($num_a,$num_b,$start,$end);
 
-            // succeed out calls
+                // succeed out calls
 
-            $com_success = $this->getDoctrine()->getRepository(TRecord::class)
-                                ->getSuccessOutCallsbetween($num_a,$num_b,$start,$end);
+                $com_success = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getSuccessOutCalls($num_a,$num_b);
 
-            // drop calls
+                // drop calls
 
-            $com_drop = $this->getDoctrine()->getRepository(TRecord::class)
-                                ->getDropOutCallsbetween($num_a,$num_b,$start,$end);
+                $com_drop = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getDropOutCalls($num_a,$num_b);
 
-            // sms
+                // sms
 
-            $sms = $this->getDoctrine()->getRepository(TRecord::class)
-                                ->getsmsbetween($num_a,$num_b,$start,$end);
+                $sms = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getsms($num_a,$num_b);
 
-           // get incoming calls
-            $rep = $this->getDoctrine()->getRepository(TRecord::class);
+                // get incoming calls
+                $rep = $this->getDoctrine()->getRepository(TRecord::class);
 
-            $in_com = $this->getDoctrine()->getRepository(TRecord::class)
-                        ->getInCallsDateBetween($num_a,$num_b,$start,$end);
+                $in_com = $this->getDoctrine()->getRepository(TRecord::class)
+                            ->getInCalls($num_a,$num_b);
+
+            }else{
+
+
+                $cp_repo = $this->getDoctrine()->getRepository(CPerson::class);
+                $a_person = $cp_repo->findOneBy([
+                    'c_number' => $num_a
+                ]);
+                $b_person = $cp_repo->findOneBy([
+                    'c_number' => $num_b
+                ]);
+
+                $serializer = new Serializer(array(new ObjectNormalizer()));
+                $a_person_serialized = $serializer->normalize($a_person, null);
+                $b_person_serialized = $serializer->normalize($b_person, null);
+
+                // compter toutes les communications
+
+                $com = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getCommunicationDateBetween($num_a,$num_b,$start,$end);
+
+                // succeed out calls
+
+                $com_success = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getSuccessOutCallsbetween($num_a,$num_b,$start,$end);
+
+                // drop calls
+
+                $com_drop = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getDropOutCallsbetween($num_a,$num_b,$start,$end);
+
+                // sms
+
+                $sms = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getsmsbetween($num_a,$num_b,$start,$end);
+
+                // get incoming calls
+                $rep = $this->getDoctrine()->getRepository(TRecord::class);
+
+                $in_com = $this->getDoctrine()->getRepository(TRecord::class)
+                    ->getInCallsDateBetween($num_a,$num_b,$start,$end);
+            }
+
+
 
 
             $com_page = $paginator->paginate(

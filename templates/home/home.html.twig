@@ -5,35 +5,56 @@
 
 {% block content %}
 
-    <div class="uk-section uk-section-default">
-        <div class="uk-container uk-container-large uk-position-relative">
-            <article class="uk-article">
+    {% for message in app.session.flashbag.get('dump_success') %}
+        <div style="margin-top: 2rem" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ message }}!</strong>
+            <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+        </div>
+    {% endfor %}
 
-                <h1 class="uk-article-title"><a class="uk-link-reset" href="">Tableau de bord</a></h1>
-                <hr>
+    <div class="row" style="margin-top: 4rem">
 
-                <table class="uk-table uk-table-hover uk-table-middle uk-table-justify uk-table-divider uk-table-responsive">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Numero</th>
-                        <th>Nom</th>
-                        <th>Opérateur</th>
-                        <th>Appels Entrants</th>
-                        <th>Appels Sortants</th>
-                        <th>SMS Entrants</th>
-                        <th>SMS Sortants</th>
-                        <th>Total Communications</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for person in response %}
+        <div class="col col-12">
+            <h3>Tableau de bord</h3>
+            <hr>
+        </div>
+
+        <div class="col col-2 offset-10" style="margin-bottom: 2rem">
+            <button id="printBtn" class="btn btn-outline-info">
+                <a style="color: inherit; text-decoration: inherit" href="{{ path('print_home') }}" target="_blank">
+                    <i class="fa fa-file-excel"></i>
+                    Exporter en excel
+                </a>
+            </button>
+        </div>
+
+        <div class="col col-12">
+            <table class="table table-hover table-responsive table-striped table-bordered text-center align-middle">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Numero</th>
+                    <th>Nom</th>
+                    <th>Opérateur</th>
+                    <th>Appels Entrants</th>
+                    <th>Appels Sortants</th>
+                    <th>SMS Entrants</th>
+                    <th>SMS Sortants</th>
+                    <th>Total Communications</th>
+                    <th>Voir</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for person in response %}
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{ person.c_number }}</td>
                         <td>
-                            <span class="uk-text-capitalize uk-text-bold">{{ person.a_name }}</span>
+                            {% if person.a_name == 0 %}
+                                <span class="text-uppercase text-danger ">Non identifié</span>
+                            {% else %}
+                                <span class="text-uppercase">{{ person.a_name }}</span>
+                            {% endif %}
                         </td>
                         <td>{{ person.c_operator }}</td>
                         <td>{{ person.b_call_count }}</td>
@@ -41,19 +62,70 @@
                         <td>{{ person.b_sms_count }}</td>
                         <td>{{ person.a_sms_count }}</td>
                         <td>{{ person.com_count }}</td>
-                        <td><a href="#">Details <span uk-icon="icon: arrow-right"></span></a></td>
+                        <td><a style="text-decoration: inherit; color: inherit" href="{{ path('c_number_page',{c_number: person.c_number}) }}"><i class="fa fa-eye"></i></a></td>
                     </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-
-            </article>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+
+
     </div>
 
-    {{ dump(response) }}
+
+
 
 
 
 {% endblock %}
 
+{% block bottom_js %}
+    <script>
+
+        var t_array = []
+
+        {% for person in response %}
+            var temp = {
+                c_number: "{{ person.c_number }}",
+                a_name: "{{ person.a_name }}",
+                    c_operator: "{{ person.c_operator }}",
+                    b_call_count: "{{ person.b_call_count }}",
+                    a_call_count: "{{ person.a_call_count }}",
+                    b_sms_count:  "{{ person.b_sms_count }}",
+                a_sms_count: "{{ person.a_sms_count }}",
+                com_count: "{{ person.com_count }}"
+            };
+            t_array.push(temp)
+        {% endfor %}
+
+        console.log(t_array)
+
+
+
+
+        $(function() {
+            $("#printBtn").on("click",function(e) {
+                e.preventDefault(); // cancel the link itself
+                axios({
+                    method: 'post',
+                    url: "{{ path('print_home') }}",
+                    responseType: 'json',
+                    data: t_array
+                }).then(function (response){
+                    console.log(response)
+                    var getUrl = window.location;
+                    var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                    href = baseUrl+response.data.link
+                    //window.open(href,'popUpWindow','height=400,width=600,left=10,top=10,,scrollbars=yes,menubar=no'); return false;
+
+                    window.open(href, '_blank').focus();
+                });
+            });
+        });
+
+
+
+
+
+    </script>
+{% endblock %}
