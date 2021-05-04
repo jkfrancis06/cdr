@@ -23,61 +23,60 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/build/css/icon/all.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/icon/fontawesome.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-brands-400.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-regular-400.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/build/css/webfonts/fa-solid-900.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/CommonContactController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/PrintController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/conrad.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/draw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/schema-contact.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.captors.mouse.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.captors.touch.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.classes.camera.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.classes.dispatcher.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.classes.edgequad.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.classes.graph.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.classes.quad.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.core.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.export.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.polyfills.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/build/js/sigma/sigma.utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/GraphController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/paginator/paginator-uikit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/schema/commun.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/schema/draw.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cdr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cdr.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/knp_paginator.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/knp_paginator.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/build/js/vue/number-details.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/js/vue/number-details.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/build/js/vue/wizard-script-vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/js/vue/wizard-script-vue.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/COM-4872820-608c032ad02c7.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4317888-608c03181a98c.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722824-608c03b396a4d.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722939-608c0303bafa3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4808373-608c039c449b9.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4302392-608c0351b94ee.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4355762-608c033deb7f2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4405791-608c0360a0f2e.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4452707-608c037213845.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-608c02ed59f28.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4808396-608c038a77615.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/.~lock.hello world.xlsx#" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f41079cd7axlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f41452ea84.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f429f7482d.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f42cc7be10.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f42f20a21f.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f4336bdda1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/Tableau de bord608f438d65ddb.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/exports/hello world.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/COM-4872820-608f22795161a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4317888-608f226bf2f13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722824-608f23011764f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722939-608f22524b4b1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4808373-608f22ed33158.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4302392-608f1904d4447.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4355762-608f228b573a9.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4405791-608f229de19e9.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4452707-608f22bbb935d.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-608f223906a68.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4808396-608f192848f2a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/CommonContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommonContactController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/MatriceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MatriceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/CPerson.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/CPerson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/PrintController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PrintController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Paginator/paginator-uikit.html.twig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/home.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/number_details.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/number_details.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home/wizard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/wizard.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/matrices/details_matrice_communication.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/details_matrice_communication.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/matrice_communication.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/matrice_communication.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -227,7 +226,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/build/css" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/build/js/sigma" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -245,11 +244,11 @@
       <recent name="$PROJECT_DIR$/public/build/js/uikit" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/build/js/sigma" />
+      <recent name="$PROJECT_DIR$/public/build/js/Sigma" />
       <recent name="$PROJECT_DIR$/public/build/css" />
       <recent name="$PROJECT_DIR$/public/build/css/icon" />
       <recent name="$PROJECT_DIR$/templates/matrices" />
-      <recent name="$PROJECT_DIR$/public/build/js/date-picker" />
-      <recent name="$PROJECT_DIR$/public/build/css/date-picker" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -265,7 +264,7 @@
       <workItem from="1619459784537" duration="20589000" />
       <workItem from="1619514746189" duration="16015000" />
       <workItem from="1619601149993" duration="113754000" />
-      <workItem from="1619818416157" duration="80233000" />
+      <workItem from="1619818416157" duration="117219000" />
     </task>
     <servers />
   </component>
@@ -288,34 +287,34 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="412" y="199" width="598" height="403" key="#com.intellij.fileTypes.FileTypeChooser/50.27.1316.741@50.27.1316.741" timestamp="1619866551135" />
-    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1619981226395">
+    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1620069529202">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/50.27.1316.741@50.27.1316.741" timestamp="1619981226395" />
+    <state x="441" y="155" width="524" height="491" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/50.27.1316.741@50.27.1316.741" timestamp="1620069529202" />
     <state x="291" y="134" width="824" height="533" key="IDE.errors.dialog" timestamp="1619801571455">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="291" y="134" width="824" height="533" key="IDE.errors.dialog/50.27.1316.741@50.27.1316.741" timestamp="1619801571455" />
-    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog" timestamp="1619994466310">
+    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog" timestamp="1620074235083">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog/50.27.1316.741@50.27.1316.741" timestamp="1619994466310" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1620002090536">
+    <state x="614" y="140" width="481" height="575" key="NewPhpClassDialog/50.27.1316.741@50.27.1316.741" timestamp="1620074235083" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1620077169079">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1620002090536" />
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1619814566377">
+    <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1620077169079" />
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1620085944863">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1619814566377" />
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1620085944863" />
     <state x="314" y="27" width="778" height="741" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1619744352054">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="314" y="27" width="778" height="741" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/50.27.1316.741@50.27.1316.741" timestamp="1619744352054" />
-    <state x="143" y="27" width="1028" height="553" key="dock-window-1" timestamp="1619643445603">
+    <state x="50" y="27" width="1270" height="695" key="dock-window-1" timestamp="1620069282808">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="143" y="27" width="1028" height="553" key="dock-window-1/50.27.1316.741@50.27.1316.741" timestamp="1619643445603" />
+    <state x="50" y="27" width="1270" height="695" key="dock-window-1/50.27.1316.741@50.27.1316.741" timestamp="1620069282808" />
     <state x="105" y="27" width="1028" height="697" key="dock-window-2" timestamp="1619736533836">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
@@ -324,13 +323,13 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="675" y="27" width="625" height="741" key="find.popup/50.27.1316.741@50.27.1316.741" timestamp="1619382426154" />
-    <state x="372" y="174" key="run.anything.popup" timestamp="1619961983601">
+    <state x="372" y="174" key="run.anything.popup" timestamp="1620086769524">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1619961983601" />
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620003543707">
+    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1620086769524" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620086286955">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620003543707" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620086286955" />
   </component>
 </project>

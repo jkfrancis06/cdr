@@ -6,6 +6,8 @@ namespace App\Controller;
 use App\Entity\CPerson;
 use App\Entity\TRecord;
 use Knp\Component\Pager\PaginatorInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -41,11 +43,85 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"][$cperson_comp->getCNumber()."( ".$cperson->getANom()." )"] = sizeof($t_record_rep);
             }
         }
+        $link = $this->exportMatriceCommonContact($com_data,$date_range);
         return $this->render('matrices/contacts_communs.html.twig',[
+            "link" => $link,
             "matrices" => $com_data,
             "range" => $date_range,
             "is_active" => "matrice_contact_communs"
         ]);
+    }
+
+
+
+    public function exportMatriceCommonContact($matrice, $range = null) {
+
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:H3');
+        $sheet->setCellValue( 'A1','MATRICE DE CONTACTS EN COMMUNS');
+
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A1:H3')
+            ->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('0dcaf0');
+
+        $sheet->getStyle('A1:H3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:H3')->getFont()->setSize('18');
+
+
+        $sheet->setCellValue( 'A5','Filtre de date: ');
+        if ($range != null) {
+            $sheet->setCellValue( 'B5',$range[0].' AU '. $range[1]);
+        }
+
+        $initial_row = 7;
+        $init_letter = 'B';
+        $i = 0;
+        foreach ($matrice as $key => $rows){
+            $sheet->setCellValue( $init_letter.''.$initial_row,$key);
+            $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(true);
+            $init_letter++;
+        }
+
+        $initial_row++;
+        $l = 'A';
+
+        foreach ($matrice as $key => $rows){
+            $init_letter = 'A';
+            $sheet->setCellValue( $init_letter.''.$initial_row,$key);
+            $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(true);
+            foreach ($rows as $key1 => $row){
+                $init_letter++;
+                $l++;
+                if ($key == $key1){
+                    $sheet->setCellValue( $init_letter.''.$initial_row,'N/A');
+                }else{
+                    $sheet->setCellValue( $init_letter.''.$initial_row,$row);
+                }
+                $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(false);
+            }
+            $initial_row++;
+        }
+
+        foreach (range('A',$l) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->getStyle('A5:Z'.$initial_row)->getAlignment()->setHorizontal('center');
+
+        $tp = '/exports/'.'Matrice_de_contact'.uniqid().'.xlsx';
+
+        $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($file);
+
+
+        return $tp;
     }
 
 
@@ -123,5 +199,6 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         ]);
 
     }
+
 
 }

@@ -45,11 +45,11 @@
 
                     {% if is_active is defined and  is_active == "communication_shema" %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Schema des communications</a>
+                            <a class="nav-link active" aria-current="page" href="{{ path('schema-commun') }}">Schema des communications</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Schema des communications</a>
+                            <a class="nav-link" aria-current="page" href={{ path('schema-commun') }}>Schema des communications</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">

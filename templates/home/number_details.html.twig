@@ -20,14 +20,19 @@
         <div class="card" style="width: 18rem;">
             <ul class="list-group list-group-flush">
                 {% if c_name == 0 or c_name == "" %}
-                    <li class="list-group-item">Nom:  <span class="text-danger text-uppercase">non identifié</span></li>
+                    <li class="list-group-item">Nom:  <span id="c_name" class="text-danger text-uppercase">non identifié</span></li>
                 {% else %}
-                    <li class="list-group-item">Nom:  <span class="text-uppercase">{{ c_name }}</span></li>
+                    <li class="list-group-item">Nom:  <span id="c_name" class="text-uppercase">{{ c_name }}</span></li>
                 {% endif %}
                 <li class="list-group-item">Numéro : <span id="c_number">{{ c_number }}</span></li>
-                <li class="list-group-item">Opérateur:  <span>{{ c_operator }}</span></li>
+                <li class="list-group-item">Opérateur:  <span id="c_operator">{{ c_operator }}</span></li>
             </ul>
         </div>
+
+        <button v-on:click="exportToExcel" id="printBtn" class="btn btn-outline-success" style="margin-top: 1rem">
+            <i class="fa fa-file-excel"></i>
+            Exporter en excel
+        </button>
 
 
         <h3 style="margin-top: 4rem">Contacts frequents</h3>

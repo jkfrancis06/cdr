@@ -9,7 +9,10 @@ use App\Entity\DumpT;
 use App\Entity\TRecord;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,11 +47,88 @@ class MatriceController extends AbstractController
                 $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"][$cperson_comp->getCNumber()."( ".$cperson->getANom()." )"] = $t_record_rep["data"];
             }
         }
+
+        $link ="";
+
+        $link = $this->exportMatriceCom($com_data,$date_range);
+
         return $this->render('matrices/matrice_communication.html.twig',[
             "matrices" => $com_data,
             "range" => $date_range,
-            "is_active" => "matrice_communication"
+            "is_active" => "matrice_communication",
+            "link" => $link
         ]);
+    }
+
+
+
+    public function exportMatriceCom($matrice, $range = null) {
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:H3');
+        $sheet->setCellValue( 'A1','MATRICE DE COMMUNICATION');
+
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A1:H3')
+            ->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('0dcaf0');
+
+        $sheet->getStyle('A1:H3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:H3')->getFont()->setSize('18');
+
+
+        $sheet->setCellValue( 'A5','Filtre de date: ');
+        if ($range != null) {
+            $sheet->setCellValue( 'B5',$range[0].' AU '. $range[1]);
+        }
+
+        $initial_row = 7;
+        $init_letter = 'B';
+        $i = 0;
+        foreach ($matrice as $key => $rows){
+            $sheet->setCellValue( $init_letter.''.$initial_row,$key);
+            $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(true);
+            $init_letter++;
+        }
+
+        $initial_row++;
+        $l = 'A';
+
+        foreach ($matrice as $key => $rows){
+            $init_letter = 'A';
+            $sheet->setCellValue( $init_letter.''.$initial_row,$key);
+            $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(true);
+            foreach ($rows as $key1 => $row){
+                $init_letter++;
+                $l++;
+                if ($key == $key1){
+                    $sheet->setCellValue( $init_letter.''.$initial_row,'N/A');
+                }else{
+                    $sheet->setCellValue( $init_letter.''.$initial_row,$row);
+                }
+                $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(false);
+            }
+            $initial_row++;
+        }
+
+        foreach (range('A',$l) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->getStyle('A5:Z'.$initial_row)->getAlignment()->setHorizontal('center');
+
+        $tp = '/exports/'.'Matrice_de_commmunication'.uniqid().'.xlsx';
+
+        $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($file);
+
+
+        return $tp;
     }
 
 
@@ -187,27 +267,34 @@ class MatriceController extends AbstractController
                 ['pageParameterName' => 'sms_page']
             );
 
+            $data = [
+                'b_person' => $b_person_serialized,
+                'a_person' => $a_person_serialized,
+                'all_com_count' => sizeof($com),
+                'all_com' => $com_page,
+                'success_com_count' => sizeof($com_success),
+                'success_com' => $com_success,
+                'drop_com_count' => sizeof($com_drop),
+                'drop_com' => $com_drop,
+                'sms_count' => sizeof($sms),
+                'sms' => $sms,
+                'in_com_count' => sizeof($in_com),
+                'in_com' => $in_com,
+                'dates' => ["start" =>$start, "end" => $end]
+            ];
+
+            $link ="";
+
+            $link = $this->exportMatriceDetails($data);
+
             return $this->render('matrices/details_matrice_communication.html.twig',[
+                'link' => $link,
                 'page_com_all' => $com_page,
                 'page_in_com' => $in_com_page,
                 'page_com_success' => $com_success_page,
                 'page_drop_com' => $drop_com_page,
                 'sms_page' => $sms_page,
-                'data' => [
-                    'b_person' => $b_person_serialized,
-                    'a_person' => $a_person_serialized,
-                    'all_com_count' => sizeof($com),
-                    'all_com' => $com_page,
-                    'success_com_count' => sizeof($com_success),
-                    'success_com' => $com_success,
-                    'drop_com_count' => sizeof($com_drop),
-                    'drop_com' => $com_drop,
-                    'sms_count' => sizeof($sms),
-                    'sms' => $sms,
-                    'in_com_count' => sizeof($in_com),
-                    'in_com' => $in_com,
-                    'dates' => ["start" =>$start, "end" => $end]
-                ]
+                'data' => $data
             ]);
 
         }else{
@@ -215,6 +302,261 @@ class MatriceController extends AbstractController
         }
 
 
+    }
+
+
+
+    public function exportMatriceDetails($data) {
+
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:H3');
+        $sheet->setCellValue( 'A1','DETAILS DES COMMUNICATIONS ENTRE '.
+            $data["a_person"]["cNumber"].'( '. $data["a_person"]["aNom"].' ) ET '.   $data["b_person"]["cNumber"].'( '. $data["b_person"]["aNom"].' )'
+            );
+
+
+
+        $spreadsheet
+            ->getActiveSheet()
+            ->getStyle('A1:H3')
+            ->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('0dcaf0');
+
+        $sheet->getStyle('A1:H3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:H3')->getFont()->setSize('18');
+
+
+        $sheet->setCellValue( 'A5','Filtre de date ');
+        $sheet->setCellValue( 'B5',$data["dates"]["start"].' ET '.$data["dates"]["end"]);
+
+
+        // start block count
+
+        $sheet->setCellValue( 'A7','Appels Entrants');
+        $sheet->setCellValue( 'B7','Appels Sortants');
+        $sheet->setCellValue( 'C7','Repondeur (Echec)');
+        $sheet->setCellValue( 'D7','SMS');
+        $sheet->setCellValue( 'E7','Total des communications');
+
+        $sheet->getStyle('A7:H7')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A7:H7')->getFont()->setBold(true);
+
+        $sheet->setCellValue( 'A8',$data["in_com_count"]);
+        $sheet->setCellValue( 'B8',$data["success_com_count"]);
+        $sheet->setCellValue( 'C8',$data["drop_com_count"]);
+        $sheet->setCellValue( 'D8',$data["sms_count"]);
+        $sheet->setCellValue( 'E8',$data["all_com_count"]);
+
+        $sheet->getStyle('A8:H8')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A8:H8')->getFont()->setBold(false);
+
+
+        // end block
+
+        $initial_row = 9;
+        $t = $initial_row + 2;
+
+
+        // start block communications list
+
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'. $initial_row.':H'. $t);
+        $sheet->setCellValue( 'A'. $initial_row,'LISTE DES COMMUNICATIONS');
+
+        $sheet->getStyle('A'. $initial_row.':H'. $t)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A'. $initial_row.':H'. $t)->getFont()->setSize('14');
+
+        $initial_row = $t+1;
+
+        $sheet->setCellValue( 'A'. $initial_row,'Flux');
+        $sheet->setCellValue( 'B'. $initial_row,'Type');
+        $sheet->setCellValue( 'C'. $initial_row,'Numero A');
+        $sheet->setCellValue( 'D'. $initial_row,'Numero B');
+        $sheet->setCellValue( 'E'. $initial_row,'Durée');
+        $sheet->setCellValue( 'F'. $initial_row,'Date');
+
+        $sheet->getStyle('A'. $initial_row.':H'. $initial_row)->getFont()->setBold(true);
+
+        $initial_row ++;
+
+        foreach ($data["all_com"] as $com) {
+            $sheet->setCellValue( 'A'.$initial_row, $com["flux_appel"]);
+            $sheet->setCellValue( 'B'.$initial_row, $com["data_type"]);
+            $sheet->setCellValue( 'C'.$initial_row, $com["num_a"]);
+            $sheet->setCellValue( 'D'.$initial_row, $com["num_b"]);
+            $sheet->setCellValue( 'E'.$initial_row, gmdate('H:i:s',$com["duration"]));
+            $sheet->setCellValue( 'F'.$initial_row, $com["day_time"]->format('Y-m-d H:i:s'));
+            $initial_row ++;
+        }
+
+        // end block
+
+
+        $initial_row ++;
+
+        // start block appels sortants
+
+        $t = $initial_row + 2;
+
+
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$initial_row.':H'.$t);
+        $sheet->setCellValue( 'A'.$initial_row ,'APPELS SORTANTS');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getFont()->setSize('14');
+
+        $initial_row = $t+1;
+
+        $sheet->setCellValue( 'A'.$initial_row,'Flux');
+        $sheet->setCellValue( 'B'.$initial_row,'Type');
+        $sheet->setCellValue( 'C'.$initial_row,'Numero A');
+        $sheet->setCellValue( 'D'.$initial_row,'Numero B');
+        $sheet->setCellValue( 'E'.$initial_row,'Durée');
+        $sheet->setCellValue( 'F'.$initial_row,'Date');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$initial_row)->getFont()->setBold(true);
+
+        $initial_row ++;
+
+        foreach ($data["all_com"] as $com) {
+            $sheet->setCellValue( 'A'.$initial_row, $com["flux_appel"]);
+            $sheet->setCellValue( 'B'.$initial_row, $com["data_type"]);
+            $sheet->setCellValue( 'C'.$initial_row, $com["num_a"]);
+            $sheet->setCellValue( 'D'.$initial_row, $com["num_b"]);
+            $sheet->setCellValue( 'E'.$initial_row, gmdate('H:i:s',$com["duration"]));
+            $sheet->setCellValue( 'F'.$initial_row, $com["day_time"]->format('Y-m-d H:i:s'));
+            $initial_row ++;
+        }
+
+        //end block
+
+        $initial_row++;
+
+
+        // start block appels entrants
+
+
+        $t = $initial_row + 2;
+
+
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$initial_row.':H'.$t);
+        $sheet->setCellValue( 'A'.$initial_row ,'APPELS ENTRANTS');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getFont()->setSize('14');
+
+        $initial_row = $t+1;
+
+        $sheet->setCellValue( 'A'.$initial_row,'Flux');
+        $sheet->setCellValue( 'B'.$initial_row,'Type');
+        $sheet->setCellValue( 'C'.$initial_row,'Numero A');
+        $sheet->setCellValue( 'D'.$initial_row,'Numero B');
+        $sheet->setCellValue( 'E'.$initial_row,'Durée');
+        $sheet->setCellValue( 'F'.$initial_row,'Date');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$initial_row)->getFont()->setBold(true);
+
+        $initial_row ++;
+
+        foreach ($data["in_com"] as $com) {
+            $sheet->setCellValue( 'A'.$initial_row, $com["flux_appel"]);
+            $sheet->setCellValue( 'B'.$initial_row, $com["data_type"]);
+            $sheet->setCellValue( 'C'.$initial_row, $com["num_a"]);
+            $sheet->setCellValue( 'D'.$initial_row, $com["num_b"]);
+            $sheet->setCellValue( 'E'.$initial_row, gmdate('H:i:s',$com["duration"]));
+            $sheet->setCellValue( 'F'.$initial_row, $com["day_time"]->format('Y-m-d H:i:s'));
+            $initial_row ++;
+        }
+
+        $initial_row++;
+        // endblock
+
+        // start block echec
+
+        $t = $initial_row + 2;
+
+
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$initial_row.':H'.$t);
+        $sheet->setCellValue( 'A'.$initial_row ,'APPELS ECHOUES (REPONDEUR)');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getFont()->setSize('14');
+
+        $initial_row = $t+1;
+
+        $sheet->setCellValue( 'A'.$initial_row,'Type');
+        $sheet->setCellValue( 'B'.$initial_row,'Numero A');
+        $sheet->setCellValue( 'C'.$initial_row,'Numero B');
+        $sheet->setCellValue( 'D'.$initial_row,'Date');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$initial_row)->getFont()->setBold(true);
+
+        $initial_row ++;
+
+        foreach ($data["in_com"] as $com) {
+            $sheet->setCellValue( 'A'.$initial_row, $com["data_type"]);
+            $sheet->setCellValue( 'B'.$initial_row, $com["num_a"]);
+            $sheet->setCellValue( 'C'.$initial_row, $com["num_b"]);
+            $sheet->setCellValue( 'D'.$initial_row, $com["day_time"]->format('Y-m-d H:i:s'));
+            $initial_row ++;
+        }
+
+        $initial_row++;
+
+        // block sms
+
+
+        $t = $initial_row + 2;
+
+
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A'.$initial_row.':H'.$t);
+        $sheet->setCellValue( 'A'.$initial_row ,'SMS');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A'.$initial_row.':H'.$t)->getFont()->setSize('14');
+
+        $initial_row = $t+1;
+
+        $sheet->setCellValue( 'A'.$initial_row,'Flux');
+        $sheet->setCellValue( 'B'.$initial_row,'Type');
+        $sheet->setCellValue( 'C'.$initial_row,'Numero A');
+        $sheet->setCellValue( 'D'.$initial_row,'Numero B');
+        $sheet->setCellValue( 'E'.$initial_row,'Durée');
+        $sheet->setCellValue( 'F'.$initial_row,'Date');
+
+        $sheet->getStyle('A'.$initial_row.':H'.$initial_row)->getFont()->setBold(true);
+
+        $initial_row ++;
+
+        foreach ($data["sms"] as $com) {
+            $sheet->setCellValue( 'A'.$initial_row, $com["flux_appel"]);
+            $sheet->setCellValue( 'B'.$initial_row, $com["data_type"]);
+            $sheet->setCellValue( 'C'.$initial_row, $com["num_a"]);
+            $sheet->setCellValue( 'D'.$initial_row, $com["num_b"]);
+            $sheet->setCellValue( 'E'.$initial_row, gmdate('H:i:s',$com["duration"]));
+            $sheet->setCellValue( 'F'.$initial_row, $com["day_time"]->format('Y-m-d H:i:s'));
+            $initial_row ++;
+        }
+
+        $initial_row++;
+
+
+        foreach (range('A','H') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $sheet->getStyle('A5:Z'.$initial_row)->getAlignment()->setHorizontal('center');
+
+        $tp = '/exports/'.'communications_details'.uniqid().'.xlsx';
+
+        $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($file);
+
+
+        return $tp;
     }
 
 }

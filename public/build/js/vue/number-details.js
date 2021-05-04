@@ -165,6 +165,41 @@ window.onload = function () {
         },
 
         methods : {
+
+            exportToExcel: function (event){
+                event.preventDefault();
+                var data = {
+                    'c_person' : this.user,
+                    'frequent_users_range': this.date_time_range,
+                    'favorites': this.frequent_users,
+                    'number_filter' : this.number_to_filter,
+                    'communications': this.number_filter_result,
+                    'date_time_range_com': this.date_time_range_com
+                };
+                data.c_person.c_name = document.getElementById("c_name").innerHTML
+                data.c_person.c_operator = document.getElementById("c_operator").innerHTML
+                data.c_person.c_number = document.getElementById("c_number").innerHTML
+
+                console.log(data)
+                console.log()
+
+                axios({
+                    method: 'post',
+                    url: "/print/user-com-details",
+                    responseType: 'json',
+                    data: data
+                }).then(function (response){
+                    console.log(response)
+                    var getUrl = window.location;
+                    var baseUrl = getUrl .protocol + "//" + getUrl.host + "/";
+                    href = baseUrl+response.data.link
+                    //window.open(href,'popUpWindow','height=400,width=600,left=10,top=10,,scrollbars=yes,menubar=no'); return false;
+
+                    window.open(href, '_blank').focus();
+                });
+
+            },
+
             paginate_table:function(){
                 this.pagination_array = this.number_filter_result.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
                 this.totalPages = Math.ceil(this.number_filter_result.length / this.pageSize)
