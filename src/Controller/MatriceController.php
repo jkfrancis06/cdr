@@ -122,13 +122,19 @@ class MatriceController extends AbstractController
         $sheet->getStyle('A5:Z'.$initial_row)->getAlignment()->setHorizontal('center');
 
         $tp = '/exports/'.'Matrice_de_commmunication'.uniqid().'.xlsx';
-
+        $this->checkDir();
         $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);
 
 
         return $tp;
+    }
+
+    public function checkDir(){
+        if (!file_exists($this->getParameter('kernel.project_dir').'/public/exports')) {
+            mkdir($this->getParameter('kernel.project_dir').'/public/exports', 0777, true);
+        }
     }
 
 
@@ -550,7 +556,7 @@ class MatriceController extends AbstractController
         $sheet->getStyle('A5:Z'.$initial_row)->getAlignment()->setHorizontal('center');
 
         $tp = '/exports/'.'communications_details'.uniqid().'.xlsx';
-
+        $this->checkDir();
         $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);

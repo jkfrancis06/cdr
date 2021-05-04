@@ -10,6 +10,7 @@ use App\Entity\TRecord;
 use App\Form\CPersonType;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,11 @@ class WizardController extends AbstractController
             $c_person = $repo->findOneBy([
                'c_number' => $c_number
             ]);
-            $is_new = false;
+            if ($c_person == null) {
+                $c_person = new CPerson();
+            }else{
+                $is_new = false;
+            }
         }else{
             $c_person = new CPerson();
         }
@@ -53,10 +58,16 @@ class WizardController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $cdrFile = $form->get('c_file_name')->getData();
+            if ($cdrFile == null && $is_new){
+                $fileError = new FormError("Veuillez envoyer un fichier");
+                $form->get('c_file_name')->addError($fileError);
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-            $cdrFile = $form->get('c_file_name')->getData();
 
             $form_c_number = $form->get('c_number')->getData();
             $firstCharacter = substr($form_c_number, 0, 1);
@@ -71,6 +82,10 @@ class WizardController extends AbstractController
                     $c_person->setCOperator("HURI");
                     break;
             }
+
+            $cdrFile = $form->get('c_file_name')->getData();
+
+
 
             if($cdrFile != null){
                 $uploadedFileName = $fileUploader->upload($cdrFile);
@@ -99,9 +114,12 @@ class WizardController extends AbstractController
 
         }
 
+
         return $this->render('home/wizard.html.twig',[
             'form' => $form->createView(),
-            'c_persons' => $a_person_serialized
+            'c_persons' => $a_person_serialized,
+            'is_new' => $is_new,
+            'number' => $c_number
         ]);
     }
 

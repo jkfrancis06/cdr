@@ -117,6 +117,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $tp = '/exports/'.'Matrice_de_contact'.uniqid().'.xlsx';
 
         $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
+        $this->checkDir();
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);
 
@@ -124,6 +125,11 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         return $tp;
     }
 
+    public function checkDir(){
+        if (!file_exists($this->getParameter('kernel.project_dir').'/public/exports')) {
+            mkdir($this->getParameter('kernel.project_dir').'/public/exports', 0777, true);
+        }
+    }
 
 
     /**

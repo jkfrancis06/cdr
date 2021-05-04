@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -24,6 +25,12 @@ class CPersonType extends AbstractType
                 'label' => 'Numero de telephone',
                 'constraints' => [
                     new NotBlank(),
+                    new Length(array(
+                        'min'        => 7,
+                        'max'        => 7,
+                        'minMessage' => 'Le numéro doit contenir 7 chiffres',
+                        'maxMessage' => 'Le numéro doit contenir 7 chiffres'
+                    )),
                     new Regex('/^[347][0-9]{6}$/','Le numéro est incorrect')
                 ]
             ])
@@ -33,8 +40,8 @@ class CPersonType extends AbstractType
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
 
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
+                // make it optional so you don't have to re-upload the  file
+                // every time you edit details
                 'required' => false,
 
                 // unmapped fields can't define their validation using annotations

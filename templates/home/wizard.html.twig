@@ -54,7 +54,11 @@
                 <div class="col col-md-12 col-lg-5">
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h5 class="card-title text-center text-uppercase">AJOUTER UN SUJET</h5>
+                            {% if is_new == true %}
+                                <h5 class="card-title text-center text-uppercase">AJOUTER UN SUJET</h5>
+                            {% else %}
+                                <h5 class="card-title text-center text-uppercase">MODIFIER {{ number }}</h5>
+                            {% endif %}
                             <hr>
                             <h6 class="card-subtitle mb-2 text-muted text-center"></h6>
                             <div class="card-text">
@@ -62,7 +66,7 @@
                                     <div class="row">
 
                                         <div class="col col-7">
-                                            {{ form_label(form.c_number, "Numéro de telephone", {'label_attr': {'class': 'c_number_input_label', 'maxlength': 7}}) }}
+                                            {{ form_label(form.c_number, "Numéro de telephone", {'label_attr': {'class': 'c_number_input_label'}}) }}
                                             <div class="input-group input-group-sm mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroup-sizing-sm">+269</span>
@@ -78,16 +82,20 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        <div class="col col-6">
+                                        <div class="col col-12">
                                             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                                <div class="btn-group mr-6" role="group" aria-label="First group">
+                                                {% if is_new == false %}
+                                                <div class="btn-group mr-4" role="group" aria-label="Third group" style="margin-left: 2rem">
+                                                    <a href="{{ path('home_wizard') }}" class="btn btn-outline-info">Retour a l'ajout</a>
+                                                </div>
+                                                {% endif %}
+                                                <div class="btn-group mr-4" role="group" aria-label="First group" style="margin-left: 2rem">
                                                     {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
                                                 </div>
-                                                <div class="btn-group mr-6" role="group" aria-label="Third group" style="margin-left: 2rem">
+                                                <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
                                                     {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 {{ form_end(form) }}

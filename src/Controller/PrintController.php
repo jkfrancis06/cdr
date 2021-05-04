@@ -81,7 +81,7 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         $sheet->getStyle('A4:H'.$initial_row)->getAlignment()->setHorizontal('center');
 
         $tp = '/exports/'.'Tableau de bord'.uniqid().'.xlsx';
-
+        $this->checkDir();
         $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);
@@ -94,6 +94,13 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
             'link' => $tp
         ],200);
     }
+
+    public function checkDir(){
+        if (!file_exists($this->getParameter('kernel.project_dir').'/public/exports')) {
+            mkdir($this->getParameter('kernel.project_dir').'/public/exports', 0777, true);
+        }
+    }
+
 
 
 
@@ -246,6 +253,7 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
 
         $tp = '/exports/'.'DetailsComm'.$data["c_person"]["c_number"].uniqid().'.xlsx';
 
+        $this->checkDir();
         $file = $this->getParameter('kernel.project_dir').'/public'.$tp;
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);
