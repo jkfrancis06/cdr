@@ -57,7 +57,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = false;
                 $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["nb"] = sizeof($t_record_rep);
                 foreach ($t_record_rep as $item){
-                    if (strlen($item["num_b"]) != 7 && !in_array(substr($item["num_b"], 0, 1),["3","4","7"]) ){
+                    if (strlen($item["num_b"]) != 7 || !in_array(substr($item["num_b"], 0, 1),["3","4","7"]) ){
                         $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = true;
                         break;
                     }
