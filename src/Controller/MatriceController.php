@@ -35,7 +35,12 @@ class MatriceController extends AbstractController
         $cpersons = $cperson_repo->findAll();
         $com_data = [];
         foreach ($cpersons as $cperson) {
-            $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"] = [];
+            $c_person_nom = $cperson->getANom() ;
+            if ($cperson->getANom() == "0" || $cperson->getANom() ==""){
+                $c_person_nom = "NON ID";
+            }
+
+            $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"] = [];
             foreach ($cpersons as $cperson_comp){
                 if ($range != null){
                     $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
@@ -44,7 +49,18 @@ class MatriceController extends AbstractController
                     $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
                         ->countCommunicationBetween($cperson->getCNumber(),$cperson_comp->getCNumber());
                 }
-                $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"][$cperson_comp->getCNumber()."( ".$cperson->getANom()." )"] = $t_record_rep["data"];
+
+                $c_person_nom = $cperson->getANom() ;
+                $c_person_com_nom = $cperson_comp->getANom();
+                if ($cperson->getANom() == "0" || $cperson->getANom() ==""){
+                    $c_person_nom = "NON ID";
+                }
+
+                if ($cperson_comp->getANom() == "0" || $cperson_comp->getANom() ==""){
+                    $c_person_com_nom = "NON ID";
+                }
+                $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"] = $t_record_rep["data"];
+
             }
         }
 

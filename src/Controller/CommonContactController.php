@@ -31,7 +31,12 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $cpersons = $cperson_repo->findAll();
         $com_data = [];
         foreach ($cpersons as $cperson) {
-            $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"] = [];
+            $c_person_nom = $cperson->getANom() ;
+            if ($cperson->getANom() == "0" || $cperson->getANom() ==""){
+                $c_person_nom = "NON ID";
+            }
+
+            $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"] = [];
             foreach ($cpersons as $cperson_comp){
                 if ($range != null){
                     $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
@@ -40,12 +45,29 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                     $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
                         ->getCommonContacts($cperson->getCNumber(),$cperson_comp->getCNumber());
                 }
-                $com_data[$cperson->getCNumber()."( ".$cperson->getANom()." )"][$cperson_comp->getCNumber()."( ".$cperson->getANom()." )"] = sizeof($t_record_rep);
+                $c_person_nom = $cperson->getANom() ;
+                $c_person_com_nom = $cperson_comp->getANom();
+                if ($cperson->getANom() == "0" || $cperson->getANom() ==""){
+                    $c_person_nom = "NON ID";
+                }
+
+                if ($cperson_comp->getANom() == "0" || $cperson_comp->getANom() ==""){
+                    $c_person_com_nom = "NON ID";
+                }
+                $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = false;
+                $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["nb"] = sizeof($t_record_rep);
+                foreach ($t_record_rep as $item){
+                    if (strlen($item["num_b"]) != 7 && !in_array(substr($item["num_b"], 0, 1),["3","4","7"]) ){
+                        $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = true;
+                        break;
+                    }
+                }
+
             }
         }
-        $link = $this->exportMatriceCommonContact($com_data,$date_range);
+        $link = $this->exportMatriceCommonContact($com_data,$range);
         return $this->render('matrices/contacts_communs.html.twig',[
-            "link" => $link,
+            "link" => "",
             "matrices" => $com_data,
             "range" => $date_range,
             "is_active" => "matrice_contact_communs"
@@ -101,7 +123,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 if ($key == $key1){
                     $sheet->setCellValue( $init_letter.''.$initial_row,'N/A');
                 }else{
-                    $sheet->setCellValue( $init_letter.''.$initial_row,$row);
+                    $sheet->setCellValue( $init_letter.''.$initial_row,$row["nb"]);
                 }
                 $sheet->getStyle($init_letter.''.$initial_row)->getFont()->setBold(false);
             }

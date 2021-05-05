@@ -88,11 +88,20 @@
                                     {% set data =  "" %}
                                     {% set data =  num~"&"~assoc %}
 
-                                    {% if range[0] is defined %}
-                                        <a style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: range[0], end: range[1]}) }}">{{ nb }}</a>
+                                    {% if nb.int == true %}
+                                        {% if range[0] is defined %}
+                                            <a class="text-warning" style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: range[0], end: range[1]}) }}">{{ nb.nb }}</a>
+                                        {% else %}
+                                            <a class="text-warning" style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: 0, end: 0}) }}">{{ nb.nb }}</a>
+                                        {% endif %}
                                     {% else %}
-                                        <a style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: 0, end: 0}) }}">{{ nb }}</a>
+                                        {% if range[0] is defined %}
+                                            <a style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: range[0], end: range[1]}) }}">{{ nb.nb }}</a>
+                                        {% else %}
+                                            <a style="text-decoration: inherit; color: inherit" href="{{ path('matrice_commun_details',{numbers: data,start: 0, end: 0}) }}">{{ nb.nb }}</a>
+                                        {% endif %}
                                     {% endif %}
+
                                 </td>
                             {% endif%}
                         {% endfor %}
