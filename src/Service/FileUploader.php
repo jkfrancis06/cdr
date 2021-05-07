@@ -20,17 +20,26 @@ class FileUploader
         $this->slugger = $slugger;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file, $dir = null)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
-        if (!file_exists($this->getTargetDirectory())) {
-            mkdir($this->getTargetDirectory(), 0777, true);
+        if ($dir == null){
+            if (!file_exists($this->getTargetDirectory())) {
+                mkdir($this->getTargetDirectory(), 0777, true);
+            }
+
+            $file->move($this->getTargetDirectory(), $fileName);
+        }else{
+            if (!file_exists($dir) ){
+                mkdir($dir, 0777, true);
+            }
+
+            $file->move($dir, $fileName);
         }
 
-        $file->move($this->getTargetDirectory(), $fileName);
 
         /*try {
 

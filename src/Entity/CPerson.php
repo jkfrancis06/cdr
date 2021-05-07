@@ -48,6 +48,16 @@ class CPerson
      */
     private $c_file_name;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": "icon-default.png"})
+     */
+    private $c_pic_name;
+
+    public function __construct()
+    {
+        $this->c_pic_name= "icon-default.png";
+    }
+
 
 
 
@@ -112,6 +122,18 @@ class CPerson
     public function setANom(?string $a_nom): self
     {
         $this->a_nom = $a_nom;
+
+        return $this;
+    }
+
+    public function getCPicName(): ?string
+    {
+        return $this->c_pic_name;
+    }
+
+    public function setCPicName(string $c_pic_name): self
+    {
+        $this->c_pic_name = $c_pic_name;
 
         return $this;
     }

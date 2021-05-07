@@ -27,8 +27,10 @@ class WizardController extends AbstractController
      */
     public function homeWizard(Request  $request, $c_number = null,FileUploader $fileUploader){
 
-        $is_new = true;
+
+        $is_new = true;  // check if is new user to add or not (modify user)
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+        // if number in url
         if($c_number != null) {
             $c_person = $repo->findOneBy([
                'c_number' => $c_number
@@ -64,35 +66,71 @@ class WizardController extends AbstractController
                 $fileError = new FormError("Veuillez envoyer un fichier");
                 $form->get('c_file_name')->addError($fileError);
             }
+
+            if ($cdrFile != null) {
+                if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
+
+                    while (($data = fgetcsv($handle,"",";")) !== false) {
+                        if ($data[5] == ""){
+                            $fileError = new FormError("Numero incorrect dans le fichier CDR, Ligne 1 Colonne 6");
+                            $form->get('c_file_name')->addError($fileError);
+                        }else{
+                            $bdd_person = $repo->findOneBy([
+                                'c_number' => $data[5]
+                            ]);
+                            if ($bdd_person != null) {
+                                $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
+                                $form->get('c_file_name')->addError($fileError);
+                            }
+                        }
+                        break;
+                    }
+                    fclose($handle);
+                }
+            }
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-            $form_c_number = $form->get('c_number')->getData();
-            $firstCharacter = substr($form_c_number, 0, 1);
-            switch($firstCharacter) {
-                case "3":
-                    $c_person->setCOperator("HURI");
-                    break;
-                case "4":
-                    $c_person->setCOperator("TELMA");
-                    break;
-                case "7":
-                    $c_person->setCOperator("HURI");
-                    break;
-            }
-
             $cdrFile = $form->get('c_file_name')->getData();
 
-
-
             if($cdrFile != null){
+
                 $uploadedFileName = $fileUploader->upload($cdrFile);
                 $c_person->setCFileName($uploadedFileName);
+
+                $dir = $this->getParameter('kernel.project_dir').'/public/upload/';
+
+                if (($handle = fopen($dir.''.$uploadedFileName, "r")) !== false) {
+
+                    while (($data = fgetcsv($handle,"",";")) !== false) {
+                        $c_person->setCNumber($data[5]);
+                        $firstCharacter = substr($data[5], 0, 1);
+                        switch($firstCharacter) {
+                            case "7":
+                            case "3":
+                                $c_person->setCOperator("HURI");
+                                break;
+                            case "4":
+                                $c_person->setCOperator("TELMA");
+                                break;
+                        }
+                        if ($data["12"] != ""){
+                            $c_person->setANom($data[12]);
+                        }else{
+                            $c_person->setANom("0");
+                        }
+                        break;
+                    }
+                    fclose($handle);
+                }
             }
 
-
+            $imgFile = $form->get('c_image_name')->getData();
+            if ($imgFile != null){
+                $uploadedImgName = $fileUploader->upload($imgFile,$this->getParameter('kernel.project_dir').'/public/img');
+                $c_person->setCPicName($uploadedImgName);
+            }
 
             if ($is_new == false) {
                 $em->flush();
@@ -110,8 +148,6 @@ class WizardController extends AbstractController
                 $serializer = new Serializer(array(new ObjectNormalizer()));
                 $a_person_serialized = $serializer->normalize($c_persons, null);
             }
-
-
         }
 
 
@@ -122,6 +158,7 @@ class WizardController extends AbstractController
             'number' => $c_number
         ]);
     }
+
 
     /**
      * @Route("/wizard-remove/{c_number}", name="remove_number_wizard")

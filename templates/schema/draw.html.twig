@@ -65,12 +65,107 @@
                     edges : [],
                     nodes: [],
                     date_range : '',
+
+
                 },
 
                 watch: {
                 },
 
                 mounted (){
+
+                    sigma.utils.pkg('sigma.canvas.nodes');
+                    sigma.canvas.nodes.image = (function() {
+                        var _cache = {},
+                            _loading = {},
+                            _callbacks = {};
+
+                        // Return the renderer itself:
+                        var renderer = function(node, context, settings) {
+                            var args = arguments,
+                                prefix = settings('prefix') || '',
+                                size = node[prefix + 'size'],
+                                color = node.color || settings('defaultNodeColor'),
+                                url = node.url;
+
+                            if (_cache[url]) {
+                                context.save();
+
+                                // Draw the clipping disc:
+                                context.beginPath();
+                                context.arc(
+                                    node[prefix + 'x'],
+                                    node[prefix + 'y'],
+                                    node[prefix + 'size'],
+                                    0,
+                                    Math.PI * 2,
+                                    true
+                                );
+                                context.closePath();
+                                context.clip();
+
+                                // Draw the image
+                                context.drawImage(
+                                    _cache[url],
+                                    node[prefix + 'x'] - size,
+                                    node[prefix + 'y'] - size,
+                                    2 * size,
+                                    2 * size
+                                );
+
+                                // Quit the "clipping mode":
+                                context.restore();
+
+                                // Draw the border:
+                                context.beginPath();
+                                context.arc(
+                                    node[prefix + 'x'],
+                                    node[prefix + 'y'],
+                                    node[prefix + 'size'],
+                                    0,
+                                    Math.PI * 2,
+                                    true
+                                );
+                                context.lineWidth = size / 5;
+                                context.strokeStyle = node.color || settings('defaultNodeColor');
+                                context.stroke();
+                            } else {
+                                sigma.canvas.nodes.image.cache(url);
+                                sigma.canvas.nodes.def.apply(
+                                    sigma.canvas.nodes,
+                                    args
+                                );
+                            }
+                        };
+
+                        // Let's add a public method to cache images, to make it possible to
+                        // preload images before the initial rendering:
+                        renderer.cache = function(url, callback) {
+                            if (callback)
+                                _callbacks[url] = callback;
+
+                            if (_loading[url])
+                                return;
+
+                            var img = new Image();
+
+                            img.onload = function() {
+                                _loading[url] = false;
+                                _cache[url] = img;
+
+                                if (_callbacks[url]) {
+                                    _callbacks[url].call(this, img);
+                                    delete _callbacks[url];
+                                }
+                            };
+
+                            _loading[url] = true;
+                            img.src = url;
+                        };
+
+                        return renderer;
+                    })();
+
                     var local = window.localStorage.getItem('date_range');
                     console.log(local)
                     if (local === null){
@@ -83,12 +178,15 @@
                                 console.log(response)
                                 for (let i = 0 ; i < response.data.nodes.length; i++){
                                     var temp_node = {
-                                        id : response.data.nodes[i],
-                                        label: response.data.nodes[i],
+                                        id : response.data.nodes[i]["c_number"],
+                                        label: response.data.nodes[i]["a_nom"],
                                         x: Math.random(),
                                         y: Math.random(),
-                                        size: 1,
-                                        color: "#"+ Math.floor(Math.random()*16777215).toString(16)
+                                        size: '20',
+                                        color: '#000000',
+                                        labelColor: '#000000',
+                                        type: 'image',
+                                        url: '/img/'+response.data.nodes[i]["c_pic_name"],
                                     }
                                     tp.nodes.push(temp_node)
                                 }
@@ -98,8 +196,8 @@
                                         id : response.data.edges[i].source +'-'+ response.data.edges[i].dest,
                                         source: response.data.edges[i].source,
                                         target: response.data.edges[i].dest,
-                                        color: '#202020',
-                                        type: 'curvedArrow',
+                                        color: "#"+ Math.floor(Math.random()*16777215).toString(16),
+                                        type: 'arrow',
                                     }
                                     tp.edges.push(temp_edge)
                                 }
@@ -116,6 +214,9 @@
 
                 methods : {
                     draw_sigma: function () {
+                        this.nodes.forEach(function (node){
+                           console.log(node.url)
+                        });
                         self = this
                         console.log(this.nodes)
                         console.log(this.edges)
@@ -130,7 +231,8 @@
                                 settings: {
                                     minArrowSize: 10,
                                     drawLabels: true,
-                                    labelThreshold: 1
+                                    labelThreshold: 1,
+                                    autoRescale: ['nodePosition', 'edgeSize']
                                 }
                             }
                         );
@@ -141,13 +243,39 @@
                         }
                         s.graph.read(graph);
 // call the plugin
-                        sigma.plugins.relativeSize(s, 1);
-// draw the graph
+                       sigma.plugins.relativeSize(s, 8);
+
+                        var nodes = s.graph.nodes();
+
+                        var nodes_sort_array = []
+
+                        var highest = 0
+                        var highest_id = 0
+                        // second create size for every node
+                        for(var i = 0; i < nodes.length; i++) {
+                            var degree = s.graph.degree(nodes[i].id);
+                            console.log(degree)
+                            if(degree >= highest) {
+                                highest = degree
+                                highest_id = i
+                            }
+                            // nodes[i].size = initialSize * Math.sqrt(degree);
+                        }
+
+                        console.log(nodes)
+                        console.log(highest_id)
+                        nodes[highest_id].color = "#FF0000"
+
                         s.refresh();
 // launch force-atlas for 5sec
                         s.startForceAtlas2();
                         window.setTimeout(function() {s.killForceAtlas2()}, 10000);
-                    }
+
+                    },
+
+                    plusnode: function (s, initialSize){
+
+                    },
                 }
             })
         }

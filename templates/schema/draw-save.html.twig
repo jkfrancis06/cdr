@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Network</title>
+        <script type="text/javascript"
+                src="/build/js/vis/vis-network.min.js"></script>
+        <script src="/build/js/vue/vue.js"></script>
+        <script src="/build/js/sigma/axios.min.js"></script>
+        <style type="text/css">
+            #mynetwork {
+                width: 600px;
+                height: 400px;
+                border: 1px solid lightgray;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="app">
+            <div id="mynetwork"></div>
+        </div>
+
+        <script type="text/javascript">
+
+            window.onload = function () {
+                Vue.component('v-pagination', window['vue-plain-pagination'])
+
+                var app = new Vue({
+                    el: '#app',
+                    delimiters: ['${', '}'],
+                    data: {
+                        edges : [],
+                        nodes: [],
+                        date_range : '',
+                    },
+
+                    watch: {
+                    },
+
+                    mounted (){
+                        var local = window.localStorage.getItem('date_range');
+                        console.log(local)
+                        if (local === null){
+                            window.open('/shema-commun', '_blank').focus();
+                        }else {
+                            tp = this
+                            href = '/communication-graph/'+local
+                            axios.get(href)
+                                .then(function (response) {
+                                    console.log(response)
+                                    for (let i = 0 ; i < response.data.nodes.length; i++){
+                                        var temp_node = {
+                                            id : response.data.nodes[i]["c_number"],
+                                            label: response.data.nodes[i]["a_nom"],
+                                            shape: "circularImage",
+                                            image: "/img/"+response.data.nodes[i]["c_pic_name"]
+                                        }
+                                        tp.nodes.push(temp_node)
+                                    }
+
+                                    for (let i = 0 ; i < response.data.edges.length; i++){
+                                        var temp_edge = {
+                                            from: response.data.edges[i].source,
+                                            to: response.data.edges[i].dest,
+                                            color: '#202020',
+                                            arrows: 'to'
+                                        }
+                                        tp.edges.push(temp_edge)
+                                    }
+                                    tp.draw_sigma();
+                                    console.log(tp.nodes)
+                                })
+                        }
+
+                    },
+
+                    beforeDestroy() {
+                        // remove pickadate according to its API
+                    },
+
+                    methods : {
+                        draw_sigma: function () {
+                            var container = document.getElementById("mynetwork");
+                            var data = {
+                                nodes: this.nodes,
+                                edges: this.edges,
+                            };
+                            var options = {};
+                            var network = new vis.Network(container, data, options);
+                        }
+                    }
+                })
+            }
+
+            // create an array with node
+
+        </script>
+    </body>
+</html>

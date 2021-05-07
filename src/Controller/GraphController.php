@@ -44,7 +44,15 @@ class GraphController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         $nodes_array = [];
         $edges_array = [];
         foreach ($c_persons as $c_person){
-            array_push($nodes_array,$c_person->getCNumber());
+            $tp = [];
+            if ($c_person->getANom() == "" || $c_person->getANom() == "0"){
+                $tp["a_nom"] = strtoupper("NON ID (".$c_person->getCNumber() ." )");
+            }else{
+                $tp["a_nom"] = $c_person->getANom();
+            }
+            $tp["c_number"] = $c_person->getCNumber();
+            $tp["c_pic_name"] = $c_person->getCPicName();
+            array_push($nodes_array,$tp);
             foreach ($c_persons as $row){
                 $temp = [];
                 if(sizeof($date_range ) > 0){

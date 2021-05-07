@@ -23,8 +23,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/img/icon-default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/schema/draw-save.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/CommonContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommonContactController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/COM-4872820-6091c8db9dc55.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4317888-6091c8c894b30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722824-6091c969c4f30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4722939-6091c8bbbd601.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4808373-6091c5d7582af.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Communications-du-ND-4808373-6091c95819c69.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4302392-6091c90530a0a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4355762-6091c8f0ec841.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4405791-6091c9175772a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4452707-6091c92aaf5c5.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-6091c4bc12e0d.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-6091c5c94d456.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4719555-6091c8b02757f.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Copie-de-COM-4808396-6091c9451e602.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/GraphController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/GraphController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/CPerson.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/CPerson.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CPersonType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CPersonType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/FileUploader.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FileUploader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/home.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/home.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/number_details.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/number_details.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/wizard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/wizard.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/schema/draw.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/schema/draw.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +199,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/build/js/sigma" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/schema" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -192,11 +217,11 @@
       <recent name="$PROJECT_DIR$/public/build/js/uikit" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/schema" />
+      <recent name="$PROJECT_DIR$/public/img" />
+      <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/public/build/js/sigma" />
       <recent name="$PROJECT_DIR$/public/build/js/Sigma" />
-      <recent name="$PROJECT_DIR$/public/build/css" />
-      <recent name="$PROJECT_DIR$/public/build/css/icon" />
-      <recent name="$PROJECT_DIR$/templates/matrices" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -212,7 +237,7 @@
       <workItem from="1619459784537" duration="20589000" />
       <workItem from="1619514746189" duration="16015000" />
       <workItem from="1619601149993" duration="113754000" />
-      <workItem from="1619818416157" duration="130818000" />
+      <workItem from="1619818416157" duration="153658000" />
     </task>
     <servers />
   </component>
@@ -251,10 +276,10 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1620164490814" />
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1620085944863">
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1620384951505">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1620085944863" />
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1620384951505" />
     <state x="314" y="27" width="778" height="741" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1619744352054">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
@@ -271,13 +296,13 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="675" y="27" width="625" height="741" key="find.popup/50.27.1316.741@50.27.1316.741" timestamp="1619382426154" />
-    <state x="372" y="174" key="run.anything.popup" timestamp="1620086769524">
+    <state x="372" y="174" key="run.anything.popup" timestamp="1620386916000">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1620086769524" />
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620237141372">
+    <state x="372" y="174" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1620386916000" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620375039610">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620237141372" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620375039610" />
   </component>
 </project>

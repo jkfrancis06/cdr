@@ -81,6 +81,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
             $person_data["link"] = $person->getCFileName();
             $person_data["c_operator"] = $person->getCOperator();
             $person_data["c_number"] = $person->getCNumber();
+            $person_data["c_pic_name"] = $person->getCPicName();
 
             array_push($res_data_array,$person_data);
 
@@ -113,7 +114,8 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
             'c_name' => $db_c_number->getANom(),
             'c_number' => $db_c_number->getCNumber(),
             'c_operator' => $db_c_number->getCOperator(),
-            'c_file_name' => $db_c_number->getCFileName()
+            'c_file_name' => $db_c_number->getCFileName(),
+            'c_pic_name' => $db_c_number->getCPicName(),
         ]);
 
     }

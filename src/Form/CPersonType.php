@@ -21,7 +21,7 @@ class CPersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('c_number',TextType::class, [
+            /*->add('c_number',TextType::class, [
                 'label' => 'Numero de telephone',
                 'constraints' => [
                     new NotBlank(),
@@ -33,7 +33,7 @@ class CPersonType extends AbstractType
                     )),
                     new Regex('/^[347][0-9]{6}$/','Le numéro est incorrect')
                 ]
-            ])
+            ]) */
             ->add('c_file_name',FileType::class, [
                 'label' => 'Fichier CDR (CSV file)',
 
@@ -54,6 +54,33 @@ class CPersonType extends AbstractType
                         ],
                         'mimeTypesMessage' => "Veuillez uploader un fichier .csv valide",
                         'maxSizeMessage' => "Taille maximum de 20M"
+                    ])
+                ],
+            ])
+
+            ->add('c_image_name',FileType::class, [
+                'label' => ' Photo du sujet',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the  file
+                // every time you edit details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '20M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                            'image/x-ms-bmp'
+                        ],
+                        'mimeTypesMessage' => "Veuillez uploader un fichier image valide",
+                        'maxSizeMessage' => "Taille maximum de 1M"
                     ])
                 ],
             ])

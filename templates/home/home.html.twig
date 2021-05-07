@@ -31,8 +31,9 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Numero</th>
+                    <th>Photo</th>
                     <th>Nom</th>
+                    <th>Numéro</th>
                     <th>Opérateur</th>
                     <th>Appels Entrants</th>
                     <th>Appels Sortants</th>
@@ -46,7 +47,9 @@
                 {% for person in response %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ person.c_number }}</td>
+                        <td>
+                            <img width="100" height="100" class="img-fluid img-thumbnail" src="/img/{{person.c_pic_name}}">
+                        </td>
                         <td>
                             {% if person.a_name == 0 %}
                                 <span class="text-uppercase text-danger ">Non identifié</span>
@@ -54,6 +57,7 @@
                                 <span class="text-uppercase">{{ person.a_name }}</span>
                             {% endif %}
                         </td>
+                        <td>{{ person.c_number }}</td>
                         <td>{{ person.c_operator }}</td>
                         <td>{{ person.b_call_count }}</td>
                         <td>{{ person.a_call_count }}</td>

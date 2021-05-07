@@ -14,20 +14,28 @@
         </nav>
 
 
-        <!-- Modal loader -->
 
-
-        <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-                {% if c_name == 0 or c_name == "" %}
-                    <li class="list-group-item">Nom:  <span id="c_name" class="text-danger text-uppercase">non identifié</span></li>
-                {% else %}
-                    <li class="list-group-item">Nom:  <span id="c_name" class="text-uppercase">{{ c_name }}</span></li>
-                {% endif %}
-                <li class="list-group-item">Numéro : <span id="c_number">{{ c_number }}</span></li>
-                <li class="list-group-item">Opérateur:  <span id="c_operator">{{ c_operator }}</span></li>
-            </ul>
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img class="img-thumbnail" src="/img/{{ c_pic_name }}" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% if c_name == 0 or c_name == "" %}
+                                <li class="list-group-item">Nom:  <span id="c_name" class="text-danger text-uppercase">non identifié</span></li>
+                            {% else %}
+                                <li class="list-group-item">Nom:  <span id="c_name" class="text-uppercase">{{ c_name }}</span></li>
+                            {% endif %}
+                            <li class="list-group-item">Numéro : <span id="c_number">{{ c_number }}</span></li>
+                            <li class="list-group-item">Opérateur:  <span id="c_operator">{{ c_operator }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <button v-on:click="exportToExcel" id="printBtn" class="btn btn-outline-success" style="margin-top: 1rem">
             <i class="fa fa-file-excel"></i>
