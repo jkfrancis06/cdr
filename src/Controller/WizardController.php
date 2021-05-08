@@ -28,18 +28,26 @@ class WizardController extends AbstractController
      */
     public function homeWizard(Request  $request, $c_number = null,FileUploader $fileUploader){
 
+        // huri number verification pattern
+        $pattern_huri = '/^[37][0-9]{6}$/';
+        $pattern_telma = '/^[4][0-9]{6}$/';
 
         $is_new = true;  // check if is new user to add or not (modify user)
+
+        $file_data = [];
+
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         // if number in url
         if($c_number != null) {
+            // find it in the database
             $c_person = $repo->findOneBy([
                'c_number' => $c_number
             ]);
+            // if NOT FOUND in the database
             if ($c_person == null) {
                 $c_person = new CPerson();
             }else{
-                $is_new = false;
+                $is_new = false;  //
             }
         }else{
             $c_person = new CPerson();
@@ -62,6 +70,7 @@ class WizardController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
             $cdrFile = $form->get('c_file_name')->getData();
             if ($cdrFile == null && $is_new){
                 $fileError = new FormError("Veuillez envoyer un fichier");
@@ -69,21 +78,52 @@ class WizardController extends AbstractController
             }
 
             if ($cdrFile != null) {
-                if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
 
+                // opens csv file
+                if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
+                    // loop through lines
                     while (($data = fgetcsv($handle,"",";")) !== false) {
-                        if ($data[5] == ""){
-                            $fileError = new FormError("Numero incorrect dans le fichier CDR, Ligne 1 Colonne 6");
-                            $form->get('c_file_name')->addError($fileError);
-                        }else{
+
+                        $file_data = $data;
+                        // check if is huri csv and remove hidden characters
+                        if (preg_match($pattern_huri,preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] ))){
+
+                            $c_person->setCOperator("HURI");
+                            // check if cdr has been already uploaded
                             $bdd_person = $repo->findOneBy([
-                                'c_number' => $data[5]
+                                'c_number' => $data[0]
                             ]);
                             if ($bdd_person != null) {
                                 $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
                                 $form->get('c_file_name')->addError($fileError);
                             }
+
+                        }else {
+
+                            if (preg_match($pattern_telma,preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] ))){
+
+                                $c_person->setCOperator("TELMA");
+                                if (preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[5] ) == ""){
+                                    $fileError = new FormError("Numero incorrect dans le fichier CDR, Ligne 1 Colonne 6");
+                                    $form->get('c_file_name')->addError($fileError);
+                                }else{
+                                    // check if cdr has been already uploaded
+                                    $bdd_person = $repo->findOneBy([
+                                        'c_number' => $data[5]
+                                    ]);
+                                    if ($bdd_person != null) {
+                                        $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
+                                        $form->get('c_file_name')->addError($fileError);
+                                    }
+                                }
+
+                            }else{
+                                $fileError = new FormError("Le numero ne correspond a aucun operateur");
+                                $form->get('c_file_name')->addError($fileError);
+                            }
+
                         }
+
                         break;
                     }
                     fclose($handle);
@@ -95,6 +135,8 @@ class WizardController extends AbstractController
 
             $cdrFile = $form->get('c_file_name')->getData();
 
+
+
             if($cdrFile != null){
 
                 $uploadedFileName = $fileUploader->upload($cdrFile);
@@ -103,23 +145,13 @@ class WizardController extends AbstractController
                 $dir = $this->getParameter('kernel.project_dir').'/public/upload/';
 
                 if (($handle = fopen($dir.''.$uploadedFileName, "r")) !== false) {
-
                     while (($data = fgetcsv($handle,"",";")) !== false) {
-                        $c_person->setCNumber($data[5]);
-                        $firstCharacter = substr($data[5], 0, 1);
-                        switch($firstCharacter) {
-                            case "7":
-                            case "3":
-                                $c_person->setCOperator("HURI");
-                                break;
-                            case "4":
-                                $c_person->setCOperator("TELMA");
-                                break;
-                        }
-                        if ($data["12"] != ""){
-                            $c_person->setANom($data[12]);
+                        if ($c_person->getCOperator() == "HURI") {
+                            $c_person->setCNumber(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0]));
+                            $c_person->setANom($data[2]);
                         }else{
-                            $c_person->setANom("0");
+                            $c_person->setCNumber(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[5]));
+                            $c_person->setANom($data[12]);
                         }
                         break;
                     }
@@ -214,20 +246,40 @@ class WizardController extends AbstractController
 
         if ($persons != null) {
             foreach ($persons as $person){
-                if ($person->getOperator() == "TELMA"){
+
+
+
+                if ($person->getCOperator() == "TELMA"){
+
+                    $encode = $this->getDoctrine()
+                        ->getRepository(DumpT::class)
+                        ->standardTEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+
                     $res = $this->getDoctrine()
                         ->getRepository(DumpT::class)
                         ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
                 }else{
+
+                    $encode = $this->getDoctrine()
+                        ->getRepository(DumpHuri::class)
+                        ->standardHEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+
+
                     $res = $this->getDoctrine()
                         ->getRepository(DumpHuri::class)
-                        ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                        ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+
                 }
 
             }
             $this->getDoctrine()
                 ->getRepository(TRecord::class)
-                ->dumpAll();
+                ->dumpTelmaTrecord();
+
+            $this->getDoctrine()
+                ->getRepository(TRecord::class)
+                ->dumpHuriTrecord();
+
         }
         $request->getSession()->getFlashBag()->add('dump_success', 'Donnees traitees avec succès');
 

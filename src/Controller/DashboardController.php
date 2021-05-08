@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\CPerson;
+use App\Entity\DumpHuri;
 use App\Entity\DumpT;
 use App\Entity\TRecord;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +33,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
         $res_data_array = [];
 
         foreach ($persons as $person) {
+
             $person_data = [];
 
             // count communications
@@ -59,23 +61,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
                 ->countAllSentReceivedCalls($person->getCNumber(),'SMS','Entrant');
             $person_data["b_sms_count"] = $b_sms_count["data"];
 
-            $rep = $this->getDoctrine()->getManager()->getRepository(DumpT::class)
-                ->getNumberName($person->getCNumber());
-
-
-            if (sizeof($rep["data"] )!= 0) {
-                $person->setANom($rep["data"][0]["a_nom"]);
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            if (sizeof($rep["data"] )!= 0) {
-                $person_data["a_name"] = $rep["data"][0]["a_nom"];
-            }else{
-                $person_data["a_name"] = "";
-            }
-
+            $person_data["a_name"] = $person->getANom();
 
 
             $person_data["link"] = $person->getCFileName();
@@ -93,6 +79,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
             "is_active"=> "home"
         ]);
     }
+
 
     /**
      * This route has a greedy pattern and is defined first.

@@ -145,4 +145,37 @@ class DumpTRepository extends ServiceEntityRepository
             return $res;
         }
     }
+
+    public function standardTEncoding($dir,$file_name){
+
+        $connString = 'host =localhost dbname=cdr user=admin password=sql';
+
+        $source = $dir.'/'.$file_name;
+        $destination = $dir.'/copy/'.$file_name;
+        copy($source,$destination);
+
+        if (($handle = fopen($destination, 'r')) !== FALSE  && ($outFile = fopen($source, "w") )!== false)
+        {
+
+            // Loop through each row
+            while (($row = fgetcsv($handle,"",";")) !== FALSE)
+            {
+
+                $row[2] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[2]);
+                $row[3] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[3]);
+                $row[4] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[4]);
+                $row[5] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[5]);
+
+
+                fputcsv($outFile, $row,";");
+
+            }
+
+            // Close the file pointer
+            fclose($handle);
+            fclose($outFile);
+            unlink($destination);
+        }
+
+    }
 }

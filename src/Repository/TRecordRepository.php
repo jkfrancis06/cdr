@@ -22,7 +22,7 @@ class TRecordRepository extends ServiceEntityRepository
         parent::__construct($registry, TRecord::class);
     }
 
-    public function dumpAll()  {
+    public function dumpTelmaTrecord()  {
 
         /* INSERT INTO test_import_two (name, name1, name2)
         (SELECT name, name1, name2 FROM test_import_one WHERE id = 2) */
@@ -42,6 +42,29 @@ class TRecordRepository extends ServiceEntityRepository
         return $qr;
 
     }
+
+    public function dumpHuriTrecord()  {
+
+        /* INSERT INTO test_import_two (name, name1, name2)
+        (SELECT name, name1, name2 FROM test_import_one WHERE id = 2) */
+
+
+        $separator = "\r\n'";
+
+        $db = $this->getEntityManager();
+        $query = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
+              SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
+              FROM dump_huri";
+        $stmt = $db->getConnection()->prepare($query);
+        $params = array(
+        );
+        $qr = $stmt->execute($params);
+
+        return $qr;
+
+    }
+
+
 
     // paginator query
 

@@ -56,6 +56,7 @@ class CPerson
     public function __construct()
     {
         $this->c_pic_name= "icon-default.png";
+        $this->a_nom = "0";
     }
 
 

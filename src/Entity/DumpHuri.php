@@ -12,8 +12,9 @@ class DumpHuri
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\SequenceGenerator(sequenceName="huri_id_seq", initialValue=1, allocationSize=100)
      */
     private $id;
 
@@ -105,7 +106,7 @@ class DumpHuri
 
     public function setBNom(?string $b_nom): self
     {
-        $this->b_no�m = $b_nom;
+        $this->b_nom = $b_nom;
 
         return $this;
     }
