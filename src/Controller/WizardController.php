@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 use App\Entity\CPerson;
+use App\Entity\DumpHuri;
 use App\Entity\DumpHuriEntrant;
 use App\Entity\DumpHuriSortant;
 use App\Entity\DumpT;
@@ -204,20 +205,25 @@ class WizardController extends AbstractController
 
         $this->getDoctrine()
             ->getRepository(DumpT::class)
-            ->truncateTable(DumpHuriEntrant::class);
+            ->truncateTable(DumpHuri::class);
 
-        $this->getDoctrine()
-            ->getRepository(DumpT::class)
-            ->truncateTable(DumpHuriSortant::class);
+
 
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         $persons = $repo->findAll();
 
         if ($persons != null) {
             foreach ($persons as $person){
-                $res = $this->getDoctrine()
-                    ->getRepository(DumpT::class)
-                    ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                if ($person->getOperator() == "TELMA"){
+                    $res = $this->getDoctrine()
+                        ->getRepository(DumpT::class)
+                        ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                }else{
+                    $res = $this->getDoctrine()
+                        ->getRepository(DumpHuri::class)
+                        ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                }
+
             }
             $this->getDoctrine()
                 ->getRepository(TRecord::class)

@@ -216,9 +216,10 @@ class TRecordRepository extends ServiceEntityRepository
     public function getFavoritesNumber($number) {
         try {
             $qr = $this->createQueryBuilder('t')
-                ->select('t.num_b, sum(t.duration) as dur , count(t.num_b) as nb')
+                ->select('t.num_b, t.b_nom , sum(t.duration) as dur, count(t.num_b) as nb')
                 ->where('t.num_a = :num')
                 ->groupBy('t.num_b')
+                ->addGroupBy('t.b_nom')
                 ->orderBy('dur','DESC')
                 ->addOrderBy('nb', 'DESC')
                 ->setMaxResults(15)

@@ -2,21 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\DumpHuriSortantRepository;
+use App\Repository\DumpHuriRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DumpHuriSortantRepository::class)
+ * @ORM\Entity(repositoryClass=DumpHuriRepository::class)
  */
-class DumpHuriSortant
+class DumpHuri
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(type="integer", nullable=false)
-     * @ORM\SequenceGenerator(sequenceName="id_seq", initialValue=1, allocationSize=100)
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -35,17 +35,7 @@ class DumpHuriSortant
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $a_adresse;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $a_piece;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $a_num_id;
+    private $b_nom;
 
     /**
      * @ORM\Column(type="integer")
@@ -56,6 +46,11 @@ class DumpHuriSortant
      * @ORM\Column(type="datetime")
      */
     private $day_time;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $flux_appel;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -103,38 +98,14 @@ class DumpHuriSortant
         return $this;
     }
 
-    public function getAAdresse(): ?string
+    public function getBNom(): ?string
     {
-        return $this->a_adresse;
+        return $this->b_nom;
     }
 
-    public function setAAdresse(?string $a_adresse): self
+    public function setBNom(?string $b_nom): self
     {
-        $this->a_adresse = $a_adresse;
-
-        return $this;
-    }
-
-    public function getAPiece(): ?string
-    {
-        return $this->a_piece;
-    }
-
-    public function setAPiece(?string $a_piece): self
-    {
-        $this->a_piece = $a_piece;
-
-        return $this;
-    }
-
-    public function getANumId(): ?string
-    {
-        return $this->a_num_id;
-    }
-
-    public function setANumId(?string $a_num_id): self
-    {
-        $this->a_num_id = $a_num_id;
+        $this->b_no�m = $b_nom;
 
         return $this;
     }
@@ -159,6 +130,18 @@ class DumpHuriSortant
     public function setDayTime(\DateTimeInterface $day_time): self
     {
         $this->day_time = $day_time;
+
+        return $this;
+    }
+
+    public function getFluxAppel(): ?string
+    {
+        return $this->flux_appel;
+    }
+
+    public function setFluxAppel(string $flux_appel): self
+    {
+        $this->flux_appel = $flux_appel;
 
         return $this;
     }

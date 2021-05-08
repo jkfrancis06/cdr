@@ -135,6 +135,7 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
         foreach ($fav_numbers as $fav_number){
             $temp = [];
             $temp["num_b"] = $fav_number["num_b"];
+            $temp["b_nom"] = $fav_number["b_nom"];
             $temp["duration"] = gmdate("H:i:s",$fav_number["dur"]);
             $temp["nb"] = $fav_number["nb"];
             array_push($fav_numbers_array,$temp);

@@ -62,6 +62,7 @@
                     <tr>
                         <th>#</th>
                         <th>Numéro</th>
+                        <th>Nom</th>
                         <th>Durée totale des communications</th>
                         <th>Nombre de communications</th>
                     </tr>
@@ -70,6 +71,7 @@
                     <tr v-for="(item, index) in frequent_users">
                         <td>${index + 1}</td>
                         <td>${item.num_b}</td>
+                        <td>${item.b_nom}</td>
                         <td>${item.duration}</td>
                         <td>${item.nb}</td>
                     </tr>
