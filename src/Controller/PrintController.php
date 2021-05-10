@@ -161,11 +161,12 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
 
         $sheet->setCellValue( 'A9','#');
         $sheet->setCellValue( 'B9','Numéro');
-        $sheet->setCellValue( 'C9','Durée totale');
-        $sheet->setCellValue( 'D9','Nombre de communications');
+        $sheet->setCellValue( 'C9','Nom');
+        $sheet->setCellValue( 'D9','Durée totale');
+        $sheet->setCellValue( 'E9','Nombre de communications');
 
 
-        $init_cell = 10;
+        $init_cell = 11;
         $i = 0;
 
         // favorites table content
@@ -173,8 +174,9 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         foreach ($data["favorites"] as $favorite) {
             $sheet->setCellValue( 'A'.$init_cell, $i);
             $sheet->setCellValue( 'B'.$init_cell, $favorite["num_b"]);
-            $sheet->setCellValue( 'C'.$init_cell, $favorite["duration"]);
+            $sheet->setCellValue( 'C'.$init_cell, $favorite["b_nom"]);
             $sheet->setCellValue( 'D'.$init_cell, $favorite["duration"]);
+            $sheet->setCellValue( 'E'.$init_cell, $favorite["nb"]);
             $sheet->getStyle('A'.$init_cell.':H'.$init_cell)->getFont()->setBold(false);
             $i++;
             $init_cell++;
@@ -184,63 +186,6 @@ class PrintController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstrac
         $init_cell ++;
 
         $merge = $init_cell+2;
-
-        $spreadsheet->getActiveSheet()->mergeCells('A'.$init_cell.':H'.$merge);
-        $spreadsheet
-            ->getActiveSheet()
-            ->getStyle('A'.$init_cell.':H'.$merge)
-            ->getFont()->setSize('14');
-
-        $sheet->setCellValue( 'A'.$init_cell ,'LISTE DES COMMUNICATIONS ');
-
-
-        $init_cell = $merge +1;
-
-        // communication table filter header
-
-
-        $sheet->setCellValue( 'A'.$init_cell,'Filtre numéro: ');
-        $sheet->setCellValue( 'B'.$init_cell, $data["number_filter"]);
-        $sheet->setCellValue( 'C'.$init_cell,'Filtre de date: ');
-        $sheet->setCellValue( 'D'.$init_cell, $data["date_time_range_com"]["range"]);
-
-        $init_cell +=2 ;
-
-        $sheet->getStyle('A'.$init_cell.':H'.$init_cell)->getFont()->setBold(false);
-
-        // communication table header
-
-        $sheet->setCellValue( 'A'.$init_cell,'#');
-        $sheet->setCellValue( 'B'.$init_cell,'Type');
-        $sheet->setCellValue( 'C'.$init_cell,'Flux appel');
-        $sheet->setCellValue( 'D'.$init_cell,'Date');
-        $sheet->setCellValue( 'E'.$init_cell,'Numero A');
-        $sheet->setCellValue( 'F'.$init_cell,'Numero B');
-        $sheet->setCellValue( 'G'.$init_cell,'Nom B');
-        $sheet->setCellValue( 'H'.$init_cell,'Durée');
-        $sheet->getStyle('A'.$init_cell.':H'.$init_cell)->getFont()->setBold(true);
-
-        $init_cell ++;
-        $i = 0;
-
-        foreach ($data["communications"] as $communication) {
-            $sheet->setCellValue( 'A'.$init_cell, $i);
-            $sheet->setCellValue( 'B'.$init_cell, $communication["dataType"]);
-            $sheet->setCellValue( 'C'.$init_cell, $communication["fluxAppel"]);
-            $sheet->setCellValue( 'D'.$init_cell, $communication["dayTime"]);
-            $sheet->setCellValue( 'E'.$init_cell, $communication["numA"]);
-            $sheet->setCellValue( 'F'.$init_cell, $communication["numB"]);
-            if($communication["bNom"] == "" || $communication["bNom"] == "0"){
-                $sheet->setCellValue( 'G'.$init_cell, "Non ID");
-            }else{
-                $sheet->setCellValue( 'G'.$init_cell, $communication["bNom"]);
-            }
-            $sheet->setCellValue( 'H'.$init_cell, gmdate("H:i:s", $communication["duration"]));
-            $sheet->getStyle('A'.$init_cell.':H'.$init_cell)->getFont()->setBold(false);
-            $i++;
-            $init_cell++;
-
-        }
 
 
         foreach (range('A','H') as $col) {

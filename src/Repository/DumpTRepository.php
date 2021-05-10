@@ -167,7 +167,7 @@ class DumpTRepository extends ServiceEntityRepository
                 $row[5] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[5]);
 
 
-                fputcsv($outFile, $row,";");
+                fputcsv($outFile, $row,";"," ");
 
             }
 

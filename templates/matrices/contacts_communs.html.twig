@@ -111,41 +111,52 @@
             </table>
         </div>
 
-    </div>
 
-    <div class="uk-section uk-section-default">
-        <div class="uk-container uk-container-large uk-position-relative">
-            <article class="uk-article">
-
-
-                <h3>
-                    <a class="uk-link-reset" href="">
-
-                    </a>
-                </h3>
-                <hr>
-                <p class="uk-article-meta"></p>
-
-                <div class="uk-overflow-auto">
-
-                    <div>
-                        <form class="uk-form-horizontal">
-
-                            <div style="float: left; display: inline-block;margin-right: 2%">
-
-                            </div>
-                            <a id="filter" class="uk-button uk-button-default">Filtrer</a>
-
-                        </form>
-                    </div>
-
-
-
-                </div>
-
-            </article>
+        <div class="col col-12" style="margin-top: 2rem">
+            <table class="table text-center table-justify table-bordered table-responsive">
+                <thead>
+                <tr>
+                    <th style="width: 10%" class="uk-table-expand">Numéro</th>
+                    <th style="width: 25%" class="uk-table-expand">Nom</th>
+                    <th style="width: 10%" class="uk-table-expand">Occurences</th>
+                    <th style="width: 55%" class="uk-table-expand">Personnes concernées</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
+                            <span class="">{{ contact.num_b }}</span>
+                        </td>
+                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
+                            {% if contact.b_nom == 0 or contact.b_nom == "" %}
+                                <span class="text-danger">Non identifé</span>
+                            {% else %}
+                                <span class="">{{ contact.b_nom }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
+                            {{ contact.nb }}
+                        </td>
+                        <td style="display: table-cell;vertical-align: middle;">
+                            <table class="table table-striped text-center table-justify table-bordered table-responsive">
+                                {% for occurence_number in contact.occurence_numbers %}
+                                <tr>
+                                    <td style="text-align: left">{{ occurence_number.a_nom }} ( {{ occurence_number.num_a }} )</td>
+                                    <td style="text-align: left">{{ occurence_number.b_nom }} ( {{ occurence_number.num_b }} )</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+
+
     </div>
+
 
 {% endblock %}
 

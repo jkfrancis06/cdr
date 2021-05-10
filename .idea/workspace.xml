@@ -24,13 +24,25 @@
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/CPerson.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/CPerson.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/DumpHuri.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/DumpHuri.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/build/js/vue/number-details.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/build/js/vue/number-details.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/ALIYAMINE-AHMED-SOUF-60972086359fd.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Ali-Saidali-6097208abee52.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Amir-Salime-6097207d5377a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/BEN-ALI-ABDALLAH-1-609720788a4e7.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Idriss-Tadjidine-60972074d6713.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/MOHAMED-ABDEREMANE-ABDOUL-HASSANE-6097206da1fde.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/SAID-NOURDINE-SAMIDINE-6097205bb1f2b.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Said-Ali-Ibrahim-2-60972068c773a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Said-Ali-Ibrahim-3-60972062aba77.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/upload/Said-Ali-Ibrahim-6097205f188da.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/CommonContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CommonContactController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/PrintController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PrintController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/number_details.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/number_details.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/contacts_communs.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/matrices/details_contact_communs.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +231,7 @@
       <workItem from="1619514746189" duration="16015000" />
       <workItem from="1619601149993" duration="113754000" />
       <workItem from="1619818416157" duration="159386000" />
-      <workItem from="1620474642258" duration="20455000" />
+      <workItem from="1620474642258" duration="38070000" />
     </task>
     <servers />
   </component>
@@ -259,10 +271,10 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state width="498" height="446" key="SwitcherDM/50.27.1316.741@50.27.1316.741" timestamp="1620164490814" />
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1620384951505">
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1620565475740">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1620384951505" />
+    <state x="150" y="127" width="1116" height="541" key="com.intellij.history.integration.ui.views.FileHistoryDialog/50.27.1316.741@50.27.1316.741" timestamp="1620565475740" />
     <state x="314" y="27" width="778" height="741" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1619744352054">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
@@ -283,9 +295,9 @@
       <screen x="50" y="27" width="1316" height="741" />
     </state>
     <state x="372" y="174" width="672" height="677" key="run.anything.popup/50.27.1316.741@50.27.1316.741" timestamp="1620399386923" />
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620516909883">
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1620567805071">
       <screen x="50" y="27" width="1316" height="741" />
     </state>
-    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620516909883" />
+    <state x="371" y="89" width="672" height="678" key="search.everywhere.popup/50.27.1316.741@50.27.1316.741" timestamp="1620567805071" />
   </component>
 </project>

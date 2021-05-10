@@ -124,11 +124,9 @@ class DumpHuriRepository extends ServiceEntityRepository
 
                 $row[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[0]);
                 $row[1] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[1]);
-                $row[4] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[4]);
-                $row[5] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[5]);
 
 
-                fputcsv($outFile, $row,";");
+                fputcsv($outFile, $row,";"," ");
 
             }
 

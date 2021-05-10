@@ -30,6 +30,9 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $cperson_repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         $cpersons = $cperson_repo->findAll();
         $com_data = [];
+        $common_contact_array = [];
+        $occurence_array = [];
+
         foreach ($cpersons as $cperson) {
             $c_person_nom = $cperson->getANom() ;
             if ($cperson->getANom() == "0" || $cperson->getANom() ==""){
@@ -38,6 +41,10 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
 
             $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"] = [];
             foreach ($cpersons as $cperson_comp){
+                $temp_occurence = [];
+                $temp_occurence["num_a"] = $cperson->getCNumber();
+                $temp_occurence["num_b"] = $cperson_comp->getCNumber();
+
                 if ($range != null){
                     $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
                         ->getCommonContactsBetweenDates($cperson->getCNumber(),$cperson_comp->getCNumber(),$date_range[0],$date_range[1]);
@@ -56,20 +63,94 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 }
                 $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = false;
                 $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["nb"] = sizeof($t_record_rep);
-                foreach ($t_record_rep as $item){
-                    if (strlen($item["num_b"]) != 7 || !in_array(substr($item["num_b"], 0, 1),["3","4","7"]) ){
-                        $com_data[$cperson->getCNumber()."( ".$c_person_nom." )"][$cperson_comp->getCNumber()."( ".$c_person_com_nom." )"]["int"] = true;
-                        break;
+
+
+
+                if ($cperson->getCNumber() != $cperson_comp->getCNumber()){
+
+                    $is_new = true;
+
+                    foreach ($occurence_array as $value) {
+
+                        if ((($value["num_a"] == $cperson->getCNumber()) && $value["num_b"] == $cperson_comp->getCNumber())
+                            || (($value["num_a"] == $cperson_comp->getCNumber()) && ($value["num_b"] == $cperson->getCNumber()))){
+
+                            $is_new = false;
+
+                        }
                     }
+
+                    foreach ($t_record_rep as $item) {
+
+
+                        if ($is_new == true) {
+                            $key = false;
+                            $index = 0;
+                            $found = 0;
+                            foreach ($common_contact_array as $tp) {
+
+                                if ($tp["num_b"] == $item["num_b"]) {
+                                    $key = true;
+                                    $found = $index;
+                                    break;
+                                }
+                                $index++;
+                            }
+                            if ($key == false){  // not found
+
+                                $tem_common_array = [];
+                                $tem_common_array["num_b"] = $item["num_b"];
+                                $tem_common_array["b_nom"] = $item["b_nom"];
+                                $tem_common_array["nb"] = 1;
+                                $tem_common_array["occurence_numbers"] = [];
+                                array_push( $tem_common_array["occurence_numbers"],  [
+                                    "num_a" => $cperson->getCNumber(),
+                                    "a_nom" => $cperson->getANom(),
+                                    "num_b" => $cperson_comp->getCNumber(),
+                                    "b_nom" => $cperson_comp->getANom(),
+                                ]);
+                                array_push($common_contact_array, $tem_common_array);
+
+                            }else{
+                                $common_contact_array[$found]["nb"] ++;
+                                array_push( $common_contact_array[$found]["occurence_numbers"],  [
+                                    "num_a" => $cperson->getCNumber(),
+                                    "a_nom" => $cperson->getANom(),
+                                    "num_b" => $cperson_comp->getCNumber(),
+                                    "b_nom" => $cperson_comp->getANom(),
+                                ]);
+
+                            }
+                        }
+
+                    }
+
                 }
 
+
+                foreach ($t_record_rep as $item) {
+                    if (strlen($item["num_b"]) != 7 || !in_array(substr($item["num_b"], 0, 1), ["3", "4", "7"])) {
+                        $com_data[$cperson->getCNumber() . "( " . $c_person_nom . " )"][$cperson_comp->getCNumber() . "( " . $c_person_com_nom . " )"]["int"] = true;
+                        break;
+                    }
+
+                }
+                array_push($occurence_array,$temp_occurence);
             }
         }
+
+        var_dump(count($occurence_array));
+
+
+        usort($common_contact_array, function($a, $b) {
+            return $b['nb'] <=> $a['nb'];
+        });
         $link = $this->exportMatriceCommonContact($com_data,$range);
         return $this->render('matrices/contacts_communs.html.twig',[
             "link" => "",
             "matrices" => $com_data,
             "range" => $date_range,
+            "contacts" => $common_contact_array,
             "is_active" => "matrice_contact_communs"
         ]);
     }

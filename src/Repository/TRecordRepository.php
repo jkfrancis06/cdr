@@ -243,8 +243,8 @@ class TRecordRepository extends ServiceEntityRepository
                 ->where('t.num_a = :num')
                 ->groupBy('t.num_b')
                 ->addGroupBy('t.b_nom')
-                ->orderBy('dur','DESC')
-                ->addOrderBy('nb', 'DESC')
+                ->orderBy('nb', 'DESC')
+                ->addOrderBy('dur','DESC')
                 ->setMaxResults(15)
                 ->setParameters([
                     'num' => $number

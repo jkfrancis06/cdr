@@ -1,3 +1,4 @@
+
 window.onload = function () {
     Vue.component('v-pagination', window['vue-plain-pagination'])
 
@@ -181,7 +182,6 @@ window.onload = function () {
                 data.c_person.c_number = document.getElementById("c_number").innerHTML
 
                 console.log(data)
-                console.log()
 
                 axios({
                     method: 'post',
