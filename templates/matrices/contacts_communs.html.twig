@@ -111,13 +111,13 @@
             </table>
         </div>
 
-
         <div class="col col-12" style="margin-top: 2rem">
             <table class="table text-center table-justify table-bordered table-responsive">
                 <thead>
                 <tr>
                     <th style="width: 10%" class="uk-table-expand">Numéro</th>
                     <th style="width: 25%" class="uk-table-expand">Nom</th>
+                    <th style="width: 25%" class="uk-table-expand">CDR</th>
                     <th style="width: 10%" class="uk-table-expand">Occurences</th>
                     <th style="width: 55%" class="uk-table-expand">Personnes concernées</th>
                 </tr>
@@ -125,28 +125,33 @@
                 <tbody>
                 {% for contact in contacts %}
                     <tr>
-                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
+                        <td >
                             <span class="">{{ contact.num_b }}</span>
                         </td>
-                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
-                            {% if contact.b_nom == 0 or contact.b_nom == "" %}
-                                <span class="text-danger">Non identifé</span>
+                        <td>
+                            {% if contact.b_nom == "PROBABLEMENT NON ID" %}
+                                <span class="text-warning">PROBABLEMENT NON ID</span>
+                            {% elseif contact.b_nom == "NON IDENTIFIE"%}
+                                <span class="text-danger"> NON IDENTIFIE</span>
                             {% else %}
-                                <span class="">{{ contact.b_nom }}</span>
+                                {{ contact.b_nom }}
                             {% endif %}
                         </td>
-                        <td style="display: table-cell;vertical-align: middle;" class="uk-table-expand">
-                            {{ contact.nb }}
+                        <td>
+                            {{ contact.has_cdr }}
                         </td>
-                        <td style="display: table-cell;vertical-align: middle;">
-                            <table class="table table-striped text-center table-justify table-bordered table-responsive">
-                                {% for occurence_number in contact.occurence_numbers %}
-                                <tr>
-                                    <td style="text-align: left">{{ occurence_number.a_nom }} ( {{ occurence_number.num_a }} )</td>
-                                    <td style="text-align: left">{{ occurence_number.b_nom }} ( {{ occurence_number.num_b }} )</td>
-                                </tr>
-                                {% endfor %}
-                            </table>
+                        </td>
+                        <td>
+                            {{ contact.numbers | length }}
+                        </td>
+                        <td >
+                            <div class="card">
+                                <ul class="list-group list-group-flush">
+                                    {% for key,value in contact.numbers %}
+                                        <li class="list-group-item">{{ value }} ( {{ key }} )</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

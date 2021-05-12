@@ -40,12 +40,12 @@ class TRecord
     private $num_b;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $a_nom;
 
     /**
-     * @ORM\Column(type="string", length=255 ,nullable=true)
+     * @ORM\Column(type="text" ,nullable=true)
      */
     private $b_nom;
 

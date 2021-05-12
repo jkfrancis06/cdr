@@ -65,6 +65,35 @@ class TRecordRepository extends ServiceEntityRepository
     }
 
 
+    public function checkIdentity($number) {
+
+        $first_char = substr($number,0,1);
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->select('trecord.b_nom')
+            ->where('trecord.num_a LIKE :char')
+            ->andWhere('trecord.num_b LIKE :number')
+            ->setParameters([
+                'char' => $first_char.'%',
+                'number' => $number
+            ])
+            ->getQuery()
+            ->getResult();
+
+
+        if (sizeof($qr) == 0) {
+            return "PROBABLEMENT NON ID";
+        }
+        if (sizeof($qr) != 0 && ($qr[0]["b_nom"] == "" || $qr[0]["b_nom"] == "0") ) {
+            return "NON IDENTIFIE";
+        }
+        if (sizeof($qr) != 0 && $qr[0]["b_nom"] != "" && $qr[0]["b_nom"] != "0") {
+            return $qr[0]["b_nom"];
+        }
+    }
+
+
+
 
     // paginator query
 

@@ -57,7 +57,7 @@ class DumpTRepository extends ServiceEntityRepository
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
         array_shift($rows);
-        try {
+        {
             $res = pg_copy_from($db, 'dump_t(
             flux_appel,
             data_type,
@@ -84,10 +84,6 @@ class DumpTRepository extends ServiceEntityRepository
             $data["error"] = 0;
             $data["nb_rows"] = $rows_count;
             $data["mem_usage"] = $mem_usage;
-            return $data;
-        }catch (\Exception $e) {
-            $data["error"] = 1;
-            $data["message"] = $e->getMessage();
             return $data;
         }
 
@@ -167,7 +163,7 @@ class DumpTRepository extends ServiceEntityRepository
                 $row[5] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[5]);
 
 
-                fputcsv($outFile, $row,";"," ");
+                fputcsv($outFile, $row,";"," ",'');
 
             }
 

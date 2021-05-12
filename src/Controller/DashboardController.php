@@ -117,12 +117,15 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
     public function getNumberCommunications(string $c_number) {
         $res = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
                         ->getFavoritesNumber($c_number);
+
+        $t_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
+
         $fav_numbers = $res["data"];
         $fav_numbers_array = [];
         foreach ($fav_numbers as $fav_number){
             $temp = [];
             $temp["num_b"] = $fav_number["num_b"];
-            $temp["b_nom"] = $fav_number["b_nom"];
+            $temp["b_nom"] = $t_rep->checkIdentity($fav_number["num_b"]);
             $temp["duration"] = gmdate("H:i:s",$fav_number["dur"]);
             $temp["nb"] = $fav_number["nb"];
             array_push($fav_numbers_array,$temp);
@@ -132,6 +135,10 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
         $communications = $repo->findBy([
             'num_a'=> $c_number
         ]);
+
+        foreach ($communications as &$communication){
+            $communication->setBNom($t_rep->checkIdentity($communication->getNumB()));
+        }
 
 
         $serializer = new Serializer(
@@ -164,11 +171,13 @@ class DashboardController extends \Symfony\Bundle\FrameworkBundle\Controller\Abs
         $data = json_decode($json_data,true);
         $res = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
             ->getFavoritesNumberDateRange($data["c_number"], $data["start"], $data["end"]);
+        $t_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
         $fav_numbers = $res["data"];
         $fav_numbers_array = [];
         foreach ($fav_numbers as $fav_number){
             $temp = [];
             $temp["num_b"] = $fav_number["num_b"];
+            $temp["b_nom"] = $t_rep->checkIdentity($fav_number["num_b*"]);
             $temp["duration"] = gmdate("H:i:s",$fav_number["dur"]);
             $temp["nb"] = $fav_number["nb"];
             array_push($fav_numbers_array,$temp);

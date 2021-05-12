@@ -68,7 +68,7 @@ class DumpHuriRepository extends ServiceEntityRepository
             day_time,
             flux_appel,
             data_type
-            )', $rows, ';');
+            )', $rows, ";");
         $rows_count += count($rows);
         $mem_usage = number_format(memory_get_usage() / 1024 / 1024, 4);
         $data = [];

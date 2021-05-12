@@ -52,11 +52,11 @@ class WizardController extends AbstractController
         }else{
             $c_person = new CPerson();
         }
-        $c_persons = [];
+
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
 
         $a_person_serialized = [];
-
+        // serialize data to send
         if ($repo->findAll() != null){
             $c_persons = $repo->findAll();
             $serializer = new Serializer(array(new ObjectNormalizer()));
@@ -77,57 +77,73 @@ class WizardController extends AbstractController
                 $form->get('c_file_name')->addError($fileError);
             }
 
-            if ($cdrFile != null) {
 
-                // opens csv file
-                if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
-                    // loop through lines
-                    while (($data = fgetcsv($handle,"",";")) !== false) {
+            if ($cdrFile != null ) {
 
-                        $file_data = $data;
-                        // check if is huri csv and remove hidden characters
-                        if (preg_match($pattern_huri,preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] ))){
 
-                            $c_person->setCOperator("HURI");
-                            // check if cdr has been already uploaded
-                            $bdd_person = $repo->findOneBy([
-                                'c_number' => $data[0]
-                            ]);
-                            if ($bdd_person != null) {
-                                $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
-                                $form->get('c_file_name')->addError($fileError);
-                            }
+                if ($cdrFile->getClientOriginalExtension() == "csv") {
 
-                        }else {
 
-                            if (preg_match($pattern_telma,preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] ))){
+                    // opens csv file
+                    if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
+                        // loop through lines
+                        while (($data = fgetcsv($handle,"",";")) !== false) {
 
-                                $c_person->setCOperator("TELMA");
-                                if (preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[5] ) == ""){
-                                    $fileError = new FormError("Numero incorrect dans le fichier CDR, Ligne 1 Colonne 6");
+                            $file_data = $data;
+                            // check if is huri csv and remove hidden characters
+                            if (preg_match($pattern_huri,preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] ))){
+
+                                $c_person->setCOperator("HURI");
+                                // check if cdr has been already uploaded
+                                $c_person_repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
+                                $bdd_person = $c_person_repo->findOneBy([
+                                    'c_number' => preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0] )
+                                ]);
+
+                                if ($bdd_person != null) {
+                                    $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
                                     $form->get('c_file_name')->addError($fileError);
-                                }else{
-                                    // check if cdr has been already uploaded
-                                    $bdd_person = $repo->findOneBy([
-                                        'c_number' => $data[5]
-                                    ]);
-                                    if ($bdd_person != null) {
-                                        $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
-                                        $form->get('c_file_name')->addError($fileError);
-                                    }
                                 }
 
-                            }else{
-                                $fileError = new FormError("Le numero ne correspond a aucun operateur");
-                                $form->get('c_file_name')->addError($fileError);
+                            }else {
+
+
+                                if (preg_match($pattern_telma,$data[5])){
+
+                                    $c_person->setCOperator("TELMA");
+                                    if (preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[5] ) == ""){
+                                        $fileError = new FormError("Numero incorrect dans le fichier CDR, Ligne 1 Colonne 6");
+                                        $form->get('c_file_name')->addError($fileError);
+                                    }else{
+                                        // check if cdr has been already uploaded
+                                        $bdd_person = $repo->findOneBy([
+                                            'c_number' => $data[5]
+                                        ]);
+                                        if ($bdd_person != null) {
+                                            $fileError = new FormError("Le CDR de ce numéro a déjà été uploadé");
+                                            $form->get('c_file_name')->addError($fileError);
+                                        }
+                                    }
+
+                                }else{
+                                    $fileError = new FormError("Le numero ne correspond a aucun operateur");
+                                    $form->get('c_file_name')->addError($fileError);
+                                }
+
                             }
 
+                            break;
                         }
-
-                        break;
+                        fclose($handle);
                     }
-                    fclose($handle);
+
+                }else{
+
+                    $fileError = new FormError("Seuls les fichiers csv sont autorisés");
+                    $form->get('c_file_name')->addError($fileError);
+
                 }
+
             }
         }
 

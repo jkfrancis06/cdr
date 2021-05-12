@@ -32,6 +32,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $com_data = [];
         $common_contact_array = [];
         $occurence_array = [];
+        $t_rec_rep =  $this->getDoctrine()->getManager()->getRepository(TRecord::class);
 
         foreach ($cpersons as $cperson) {
             $c_person_nom = $cperson->getANom() ;
@@ -46,11 +47,9 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 $temp_occurence["num_b"] = $cperson_comp->getCNumber();
 
                 if ($range != null){
-                    $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
-                        ->getCommonContactsBetweenDates($cperson->getCNumber(),$cperson_comp->getCNumber(),$date_range[0],$date_range[1]);
+                    $t_record_rep = $t_rec_rep->getCommonContactsBetweenDates($cperson->getCNumber(),$cperson_comp->getCNumber(),$date_range[0],$date_range[1]);
                 }else{
-                    $t_record_rep = $this->getDoctrine()->getManager()->getRepository(TRecord::class)
-                        ->getCommonContacts($cperson->getCNumber(),$cperson_comp->getCNumber());
+                    $t_record_rep = $t_rec_rep->getCommonContacts($cperson->getCNumber(),$cperson_comp->getCNumber());
                 }
                 $c_person_nom = $cperson->getANom() ;
                 $c_person_com_nom = $cperson_comp->getANom();
@@ -83,6 +82,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                     foreach ($t_record_rep as $item) {
 
 
+
                         if ($is_new == true) {
                             $key = false;
                             $index = 0;
@@ -99,8 +99,18 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                             if ($key == false){  // not found
 
                                 $tem_common_array = [];
+                                $tem_common_array["has_cdr"] = "NON";
+
+                                $cp =  $cperson_repo->findOneBy([
+                                   "c_number" => $item["num_b"]
+                                ]);
+
+                                if ($cp != null) {
+                                    $tem_common_array["has_cdr"] = "OUI";
+                                }
+
                                 $tem_common_array["num_b"] = $item["num_b"];
-                                $tem_common_array["b_nom"] = $item["b_nom"];
+                                $tem_common_array["b_nom"] = $t_rec_rep->checkIdentity($item["num_b"]);
                                 $tem_common_array["nb"] = 1;
                                 $tem_common_array["occurence_numbers"] = [];
                                 array_push( $tem_common_array["occurence_numbers"],  [
@@ -139,15 +149,26 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
             }
         }
 
-        var_dump(count($occurence_array));
-
 
         usort($common_contact_array, function($a, $b) {
             return $b['nb'] <=> $a['nb'];
         });
+        $i = 0;
+        foreach ($common_contact_array as $contact) {
+            foreach ($contact["occurence_numbers"] as $number){
+
+                if (!isset($contact["numbers"][$number["num_a"]])){
+                    $common_contact_array[$i]["numbers"][$number["num_a"]] = $number["a_nom"];
+                }
+                if (!isset($contact["numbers"][$number["num_b"]])){
+                    $common_contact_array[$i]["numbers"][$number["num_b"]] = $number["b_nom"];
+                }
+            }
+            $i++;
+        }
         $link = $this->exportMatriceCommonContact($com_data,$range);
         return $this->render('matrices/contacts_communs.html.twig',[
-            "link" => "",
+            "link" => $link,
             "matrices" => $com_data,
             "range" => $date_range,
             "contacts" => $common_contact_array,
@@ -260,6 +281,8 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                 ->getCommonContactsBetweenDates($num_a,$num_b,$start,$end);
         }
 
+        $t_record_repo = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
+
 
         $cp_repo = $this->getDoctrine()->getRepository(CPerson::class);
         $a_person = $cp_repo->findOneBy([
@@ -275,7 +298,8 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $data = [];
         foreach ($commons as $common){
             $temp = [];
-            $temp["b_nom"] = $common["b_nom"];
+            $temp["b_nom"] = $t_record_repo->checkIdentity($common["num_b"]);
+
             $temp["has_cdr"] = false;
             $temp["num_b"] =  $common["num_b"];
             $cperson_repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
