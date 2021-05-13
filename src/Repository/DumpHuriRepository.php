@@ -81,6 +81,34 @@ class DumpHuriRepository extends ServiceEntityRepository
 
     }
 
+    public function deleteNumberRecords($number) {
+
+
+        $qr = $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.num_a LIKE :number')
+            ->setParameters([
+                'number' => $number
+            ])
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function deleteUnwantedRecords($number) {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->delete()
+            ->where('trecord.num_b LIKE :number')
+            ->setParameters([
+                'number' => $number
+            ])
+            ->getQuery()
+            ->getResult();
+
+    }
+
 
     public function getNumberName($number){
         try {

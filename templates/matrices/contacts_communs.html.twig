@@ -129,10 +129,10 @@
                             <span class="">{{ contact.num_b }}</span>
                         </td>
                         <td>
-                            {% if contact.b_nom == "PROBABLEMENT NON ID" %}
+                            {% if contact.b_nom == "" or contact.b_nom == "0" or contact.b_nom == null %}
                                 <span class="text-warning">PROBABLEMENT NON ID</span>
-                            {% elseif contact.b_nom == "NON IDENTIFIE"%}
-                                <span class="text-danger"> NON IDENTIFIE</span>
+                            {% elseif contact.b_nom != "" and contact.b_nom != "0" and contact.b_nom != null%}
+                                <span> {{ contact.b_nom }}</span>
                             {% else %}
                                 {{ contact.b_nom }}
                             {% endif %}

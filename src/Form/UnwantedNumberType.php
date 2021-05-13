@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\UnwantedNumber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,12 +19,21 @@ class UnwantedNumberType extends AbstractType
     {
         $builder
             ->add('number',TextType::class, [
-                'label' => 'Numero de telephone',
+                'label' => 'Numero a filtrer',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
-            ->add('description',TextareaType::class)
+            ->add('description',TextareaType::class,[
+                'label' => 'Description',
+                'required' => false
+            ])
+            ->add('submit',SubmitType::class,[
+                'label' => 'Ajouter'
+            ])
+            ->add('cancel',ResetType::class,[
+                'label' => 'Annuler'
+            ])
         ;
     }
 

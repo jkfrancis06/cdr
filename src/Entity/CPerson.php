@@ -53,6 +53,9 @@ class CPerson
      */
     private $c_pic_name;
 
+
+
+
     public function __construct()
     {
         $this->c_pic_name= "icon-default.png";
@@ -138,4 +141,5 @@ class CPerson
 
         return $this;
     }
+
 }

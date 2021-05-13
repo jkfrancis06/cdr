@@ -110,7 +110,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
                                 }
 
                                 $tem_common_array["num_b"] = $item["num_b"];
-                                $tem_common_array["b_nom"] = $t_rec_rep->checkIdentity($item["num_b"]);
+                                $tem_common_array["b_nom"] = $item["b_nom"];
                                 $tem_common_array["nb"] = 1;
                                 $tem_common_array["occurence_numbers"] = [];
                                 array_push( $tem_common_array["occurence_numbers"],  [
@@ -298,7 +298,7 @@ class CommonContactController extends \Symfony\Bundle\FrameworkBundle\Controller
         $data = [];
         foreach ($commons as $common){
             $temp = [];
-            $temp["b_nom"] = $t_record_repo->checkIdentity($common["num_b"]);
+            $temp["b_nom"] = $common["b_nom"];
 
             $temp["has_cdr"] = false;
             $temp["num_b"] =  $common["num_b"];

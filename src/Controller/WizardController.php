@@ -53,8 +53,6 @@ class WizardController extends AbstractController
             $c_person = new CPerson();
         }
 
-        $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
-
         $a_person_serialized = [];
         // serialize data to send
         if ($repo->findAll() != null){
@@ -151,8 +149,6 @@ class WizardController extends AbstractController
 
             $cdrFile = $form->get('c_file_name')->getData();
 
-
-
             if($cdrFile != null){
 
                 $uploadedFileName = $fileUploader->upload($cdrFile);
@@ -197,6 +193,9 @@ class WizardController extends AbstractController
                 $serializer = new Serializer(array(new ObjectNormalizer()));
                 $a_person_serialized = $serializer->normalize($c_persons, null);
             }
+
+            $request->getSession()->getFlashBag()->add('unwanted_add', 'Le sujet a été ajouté avec succès');
+
         }
 
 
@@ -217,16 +216,31 @@ class WizardController extends AbstractController
         $c_person = $repo->findOneBy([
             'c_number' => $c_number
         ]);
-        try {
-            unlink($this->getParameter('targetdirectory').'/'.$c_person->getCFileName());
-        }catch (\Exception $exception){
+        $dump_t_repo = $this->getDoctrine()->getManager()->getRepository(DumpT::class);
+        $dump_h_repo = $this->getDoctrine()->getManager()->getRepository(DumpHuri::class);
+        $t_rec_repo = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
 
+        if ($c_person != null) {
+
+            $t_rec_del = $t_rec_repo->deleteNumberRecords($c_person->getCNumber());
+
+            if ($c_person->getCOperator() == "TELMA"){
+               $dump_t_del =  $dump_t_repo->deleteNumberRecords($c_person->getCNumber());
+            }else{
+                $dump_h_del = $dump_h_repo->deleteNumberRecords($c_person->getCNumber());
+            }
+
+            try {
+                unlink($this->getParameter('targetdirectory').'/'.$c_person->getCFileName());
+            }catch (\Exception $exception){
+
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($c_person);
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('remove_c_person', 'Le sujet a été supprimé avec succès');
         }
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($c_person);
-        $em->flush();
-
-        $request->getSession()->getFlashBag()->add('remove_c_person', 'Le sujet a été supprimé avec succès');
 
         return $this->redirectToRoute('home_wizard');
 
@@ -241,21 +255,10 @@ class WizardController extends AbstractController
 
     public function dumpWizardData(Request $request){
 
-        // Truncate tables
 
-        $this->getDoctrine()
-            ->getRepository(DumpT::class)
-            ->truncateTable(DumpT::class);
-
-        $this->getDoctrine()
-            ->getRepository(DumpT::class)
-            ->truncateTable(TRecord::class);
-
-        $this->getDoctrine()
-            ->getRepository(DumpT::class)
-            ->truncateTable(DumpHuri::class);
-
-
+        $dump_t_repo = $this->getDoctrine()->getManager()->getRepository(DumpT::class);
+        $dump_h_repo = $this->getDoctrine()->getManager()->getRepository(DumpHuri::class);
+        $t_rec_repo = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
 
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         $persons = $repo->findAll();
@@ -263,28 +266,46 @@ class WizardController extends AbstractController
         if ($persons != null) {
             foreach ($persons as $person){
 
+                $record = $t_rec_repo->findOneBy([
+                   'num_a' => $person->getCNumber()
+                ]);
+
+                if ($record == null){
+                    if ($person->getCOperator() == "TELMA"){
+
+                        $dump = $dump_t_repo->findOneBy([
+                            'num_a' => $person->getCNumber()
+                        ]);
+
+                        if ($dump == null) {
+                            $encode = $this->getDoctrine()
+                                ->getRepository(DumpT::class)
+                                ->standardTEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+
+                            $res = $this->getDoctrine()
+                                ->getRepository(DumpT::class)
+                                ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                        }
+
+                    }else{
+
+                        $dump = $dump_h_repo->findOneBy([
+                            'num_a' => $person->getCNumber()
+                        ]);
+
+                        if ($dump == null) {
+                            $encode = $this->getDoctrine()
+                                ->getRepository(DumpHuri::class)
+                                ->standardHEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
 
 
-                if ($person->getCOperator() == "TELMA"){
-
-                    $encode = $this->getDoctrine()
-                        ->getRepository(DumpT::class)
-                        ->standardTEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
-
-                    $res = $this->getDoctrine()
-                        ->getRepository(DumpT::class)
-                        ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
-                }else{
-
-                    $encode = $this->getDoctrine()
-                        ->getRepository(DumpHuri::class)
-                        ->standardHEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+                            $res = $this->getDoctrine()
+                                ->getRepository(DumpHuri::class)
+                                ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                        }
 
 
-                    $res = $this->getDoctrine()
-                        ->getRepository(DumpHuri::class)
-                        ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
-
+                    }
                 }
 
             }
@@ -295,6 +316,12 @@ class WizardController extends AbstractController
             $this->getDoctrine()
                 ->getRepository(TRecord::class)
                 ->dumpHuriTrecord();
+
+            $this->getDoctrine()
+                ->getRepository(TRecord::class)
+                ->parseNames();
+
+
 
         }
         $request->getSession()->getFlashBag()->add('dump_success', 'Donnees traitees avec succès');

@@ -1,0 +1,143 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}{% endblock%}
+
+
+{% block content %}
+
+    <div class="container-fluid" style="margin-top: 2em">
+        <div class="row">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('home') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item">Numéros indesirables</li>
+                </ol>
+            </nav>
+
+            <div id="app">
+                <hr>
+
+                {% for message in app.session.flashbag.get('unwanted_add') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}!</strong>
+                        <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+
+                {% for message in app.session.flashbag.get('restore_unwanted') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}!</strong>
+                        <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+
+
+
+                <div class="row">
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-uppercase">AJOUTER UN NUMERO INDESIRABLE</h5>
+                                <hr>
+                                <h6 class="card-subtitle mb-2 text-muted text-center">
+                                    <p>
+                                        Ajouter ici les numéros indesirables qui seront filtrés durant le traitement des CDR
+                                    </p>
+                                    <p class="text-warning">Attention!! Les entrées concernant ce numéro seront supprimées. </p>
+                                </h6>
+                                <div class="card-text">
+
+                                    {{ form_start(form) }}
+                                    <div class="row">
+
+                                        <div class="col col-8">
+                                            <div class="mb-3">
+                                                {{ form_label(form.number, "Numéro a filtrer", {'label_attr': {'class': 'number_label'}}) }}
+                                                {{ form_widget(form.number, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-8">
+                                            <div class="mb-3">
+                                                {{ form_label(form.description, "Description", {'label_attr': {'class': 'description_label'}}) }}
+                                                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <div class="col col-12">
+                                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                                <div class="btn-group mr-4" role="group" aria-label="First group" style="margin-left: 2rem">
+                                                    {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                                                </div>
+                                                <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
+                                                    {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_end(form) }}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h5 class="card-title text-uppercase text-center">Liste des numéros indésirables</h5>
+                                <hr>
+                                <div class="card-text">
+                                    <div class="row">
+                                        <div class="col col-12">
+                                            <table class="table  table-responsive table-bordered table-striped table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>Numéro</th>
+                                                    <th>Lignes concernées</th>
+                                                    <th>Description</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if unwanted_numbers | length == 0 %}
+                                                        <p class="text-center">Aucun numero n'a été ajouté pour l'instant</p>
+                                                    {% else %}
+                                                        {% for unwanted_number in unwanted_numbers%}
+                                                            <tr>
+                                                                <td>{{ unwanted_number.number }}</td>
+                                                                <td>{{ unwanted_number.unwantedRowsCount }}</td>
+                                                                <td>{{ unwanted_number.description }}</td>
+                                                                <td>
+                                                                    <a class="btn btn-outline-info" href="{{ path('restore_unwanted_number',{id: unwanted_number.id}) }}">
+                                                                        <i class="fa fa-reply"></i>
+                                                                        Restaurer
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col col-lg-12">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block bottom_js %}
+{% endblock %}

@@ -71,9 +71,8 @@
                     <tr v-for="(item, index) in frequent_users">
                         <td>${index + 1}</td>
                         <td>${item.num_b}</td>
-                        <td v-if="item.b_nom == 'PROBABLEMENT NON ID'" class="text-uppercase text-warning">PROBABLEMENT NON ID</td>
-                        <td v-if="item.b_nom == 'NON IDENTIFIE'" class="text-uppercase text-danger">NON IDENTIFIE</td>
-                        <td v-if="item.b_nom !== 'NON IDENTIFIE' && item.b_nom != 'PROBABLEMENT NON ID'" class="text-uppercase">${item.b_nom}</td>
+                        <td v-if="item.b_nom == '' || item.b_nom == '0' || item.b_nom == null" class="text-uppercase text-warning">PROBABLEMENT NON ID</td>
+                        <td v-else="item.b_nom !== '' && item.b_nom != '0' && item.b_nom != null" class="text-uppercase">${item.b_nom}</td>
                         <td>${item.duration}</td>
                         <td>${item.nb}</td>
                     </tr>
@@ -127,9 +126,8 @@
                         <td>${item.dayTime}</td>
                         <td>${item.numA}</td>
                         <td>${item.numB}</td>
-                        <td v-if="item.bNom == 'PROBABLEMENT NON ID'" class="text-uppercase text-warning">PROBABLEMENT NON ID</td>
-                        <td v-if="item.bNom == 'NON IDENTIFIE'" class="text-uppercase text-danger">NON IDENTIFIE</td>
-                        <td v-if="item.bNom !== 'NON IDENTIFIE' && item.bNom != 'PROBABLEMENT NON ID'" class="text-uppercase">${item.bNom}</td>
+                        <td v-if="item.bNom == '' || item.bNom == '0' || item.bNom == null" class="text-uppercase text-warning">PROBABLEMENT NON ID</td>
+                        <td v-else="item.bNom !== '' && item.bNom != '0' && item.bNom != null" class="text-uppercase">${item.bNom}</td>
                         <td>${convert_to_hour(item.duration)}</td>
                     </tr>
                     </tbody>

@@ -23,6 +23,11 @@ class UnwantedNumber
     private $number;
 
     /**
+     * @ORM\Column(type="integer", length=255, options={"default": 0})
+     */
+    private $unwanted_rows_count;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -31,6 +36,11 @@ class UnwantedNumber
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    public function __construct(){
+        $this->unwanted_rows_count = 0;
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +79,18 @@ class UnwantedNumber
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUnwantedRowsCount(): ?int
+    {
+        return $this->unwanted_rows_count;
+    }
+
+    public function setUnwantedRowsCount(int $unwanted_rows_count): self
+    {
+        $this->unwanted_rows_count = $unwanted_rows_count;
 
         return $this;
     }

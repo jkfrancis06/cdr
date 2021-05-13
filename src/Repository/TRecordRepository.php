@@ -64,6 +64,73 @@ class TRecordRepository extends ServiceEntityRepository
 
     }
 
+    public function parseNames(){
+        $db = $this->getEntityManager();
+        $query = "UPDATE trecord t
+                    SET b_nom = 
+                    case when b_nom = '' or b_nom = '0'
+	                    then (select b_nom b 
+		                      from trecord u
+		                      where u.num_a like CONCAT(SUBSTRING (t.num_b, 1, 1),'%') AND u.num_b like t.num_b
+                              group by b
+                              limit 1)
+	                    else b_nom
+                    end
+                ";
+        $stmt = $db->getConnection()->prepare($query);
+        $params = array(
+        );
+        $qr = $stmt->execute($params);
+
+        return $qr;
+
+
+    }
+
+
+    public function restoreRecords($number)  {
+
+        /* INSERT INTO test_import_two (name, name1, name2)
+        (SELECT name, name1, name2 FROM test_import_one WHERE id = 2) */
+
+
+        $separator = "\r\n'";
+
+        $db = $this->getEntityManager();
+        $query1 = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
+              SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
+              FROM dump_huri
+              WHERE num_b = :number";
+
+        $query2 = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
+              SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
+              FROM dump_t
+              WHERE num_b = :number";
+        $stmt1 = $db->getConnection()->prepare($query1);
+        $stmt2 = $db->getConnection()->prepare($query2);
+        $params = array(
+            'number' => $number
+        );
+        $qr1 = $stmt1->execute($params);
+        $qr2 = $stmt2->execute($params);
+
+    }
+
+
+    public function deleteNumberRecords($number) {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->delete()
+            ->where('trecord.num_a LIKE :number')
+            ->setParameters([
+                'number' => $number
+            ])
+            ->getQuery()
+            ->getResult();
+
+    }
+
 
     public function checkIdentity($number) {
 
@@ -91,6 +158,40 @@ class TRecordRepository extends ServiceEntityRepository
             return $qr[0]["b_nom"];
         }
     }
+
+
+
+    public function countRecords($number) {
+
+
+    $qr = $this->createQueryBuilder('trecord')
+        ->select('count(trecord.id)')
+        ->where('trecord.num_b LIKE :number')
+        ->setParameters([
+            'number' => $number
+        ])
+        ->getQuery()
+        ->getSingleScalarResult();
+
+    return $qr;
+
+    }
+
+    public function deleteUnwantedRecords($number) {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->delete()
+            ->where('trecord.num_b LIKE :number')
+            ->setParameters([
+                'number' => $number
+            ])
+            ->getQuery()
+            ->getResult();
+
+    }
+
+
 
 
 

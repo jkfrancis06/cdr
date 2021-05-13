@@ -43,10 +43,10 @@
                             <span class="">{{ common.num_b }}</span>
                         </td>
                         <td class="uk-table-expand">
-                            {% if common.b_nom == "PROBABLEMENT NON ID" %}
+                            {% if common.b_nom == "" or common.b_nom == "0" or common.b_nom == null %}
                                 <span class="text-warning">PROBABLEMENT NON ID</span>
-                            {% elseif common.b_nom == "NON IDENTIFIE"%}
-                                <span class="text-danger"> NON IDENTIFIE</span>
+                            {% elseif common.b_nom != "" and common.b_nom != "0" and common.b_nom != null%}
+                                <span class="text-uppercase"> {{ common.b_nom }}</span>
                             {% else %}
                                 {{ common.b_nom }}
                             {% endif %}
