@@ -22,7 +22,7 @@ class TRecordRepository extends ServiceEntityRepository
         parent::__construct($registry, TRecord::class);
     }
 
-    public function dumpTelmaTrecord()  {
+    public function dumpTelmaTrecord($number)  {
 
         /* INSERT INTO test_import_two (name, name1, name2)
         (SELECT name, name1, name2 FROM test_import_one WHERE id = 2) */
@@ -33,9 +33,11 @@ class TRecordRepository extends ServiceEntityRepository
         $db = $this->getEntityManager();
         $query = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
               SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
-              FROM dump_t";
+              FROM dump_t
+              WHERE num_a = :number";
         $stmt = $db->getConnection()->prepare($query);
         $params = array(
+            "number" => $number
         );
         $qr = $stmt->execute($params);
 
@@ -43,7 +45,7 @@ class TRecordRepository extends ServiceEntityRepository
 
     }
 
-    public function dumpHuriTrecord()  {
+    public function dumpHuriTrecord($number)  {
 
         /* INSERT INTO test_import_two (name, name1, name2)
         (SELECT name, name1, name2 FROM test_import_one WHERE id = 2) */
@@ -54,9 +56,11 @@ class TRecordRepository extends ServiceEntityRepository
         $db = $this->getEntityManager();
         $query = "INSERT INTO trecord (num_a, num_b, duration, day_time,data_type,flux_appel, a_nom, b_nom)
               SELECT  num_a, num_b ,duration,day_time,data_type,flux_appel,a_nom,b_nom
-              FROM dump_huri";
+              FROM dump_huri
+              WHERE num_a = :number";
         $stmt = $db->getConnection()->prepare($query);
         $params = array(
+            "number" => $number
         );
         $qr = $stmt->execute($params);
 
@@ -129,6 +133,79 @@ class TRecordRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
+    }
+
+    public function getDistinctNumbers() {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->select('trecord.num_b')
+            ->groupBy('trecord.num_b')
+            ->getQuery()
+            ->getArrayResult();
+        return $qr;
+
+    }
+
+
+    public function getDistinctNumbersByChar($char) {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->select('trecord.num_b')
+            ->where('trecord.num_b LIKE :char')
+            ->groupBy('trecord.num_b')
+            ->setParameters([
+                'char' => '%'.$char.'%',
+            ])
+            ->getQuery()
+            ->getArrayResult();
+        return $qr;
+
+    }
+
+    public function getDistinctNumbersByRange($start,$end) {
+
+
+        $qr = $this->createQueryBuilder('trecord')
+            ->select('trecord.num_b')
+            ->where('LENGTH(trecord.num_b) BETWEEN :start and :end')
+            ->groupBy('trecord.num_b')
+            ->setParameters([
+                'start' => $start,
+                'end' => $end,
+            ])
+            ->getQuery()
+            ->getArrayResult();
+        return $qr;
+
+    }
+
+    public function getDistinctNumbersByComp($value,$comp){
+
+        if ($comp == "inf") {
+            $qr = $this->createQueryBuilder('trecord')
+                ->select('trecord.num_b')
+                ->where('LENGTH(trecord.num_b) <= :value')
+                ->groupBy('trecord.num_b')
+                ->setParameters([
+                    'value' => $value
+                ])
+                ->getQuery()
+                ->getArrayResult();
+            return $qr;
+        } else {
+            $qr = $this->createQueryBuilder('trecord')
+                ->select('trecord.num_b')
+                ->where('LENGTH(trecord.num_b) >= :value')
+                ->groupBy('trecord.num_b')
+                ->setParameters([
+                    'value' => $value
+                ])
+                ->getQuery()
+                ->getArrayResult();
+            return $qr;
+        }
     }
 
 

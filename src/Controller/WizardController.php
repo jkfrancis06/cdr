@@ -8,6 +8,7 @@ use App\Entity\DumpHuriEntrant;
 use App\Entity\DumpHuriSortant;
 use App\Entity\DumpT;
 use App\Entity\TRecord;
+use App\Entity\UnwantedNumber;
 use App\Form\CPersonType;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -259,6 +260,7 @@ class WizardController extends AbstractController
         $dump_t_repo = $this->getDoctrine()->getManager()->getRepository(DumpT::class);
         $dump_h_repo = $this->getDoctrine()->getManager()->getRepository(DumpHuri::class);
         $t_rec_repo = $this->getDoctrine()->getManager()->getRepository(TRecord::class);
+        $unwanted_repo = $this->getDoctrine()->getManager()->getRepository(UnwantedNumber::class);
 
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         $persons = $repo->findAll();
@@ -287,6 +289,11 @@ class WizardController extends AbstractController
                                 ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
                         }
 
+                        $this->getDoctrine()
+                            ->getRepository(TRecord::class)
+                            ->dumpTelmaTrecord($person->getCNumber());
+
+
                     }else{
 
                         $dump = $dump_h_repo->findOneBy([
@@ -304,22 +311,30 @@ class WizardController extends AbstractController
                                 ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
                         }
 
+                        $this->getDoctrine()
+                            ->getRepository(TRecord::class)
+                            ->dumpHuriTrecord($person->getCNumber());
+
+
 
                     }
                 }
 
             }
-            $this->getDoctrine()
-                ->getRepository(TRecord::class)
-                ->dumpTelmaTrecord();
 
-            $this->getDoctrine()
-                ->getRepository(TRecord::class)
-                ->dumpHuriTrecord();
 
             $this->getDoctrine()
                 ->getRepository(TRecord::class)
                 ->parseNames();
+
+            // apply filter
+
+            $unwanted_numbers = $unwanted_repo->findAll();
+            if ($unwanted_numbers != null){
+                foreach ($unwanted_numbers as $unwanted_number){
+                    $t_rec_repo->deleteUnwantedRecords($unwanted_number->getNumber());
+                }
+            }
 
 
 

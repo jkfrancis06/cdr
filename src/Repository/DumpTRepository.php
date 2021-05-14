@@ -56,7 +56,6 @@ class DumpTRepository extends ServiceEntityRepository
         $db = pg_connect($connString);
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
-        array_shift($rows);
         {
             $res = pg_copy_from($db, 'dump_t(
             flux_appel,
@@ -186,10 +185,10 @@ class DumpTRepository extends ServiceEntityRepository
             while (($row = fgetcsv($handle,"",";")) !== FALSE)
             {
 
-                $row[2] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[2]);
-                $row[3] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[3]);
-                $row[4] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[4]);
-                $row[5] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[5]);
+                foreach ($row as &$item){
+                    $item = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $item);
+                    $item = $this->removeSpecialChar($item);
+                }
 
 
                 fputcsv($outFile, $row,";"," ",'');
@@ -203,4 +202,20 @@ class DumpTRepository extends ServiceEntityRepository
         }
 
     }
+
+    function removeSpecialChar($str){
+
+        setlocale(LC_ALL, 'fr_FR.UTF-8');
+
+// Convert the codepoints to entities
+        $str = preg_replace("/\\\\u([0-9a-fA-F]{4})/", "&#x\\1;", $str);
+
+// Convert the entities to a UTF-8 string
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+
+// Convert the UTF-8 string to an ISO-8859-1 string
+        return iconv("UTF-8", "ISO-8859-1//TRANSLIT", $str);
+
+    }
+
 }

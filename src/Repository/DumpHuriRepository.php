@@ -58,7 +58,6 @@ class DumpHuriRepository extends ServiceEntityRepository
         $db = pg_connect($connString);
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
-        array_shift($rows);
         $res = pg_copy_from($db, 'dump_huri(
             num_a,
             num_b,
@@ -150,8 +149,10 @@ class DumpHuriRepository extends ServiceEntityRepository
             while (($row = fgetcsv($handle,"",";")) !== FALSE)
             {
 
-                $row[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[0]);
-                $row[1] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row[1]);
+                foreach ($row as &$item){
+                    $item = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $item);
+                    $item = $this->removeSpecialChar($item);
+                }
 
 
                 fputcsv($outFile, $row,";"," ");
@@ -163,6 +164,21 @@ class DumpHuriRepository extends ServiceEntityRepository
             fclose($outFile);
             unlink($destination);
         }
+
+    }
+
+    function removeSpecialChar($str){
+
+        setlocale(LC_ALL, 'fr_FR.UTF-8');
+
+// Convert the codepoints to entities
+        $str = preg_replace("/\\\\u([0-9a-fA-F]{4})/", "&#x\\1;", $str);
+
+// Convert the entities to a UTF-8 string
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+
+// Convert the UTF-8 string to an ISO-8859-1 string
+        return iconv("UTF-8", "ISO-8859-1//TRANSLIT", $str);
 
     }
 
