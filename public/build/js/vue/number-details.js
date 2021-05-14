@@ -147,6 +147,7 @@ window.onload = function () {
             try {
                 axios.get('/number/commnunications/'+this.user.number)
                     .then(function (response){
+                        console.log(response)
                         self.frequent_users = response.data["fav_numbers_array"]
                         self.communication_array = response.data["com_list"]
                         self.communication_array_def = response.data["com_list"]

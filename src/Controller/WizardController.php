@@ -265,12 +265,18 @@ class WizardController extends AbstractController
         $repo = $this->getDoctrine()->getManager()->getRepository(CPerson::class);
         $persons = $repo->findAll();
 
+        $person_array = [];
+
+
         if ($persons != null) {
             foreach ($persons as $person){
+
+                array_push($person_array,$person->getCNumber());
 
                 $record = $t_rec_repo->findOneBy([
                    'num_a' => $person->getCNumber()
                 ]);
+
 
                 if ($record == null){
                     if ($person->getCOperator() == "TELMA"){
@@ -329,10 +335,13 @@ class WizardController extends AbstractController
 
             // apply filter
 
+
             $unwanted_numbers = $unwanted_repo->findAll();
             if ($unwanted_numbers != null){
                 foreach ($unwanted_numbers as $unwanted_number){
-                    $t_rec_repo->deleteUnwantedRecords($unwanted_number->getNumber());
+                    if (!in_array($unwanted_number->getNumber(),$person_array)){
+                        $t_rec_repo->deleteUnwantedRecords($unwanted_number->getNumber());
+                    }
                 }
             }
 
