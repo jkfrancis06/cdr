@@ -185,6 +185,8 @@ class DumpTRepository extends ServiceEntityRepository
             while (($row = fgetcsv($handle,"",";")) !== FALSE)
             {
 
+                $row[0] = preg_replace("/\s+/", "", $row[0]);
+                $row[1] = preg_replace("/\s+/", "", $row[1]);
                 foreach ($row as &$item){
                     $item = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $item);
                     $item = $this->removeSpecialChar($item);
@@ -198,7 +200,6 @@ class DumpTRepository extends ServiceEntityRepository
             // Close the file pointer
             fclose($handle);
             fclose($outFile);
-            unlink($destination);
         }
 
     }
@@ -206,6 +207,7 @@ class DumpTRepository extends ServiceEntityRepository
     function removeSpecialChar($str){
 
         setlocale(LC_ALL, 'fr_FR.UTF-8');
+
 
 // Convert the codepoints to entities
         $str = preg_replace("/\\\\u([0-9a-fA-F]{4})/", "&#x\\1;", $str);

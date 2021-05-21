@@ -149,6 +149,8 @@ class DumpHuriRepository extends ServiceEntityRepository
             while (($row = fgetcsv($handle,"",";")) !== FALSE)
             {
 
+                $row[0] = preg_replace("/\s+/", "", $row[0]);
+                $row[1] = preg_replace("/\s+/", "", $row[1]);
                 foreach ($row as &$item){
                     $item = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $item);
                     $item = $this->removeSpecialChar($item);
@@ -162,7 +164,6 @@ class DumpHuriRepository extends ServiceEntityRepository
             // Close the file pointer
             fclose($handle);
             fclose($outFile);
-            unlink($destination);
         }
 
     }
