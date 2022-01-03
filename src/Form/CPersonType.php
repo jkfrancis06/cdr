@@ -31,7 +31,7 @@ class CPersonType extends AbstractType
                         'minMessage' => 'Le numéro doit contenir 7 chiffres',
                         'maxMessage' => 'Le numéro doit contenir 7 chiffres'
                     )),
-                    new Regex('/^[347][0-9]{6}$/','Le numéro est incorrect')
+                        new Regex('/^[347][0-9]{6}$/','Le numéro est incorrect')
                 ]
             ]) */
             ->add('c_file_name',FileType::class, [
