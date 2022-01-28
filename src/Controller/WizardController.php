@@ -231,11 +231,12 @@ class WizardController extends AbstractController
                 $dump_h_del = $dump_h_repo->deleteNumberRecords($c_person->getCNumber());
             }
 
-            try {
+            /* try {
                 unlink($this->getParameter('targetdirectory').'/'.$c_person->getCFileName());
             }catch (\Exception $exception){
 
-            }
+            } */
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($c_person);
             $em->flush();
