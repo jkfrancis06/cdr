@@ -15,7 +15,7 @@
 
         <div class="row" style="margin-top: 3rem">
 
-            <div class="col col-12">
+            <div class="col col-6">
 
                 <h4>Sauvegardes</h4>
 
@@ -87,6 +87,40 @@
 
 
                 </table>
+
+            </div>
+
+            <div class="col col-6">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+
+                <div class="row">
+
+                    <div class="col col-12">
+                        {{ form_label(form.nom) }}
+                        <div class="input-group mb-5">
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-error" style="color: red">
+                            {{ form_errors(form.nom) }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col col-12">
+
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-4" role="group" aria-label="First group" style="margin-left: 2rem">
+                                {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                            </div>
+                            <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
+                                {{ form_row(form.save,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
 
             </div>
 

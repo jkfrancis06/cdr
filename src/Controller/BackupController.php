@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\BackupType;
 use BackupManager\Filesystems\Destination;
 use BackupManager\Manager as Manager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,8 +28,37 @@ class BackupController extends AbstractController
      * @Route("/backup", name="backup")
      *
      */
-    public function index(): Response
+    public function index(Request  $request): Response
     {
+
+        $form = $this->createForm(BackupType::class);
+
+        $form->handleRequest($request);
+
+
+        $backupName = $form->get('nom')->getData();
+
+        if ($backupName != null && file_exists($this->_dbDir.'/'.$backupName.'.sql.gz')){
+
+            $fileError = new FormError("Une sauvegarde avec ce nom existe deja");
+            $form->get('nom')->addError($fileError);
+        }
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $now = new \DateTime(null, new \DateTimeZone('Africa/Nairobi'));
+
+
+            $this->backupManager->makeBackup()->run('development', [new Destination('local', $backupName == null ? $now->getTimestamp() : $backupName .'.sql')], 'gzip');
+
+            $this->addFlash('success_backup', 'La sauvegarde a ete cree avec succes');
+
+
+
+            return $this->redirectToRoute('backup');
+
+        }
 
 
         $files = [];
@@ -42,8 +74,7 @@ class BackupController extends AbstractController
                 $tmp['original_name'] = $file;
                 $tmp['name'] =  strtok($file, '.') ;
 
-
-                $tmp['date'] =  date('d/m/Y H:i:s', intval($tmp['name']));
+                $tmp['date'] = date ("d-m-Y H:i:s.", filemtime($this->_dbDir.'/'.$file));
 
                 array_push($data,$tmp);
 
@@ -51,10 +82,16 @@ class BackupController extends AbstractController
 
         }
 
+        usort($data, function ($a, $b) {
+            return strtotime($b["date"]) - strtotime($a["date"]) ;
+        });
+
+
 
         return $this->render('backup/index.html.twig', [
             'controller_name' => 'BackupController',
             'saves' => $data,
+            'form' => $form->createView(),
         ]);
     }
 
