@@ -1,0 +1,100 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Gestion des sauvegardes{% endblock%}
+
+
+{% block content %}
+
+    <div id="app">
+        <nav aria-label="breadcrumb" style="margin-top: 4rem">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('home') }}">Tableau de bord</a></li>
+                <li class="breadcrumb-item">Gestion des sauvegardes</li>
+            </ol>
+        </nav>
+
+        <div class="row" style="margin-top: 3rem">
+
+            <div class="col col-12">
+
+                <h4>Sauvegardes</h4>
+
+                <hr>
+
+                {% for message in app.flashes('success_backup') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('success_restore') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('success_remove') %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                    </div>
+                {% endfor %}
+
+
+                <a class="btn btn-primary mt-4" href="{{ path('new_backup') }}">Creer une nouvelle sauvegarde</a>
+
+
+                <table class="table table-hover table-striped table-bordered mt-4">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom de la sauvegarde</th>
+                        <th scope="col">Date de create</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for save in saves %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ save['name'] }}</td>
+                                <td>{{ save['date'] }}</td>
+                                <td>
+                                    <a class="btn btn-danger mt-4"
+                                       onclick="return confirm('Vous voulez vraiment supprimer cette sauvegarde ?');"
+                                       href="{{ path('backup_remove',{name:save['name']}) }}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a class="btn btn-secondary mt-4"
+                                       onclick="return confirm('Vous voulez vraiment restaurer cette sauvegard? Les donnees actuelles seront ecrasees. N\'oubliez pas de faire une sauvegarde avant. ');"
+                                       href="{{ path('backup_restore',{name:save['name']}) }}">
+                                        <i class="fa fa-reply"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+
+                            <tr>
+                                <td colspan="3" class="text-center"> Aucune sauvegarde</td>
+                            </tr>
+
+                        {% endfor %}
+
+
+                </table>
+
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bottom_js %}
+{% endblock %}

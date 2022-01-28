@@ -1,4 +1,19 @@
 {
+    "backup-manager/backup-manager": {
+        "version": "3.0.1"
+    },
+    "backup-manager/symfony": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.1",
+            "ref": "4bb70c3f71c9bcd581e28724f50569af236df758"
+        },
+        "files": [
+            "config/packages/bm_backup_manager.yaml"
+        ]
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -106,6 +121,12 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.0"
     },
+    "league/flysystem": {
+        "version": "1.1.9"
+    },
+    "league/mime-type-detection": {
+        "version": "1.9.0"
+    },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
     },
@@ -123,6 +144,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "nyholm/dsn": {
+        "version": "2.0.1"
     },
     "php": {
         "version": "7.4"
