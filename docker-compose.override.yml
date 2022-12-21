@@ -29,7 +29,7 @@ services:
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
-      - "5432"
+      - "5454"
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mailer ###
