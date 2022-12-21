@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+
 class BackupController extends AbstractController
 {
 
@@ -18,10 +21,29 @@ class BackupController extends AbstractController
     private $backupManager;
 
 
-    public function __construct(string $dbDir,Manager $backupManager)
+    public function __construct($dbDir,Manager $backupManager)
     {
         $this->_dbDir = $dbDir;
         $this->backupManager = $backupManager;
+    }
+
+    /**
+     * @Route("/dir", name="dir")
+     *
+     */
+    public function test(Request  $request): Response
+    {
+
+
+        $process = new Process((array)'ls -lsa /srv/app/ressources/db');
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        return new Response($process->getOutput());
     }
 
     /**
@@ -50,7 +72,10 @@ class BackupController extends AbstractController
             $now = new \DateTime(null, new \DateTimeZone('Africa/Nairobi'));
 
 
-            $this->backupManager->makeBackup()->run('development', [new Destination('local', $backupName == null ? $now->getTimestamp() : $backupName .'.sql')], 'gzip');
+            $this->backupManager->makeBackup()->run('development',
+                [new Destination('local',
+                    $backupName == null ? $now->getTimestamp() : $backupName .'.sql')],
+                'gzip');
 
             $this->addFlash('success_backup', 'La sauvegarde a ete cree avec succes');
 
@@ -65,8 +90,10 @@ class BackupController extends AbstractController
 
         $data = [];
 
+
         if (file_exists($this->_dbDir)) {
             $files = array_diff(scandir($this->_dbDir), array('.', '..'));
+
 
             foreach ($files as $file) {
 

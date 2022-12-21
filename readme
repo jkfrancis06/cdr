@@ -2,8 +2,13 @@
 
 - Check the creation of directory uplpoad dir
 
-sudo add-apt-repository ppa:deadsnakes/ppa
+- Do not forget to change the date format
 
-sudo apt update
+Connect to the database container
 
-sudo apt install python3.8
+vi var/lib/postgresql/data/postgresql.conf
+
+sudo docker restart <container>
+
+
+

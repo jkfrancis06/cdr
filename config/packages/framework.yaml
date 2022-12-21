@@ -11,10 +11,6 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
-    serializer:
-        enabled: true
-        enable_annotations: true
-
     #esi: true
     #fragments: true
     php_errors:

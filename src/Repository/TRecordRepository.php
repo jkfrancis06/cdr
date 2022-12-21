@@ -39,7 +39,7 @@ class TRecordRepository extends ServiceEntityRepository
         $params = array(
             "number" => $number
         );
-        $qr = $stmt->execute($params);
+        $qr = $stmt->executeQuery($params);
 
         return $qr;
 
@@ -62,7 +62,7 @@ class TRecordRepository extends ServiceEntityRepository
         $params = array(
             "number" => $number
         );
-        $qr = $stmt->execute($params);
+        $qr = $stmt->executeQuery($params);
 
         return $qr;
 
@@ -71,9 +71,9 @@ class TRecordRepository extends ServiceEntityRepository
     public function parseNames(){
         $db = $this->getEntityManager();
         $query = "UPDATE trecord t
-                    SET b_nom = 
+                    SET b_nom =
                     case when b_nom = '' or b_nom = '0'
-	                    then (select b_nom b 
+	                    then (select b_nom b
 		                      from trecord u
 		                      where u.num_a like CONCAT(SUBSTRING (t.num_b, 1, 1),'%') AND u.num_b like t.num_b
                               group by b
@@ -84,7 +84,7 @@ class TRecordRepository extends ServiceEntityRepository
         $stmt = $db->getConnection()->prepare($query);
         $params = array(
         );
-        $qr = $stmt->execute($params);
+        $qr = $stmt->executeQuery($params);
 
         return $qr;
 
@@ -115,8 +115,8 @@ class TRecordRepository extends ServiceEntityRepository
         $params = array(
             'number' => $number
         );
-        $qr1 = $stmt1->execute($params);
-        $qr2 = $stmt2->execute($params);
+        $qr1 = $stmt1->executeQuery($params);
+        $qr2 = $stmt2->executeQuery($params);
 
     }
 
@@ -710,8 +710,8 @@ class TRecordRepository extends ServiceEntityRepository
             $start,
             $end,
         );
-        $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $qr = $stmt->executeQuery($params);
+        $res = $qr->fetchAllAssociative();
         return $res;
     }
 
@@ -722,7 +722,7 @@ class TRecordRepository extends ServiceEntityRepository
                 INNER JOIN (
 	                select trecord.num_b, trecord.num_a, trecord.day_time, trecord.flux_appel, trecord.data_type, trecord.duration
 	                from trecord
-	                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\' and duration > 0 and flux_appel LIKE \'Entrant\') 
+	                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\' and duration > 0 and flux_appel LIKE \'Entrant\')
                 ) as qr
                 ON trecord.day_time = qr.day_time and trecord.num_a = qr.num_b and trecord.num_b = qr.num_a
                 where (trecord.num_a = ? and trecord.num_b = ?) and (trecord.data_type = \'Voix\' and trecord.duration > 0 and trecord.flux_appel LIKE \'Sortant\') ';
@@ -735,8 +735,8 @@ class TRecordRepository extends ServiceEntityRepository
             $num_a,
             $num_b
         );
-        $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $qr = $stmt->executeQuery($params);
+        $res = $qr->fetchAllAssociative();
         return $res;
     }
 
@@ -767,31 +767,31 @@ class TRecordRepository extends ServiceEntityRepository
             $end,
         );
         $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $res = $qr->fetchAllAssociative();
         return $res;
     }
 
     public function getDropOutCalls(string $num_a, string $num_b){
-        $db = $this->getEntityManager();
+        $db = $this->getEntityManager()->getConnection();
         $str = 'select num_a, num_b, day_time, data_type
                 from trecord
-                where (num_a = ? and num_b = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Sortant\') 
+                where (num_a = ? and num_b = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Sortant\')
                 except
                 select num_b, num_a, day_time, data_type
                 from trecord
-                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Entrant\') 
+                where (num_b = ? and num_a = ?) and (data_type LIKE \'Voix\') and (flux_appel LIKE \'Entrant\')
                 order by day_time asc ';
 
 
-        $stmt = $db->getConnection()->prepare($str);
+        $stmt = $db->prepare($str);
         $params = array(
             $num_a,
             $num_b,
             $num_a,
             $num_b,
         );
-        $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $qr = $stmt->executeQuery($params);
+        $res = $qr->fetchAllAssociative();
         return $res;
     }
 
@@ -809,7 +809,7 @@ class TRecordRepository extends ServiceEntityRepository
 	            from trecord
 	            where (num_b NOT ILIKE \'401\' and num_b NOT ILIKE \'00403\' and num_b NOT ILIKE \'telma\' and num_b NOT ILIKE \'777\') and num_a = :num_a and day_time between :start and :end
             ) as qr
-            ON t.num_b = qr.num_b 
+            ON t.num_b = qr.num_b
             where (t.num_b NOT ILIKE \'401\' and t.num_b NOT ILIKE \'00403\' and t.num_b NOT ILIKE \'telma\' and t.num_b NOT ILIKE \'777\') and t.num_a = :num_b and t.day_time between :start and :end
             group by t.num_b, t.b_nom
         ';
@@ -823,8 +823,8 @@ class TRecordRepository extends ServiceEntityRepository
             'start' => $start,
             'end' => $end,
         );
-        $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $qr = $stmt->executeQuery($params);
+        $res = $qr->fetchAllAssociative();
         return $res;
 
     }
@@ -843,7 +843,7 @@ class TRecordRepository extends ServiceEntityRepository
 	            from trecord
 	            where (num_b NOT ILIKE \'401\' and num_b NOT ILIKE \'00403\' and num_b NOT ILIKE \'telma\' and num_b NOT ILIKE \'777\') and num_a = :num_a
             ) as qr
-            ON t.num_b = qr.num_b 
+            ON t.num_b = qr.num_b
             where (t.num_b NOT ILIKE \'401\' and t.num_b NOT ILIKE \'00403\' and t.num_b NOT ILIKE \'telma\' and t.num_b NOT ILIKE \'777\') and t.num_a = :num_b
             group by t.num_b, t.b_nom
         ';
@@ -855,8 +855,8 @@ class TRecordRepository extends ServiceEntityRepository
             'num_a' => $num_a,
             'num_b' => $num_b
         );
-        $qr = $stmt->execute($params);
-        $res = $stmt->fetchAll();
+        $qr = $stmt->executeQuery($params);
+        $res = $qr->fetchAllAssociative();
         return $res;
 
     }
