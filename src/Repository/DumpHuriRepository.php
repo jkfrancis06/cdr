@@ -55,7 +55,7 @@ class DumpHuriRepository extends ServiceEntityRepository
     public function dumpHuriCSV(string $file_name,$fileDelimiter): array
     {
         $rows_count = 1;
-        $connString = 'host =cdr_database_1 dbname=cdr user=admin password=sql';
+        $connString = 'host =database dbname=cdr user=admin password=sql';
         $db =  pg_connect($connString);
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
@@ -137,7 +137,7 @@ class DumpHuriRepository extends ServiceEntityRepository
 
     public function standardHEncoding($dir,$file_name,$fileDelimiter){
 
-        $connString = 'host =localhost dbname=cdr user=admin password=sql';
+        $connString = 'host =database dbname=cdr user=admin password=sql';
 
         $source = $dir.'/'.$file_name;
 
