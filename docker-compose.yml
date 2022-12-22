@@ -10,7 +10,8 @@ services:
         STABILITY: ${STABILITY:-stable}
     restart: unless-stopped
     volumes:
-      - php_socket:/var/run/php
+      #- php_socket:/var/run/php
+      - ./docker/php/php_socket:/var/run/php
     healthcheck:
       interval: 10s
       timeout: 3s
@@ -67,9 +68,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sql}
       POSTGRES_USER: ${POSTGRES_USER:-admin}
     volumes:
-      - db-data:/var/lib/postgresql/data:rw
+      #- db-data:/var/lib/postgresql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
+      - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
 volumes:
