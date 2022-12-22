@@ -1,5 +1,5 @@
 version: "3.4"
-
+#
 services:
   php:
     build:
@@ -10,8 +10,8 @@ services:
         STABILITY: ${STABILITY:-stable}
     restart: unless-stopped
     volumes:
-      #- php_socket:/var/run/php
-      - ./docker/php/php_socket:/var/run/php
+      - php_socket:/var/run/php
+      - ./docker/php/upload:/srv/app/public/upload
     healthcheck:
       interval: 10s
       timeout: 3s
@@ -38,6 +38,7 @@ services:
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
+      - ./docker/php/upload:/srv/app/public/upload
       - caddy_data:/data
       - caddy_config:/config
     ports:
