@@ -24,8 +24,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme" beforeDir="false" afterPath="$PROJECT_DIR$/readme" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,7 +272,7 @@
       <workItem from="1670852255134" duration="5396000" />
       <workItem from="1670866514894" duration="15899000" />
       <workItem from="1671089593585" duration="13077000" />
-      <workItem from="1671431407633" duration="28095000" />
+      <workItem from="1671431407633" duration="28556000" />
     </task>
     <servers />
   </component>

@@ -8,6 +8,8 @@ Connect to the database container
 
 vi var/lib/postgresql/data/postgresql.conf
 
+datestyle = 'iso, dmy'
+
 sudo docker restart <container>
 
 
