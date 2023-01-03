@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0e40b3a2f566c0382c8e56d2a292cfb",
+    "content-hash": "0650ab961bf69952092a40d26e6b3ea7",
     "packages": [
         {
             "name": "backup-manager/backup-manager",
@@ -8716,6 +8716,48 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yectep/phpspreadsheet-bundle",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eightyknots/phpspreadsheet-bundle.git",
+                "reference": "b73f8d6cd126d22004fb03410e24cd1bf115a1a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eightyknots/phpspreadsheet-bundle/zipball/b73f8d6cd126d22004fb03410e24cd1bf115a1a9",
+                "reference": "b73f8d6cd126d22004fb03410e24cd1bf115a1a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "phpoffice/phpspreadsheet": "~1.16",
+                "symfony/framework-bundle": "^4.0|^5.0|^6.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Yectep\\PhpSpreadsheetBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chester Li",
+                    "email": "yectep@gmail.com"
+                }
+            ],
+            "description": "A Symfony bundle to integrate with PHPOffice's PhpSpreadsheet library",
+            "support": {
+                "issues": "https://github.com/eightyknots/phpspreadsheet-bundle/issues",
+                "source": "https://github.com/eightyknots/phpspreadsheet-bundle/tree/v1.0.0"
+            },
+            "time": "2022-01-20T23:31:58+00:00"
         }
     ],
     "packages-dev": [
@@ -9328,5 +9370,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

@@ -117,6 +117,7 @@ class BackupController extends AbstractController
 
         return $this->render('backup/index.html.twig', [
             'controller_name' => 'BackupController',
+            "is_active" => "backup",
             'saves' => $data,
             'form' => $form->createView(),
         ]);

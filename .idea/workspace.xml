@@ -23,39 +23,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/php/upload/test.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/php/upload/test1.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/upload/test.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/XlsxConvertType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/home/convert.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cdr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cdr.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/1249" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/1249" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/1259" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/1259" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16391" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16391" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16393" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16393" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16401" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16401" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16403" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16403" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16404" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16404" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16404_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16404_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16404_vm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16404_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16410" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16410" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16431" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16431" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16432" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16432" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16432_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16432_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16432_vm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16432_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/16438" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/16438" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2224" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2224" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2619" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2619" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2619_fsm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2619_fsm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2619_vm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2619_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2659" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2659" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2696" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2696" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2840" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2840" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2840_vm" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2840_vm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/base/16384/2841" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/base/16384/2841" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/global/pg_control" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/global/pg_control" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_0.stat" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_0.stat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_13777.stat" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_13777.stat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_16384.stat" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/db_16384.stat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/global.stat" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_stat_tmp/global.stat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_wal/000000010000000000000001" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_wal/000000010000000000000001" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/db/data/pg_xact/0000" beforeDir="false" afterPath="$PROJECT_DIR$/docker/db/data/pg_xact/0000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BackupController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BackupController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home/wizard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/wizard.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,6 +192,7 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/yectep/phpspreadsheet-bundle" />
     </include_path>
   </component>
   <component name="ProjectId" id="1repQkPvvaD28LwwjggQTw1A82x" />
@@ -220,7 +205,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/home" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -234,11 +219,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/home" />
+      <recent name="$PROJECT_DIR$/src/Form" />
+      <recent name="$PROJECT_DIR$/docker/php/upload" />
+      <recent name="$PROJECT_DIR$/public/upload" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/public/build/js/sigma" />
-      <recent name="$PROJECT_DIR$/templates/schema" />
-      <recent name="$PROJECT_DIR$/public/img" />
-      <recent name="$PROJECT_DIR$/public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ressources" />
@@ -302,7 +287,10 @@
       <workItem from="1670852255134" duration="5396000" />
       <workItem from="1670866514894" duration="15899000" />
       <workItem from="1671089593585" duration="13077000" />
-      <workItem from="1671431407633" duration="34724000" />
+      <workItem from="1671431407633" duration="35020000" />
+      <workItem from="1671897792311" duration="1105000" />
+      <workItem from="1672245426466" duration="14072000" />
+      <workItem from="1672730070475" duration="6215000" />
     </task>
     <servers />
   </component>

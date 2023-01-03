@@ -211,6 +211,7 @@ class WizardController extends AbstractController
             'form' => $form->createView(),
             'c_persons' => $a_person_serialized,
             'is_new' => $is_new,
+            "is_active" => "home_wizard",
             'number' => $c_number
         ]);
     }
