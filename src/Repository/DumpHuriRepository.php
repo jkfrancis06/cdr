@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\DumpHuri;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\PDO\PgSQL\Driver;
 use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -51,11 +52,11 @@ class DumpHuriRepository extends ServiceEntityRepository
     }
     */
 
-    public function dumpHuriCSV(string $file_name): array
+    public function dumpHuriCSV(string $file_name,$fileDelimiter): array
     {
         $rows_count = 1;
-        $connString = 'host =localhost dbname=cdr user=admin password=sql';
-        $db = pg_connect($connString);
+        $connString = 'host =database dbname=cdr user=admin password=sql';
+        $db =  pg_connect($connString);
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
         $res = pg_copy_from($db, 'dump_huri(
@@ -67,7 +68,7 @@ class DumpHuriRepository extends ServiceEntityRepository
             day_time,
             flux_appel,
             data_type
-            )', $rows, ";");
+            )', $rows, $fileDelimiter);
         $rows_count += count($rows);
         $mem_usage = number_format(memory_get_usage() / 1024 / 1024, 4);
         $data = [];
@@ -134,11 +135,17 @@ class DumpHuriRepository extends ServiceEntityRepository
 
 
 
-    public function standardHEncoding($dir,$file_name){
+    public function standardHEncoding($dir,$file_name,$fileDelimiter){
 
-        $connString = 'host =localhost dbname=cdr user=admin password=sql';
+        $connString = 'host =database dbname=cdr user=admin password=sql';
 
         $source = $dir.'/'.$file_name;
+
+
+        if ( !file_exists( $dir.'/copy/' ) || !is_dir( $dir.'/copy/') ) {
+            mkdir($dir.'/copy/');
+        }
+
         $destination = $dir.'/copy/'.$file_name;
         copy($source,$destination);
 
@@ -146,7 +153,7 @@ class DumpHuriRepository extends ServiceEntityRepository
         {
 
             // Loop through each row
-            while (($row = fgetcsv($handle,"",";")) !== FALSE)
+            while (($row = fgetcsv($handle,"",$fileDelimiter)) !== FALSE)
             {
 
                 foreach ($row as &$item){

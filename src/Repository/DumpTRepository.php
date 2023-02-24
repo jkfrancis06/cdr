@@ -49,10 +49,10 @@ class DumpTRepository extends ServiceEntityRepository
     }
     */
 
-    public function dumpCSV(string $file_name): array
+    public function dumpCSV(string $file_name,$fileDelimiter): array
     {
         $rows_count = 1;
-        $connString = 'host =localhost dbname=cdr user=admin password=sql';
+        $connString = 'host =database dbname=cdr user=admin password=sql';
         $db = pg_connect($connString);
 
         $rows = file($file_name, FILE_IGNORE_NEW_LINES);
@@ -76,7 +76,7 @@ class DumpTRepository extends ServiceEntityRepository
             b_nom,
             b_piece,
             b_adresse
-            )', $rows, ';');
+            )', $rows, $fileDelimiter);
             $rows_count += count($rows);
             $mem_usage = number_format(memory_get_usage() / 1024 / 1024, 4);
             $data = [];
@@ -170,9 +170,9 @@ class DumpTRepository extends ServiceEntityRepository
         }
     }
 
-    public function standardTEncoding($dir,$file_name){
+    public function standardTEncoding($dir,$file_name,$fileDelimiter){
 
-        $connString = 'host =localhost dbname=cdr user=admin password=sql';
+        $connString = 'host =database dbname=cdr user=admin password=sql';
 
         $source = $dir.'/'.$file_name;
         $destination = $dir.'/copy/'.$file_name;
@@ -182,7 +182,7 @@ class DumpTRepository extends ServiceEntityRepository
         {
 
             // Loop through each row
-            while (($row = fgetcsv($handle,"",";")) !== FALSE)
+            while (($row = fgetcsv($handle,"",$fileDelimiter)) !== FALSE)
             {
 
                 foreach ($row as &$item){

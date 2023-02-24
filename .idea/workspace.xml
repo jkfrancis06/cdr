@@ -23,8 +23,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e75f662-9fa9-4df4-b2fa-8a809d6a76a4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BackupController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BackupController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/WizardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WizardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CPersonType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CPersonType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpHuriRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DumpTRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TRecordRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/BackupController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/CommonContactController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/DashboardController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/GraphController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/MatriceController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/PrintController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/UnwantedNumberController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/WizardController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Controller/XlsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/XlsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/DQL/ToChar.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/CPerson.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/DumpHuri.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/DumpT.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/TRecord.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Entity/UnwantedNumber.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Form/BackupType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Form/CPersonType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Form/UnwantedNumberType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Form/XlsxConvertType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/XlsxConvertType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Kernel.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/CPersonRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/DumpHuriRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/DumpTRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/TRecordRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Repository/UnwantedNumberRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Service/FileDelimiter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/FileDelimiter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Service/FileUploader.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/src/Validator/ContainsFileMustExists.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/backup/index.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/base.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/home/convert.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/convert.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/home/home.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/home/number_details.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/home/wizard.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/matrices/contacts_communs.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/matrices/details_contact_communs.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/matrices/details_matrice_communication.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/matrices/matrice_communication.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/nav.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/paginator/paginator-uikit.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/schema/commun.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/schema/draw-save.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/schema/draw.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/templates/unwanted/number.html.twig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home/wizard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/wizard.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/nav.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/nav.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,6 +231,8 @@
       <path value="$PROJECT_DIR$/vendor/backup-manager/symfony" />
       <path value="$PROJECT_DIR$/vendor/backup-manager/backup-manager" />
       <path value="$PROJECT_DIR$/vendor/nyholm/dsn" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php81" />
+      <path value="$PROJECT_DIR$/vendor/yectep/phpspreadsheet-bundle" />
     </include_path>
   </component>
   <component name="ProjectId" id="1repQkPvvaD28LwwjggQTw1A82x" />
@@ -204,11 +259,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public/build/js/sigma" />
       <recent name="$PROJECT_DIR$/templates/schema" />
       <recent name="$PROJECT_DIR$/public/img" />
       <recent name="$PROJECT_DIR$/public" />
-      <recent name="$PROJECT_DIR$/public/build/js/Sigma" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ressources" />

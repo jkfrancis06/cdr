@@ -72,7 +72,7 @@ class CPersonType extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '20M',
+                        'maxSize' => '512k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -93,6 +93,7 @@ class CPersonType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CPerson::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -10,6 +10,7 @@ use App\Entity\DumpT;
 use App\Entity\TRecord;
 use App\Entity\UnwantedNumber;
 use App\Form\CPersonType;
+use App\Service\FileDelimiter;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -24,10 +25,16 @@ use Symfony\Component\Serializer\Serializer;
 class WizardController extends AbstractController
 {
 
+    private $fileDelimiter;
+
+    public function __construct(FileDelimiter $fileDelimiter){
+        $this->fileDelimiter = $fileDelimiter;
+    }
+
     /**
      * @Route("/wizard/{c_number?}", name="home_wizard")
      */
-    public function homeWizard(Request  $request, $c_number = null,FileUploader $fileUploader){
+    public function homeWizard(Request  $request, $c_number = null,FileUploader $fileUploader,FileDelimiter $fileDelimiter){
 
         // huri number verification pattern
         $pattern_huri = '/^[37][0-9]{6}$/';
@@ -86,7 +93,7 @@ class WizardController extends AbstractController
                     // opens csv file
                     if (($handle = fopen($cdrFile->getPathname(), "r")) !== false) {
                         // loop through lines
-                        while (($data = fgetcsv($handle,"",";")) !== false) {
+                        while (($data = fgetcsv($handle,"",$fileDelimiter->getFileDelimiter($cdrFile->getPathname(), 5))) !== false) {
 
                             $file_data = $data;
                             // check if is huri csv and remove hidden characters
@@ -158,7 +165,7 @@ class WizardController extends AbstractController
                 $dir = $this->getParameter('kernel.project_dir').'/public/upload/';
 
                 if (($handle = fopen($dir.''.$uploadedFileName, "r")) !== false) {
-                    while (($data = fgetcsv($handle,"",";")) !== false) {
+                    while (($data = fgetcsv($handle,"",$fileDelimiter->getFileDelimiter($dir.''.$uploadedFileName, 5))) !== false) {
                         if ($c_person->getCOperator() == "HURI") {
                             $c_person->setCNumber(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data[0]));
                             $c_person->setANom($data[2]);
@@ -204,6 +211,7 @@ class WizardController extends AbstractController
             'form' => $form->createView(),
             'c_persons' => $a_person_serialized,
             'is_new' => $is_new,
+            "is_active" => "home_wizard",
             'number' => $c_number
         ]);
     }
@@ -279,6 +287,9 @@ class WizardController extends AbstractController
                 ]);
 
 
+                $fileDelimiter = $this->fileDelimiter->getFileDelimiter($this->getParameter('targetdirectory').'/'.$person->getCFileName(),2);
+
+
                 if ($record == null){
                     if ($person->getCOperator() == "TELMA"){
 
@@ -289,11 +300,11 @@ class WizardController extends AbstractController
                         if ($dump == null) {
                             $encode = $this->getDoctrine()
                                 ->getRepository(DumpT::class)
-                                ->standardTEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+                                ->standardTEncoding($this->getParameter('targetdirectory'), $person->getCFileName(),$fileDelimiter);
 
                             $res = $this->getDoctrine()
                                 ->getRepository(DumpT::class)
-                                ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                                ->dumpCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName(),$fileDelimiter);
                         }
 
                         $this->getDoctrine()
@@ -310,12 +321,12 @@ class WizardController extends AbstractController
                         if ($dump == null) {
                             $encode = $this->getDoctrine()
                                 ->getRepository(DumpHuri::class)
-                                ->standardHEncoding($this->getParameter('targetdirectory'), $person->getCFileName());
+                                ->standardHEncoding($this->getParameter('targetdirectory'), $person->getCFileName(),$fileDelimiter);
 
 
                             $res = $this->getDoctrine()
                                 ->getRepository(DumpHuri::class)
-                                ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName());
+                                ->dumpHuriCSV($this->getParameter('targetdirectory').'/'.$person->getCFileName(),$fileDelimiter);
                         }
 
                         $this->getDoctrine()
@@ -372,9 +383,12 @@ class WizardController extends AbstractController
 
             // Copy file to DB
 
+            $fileDelimiter = $this->fileDelimiter->getFileDelimiter($this->getParameter('targetdirectory').'/'.$uploadedFileName,2);
+
+
             $res = $this->getDoctrine()
                 ->getRepository(DumpT::class)
-                ->dumpCSV($this->getParameter('targetdirectory').'/'.$uploadedFileName);
+                ->dumpCSV($this->getParameter('targetdirectory').'/'.$uploadedFileName,$fileDelimiter);
 
             $data = [];
 
