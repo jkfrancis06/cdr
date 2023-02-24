@@ -1,0 +1,92 @@
+{# /templates/produit.html.twig #}
+{% extends '/nav.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock%}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock%}
+
+{% block content %}
+
+
+    <div class="row">
+        <div id="app">
+
+            <div class="row" style="margin-top: 3%">
+
+                <div class="col col-md-12">
+                    <h3 class="uk-margin-medium-top" style="text-align: center">
+                        CONVERSION EXCEL - CSV (HURI)
+                    </h3>
+                </div>
+
+            </div>
+            <hr>
+
+            {% for message in app.session.flashbag.get('add_c_person') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}!</strong>
+                    <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+
+
+
+            <div class="row">
+                <div class="col col-md-12 col-lg-12">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <hr>
+                            <h6 class="card-subtitle mb-2 text-muted text-center"></h6>
+                            <div class="card-text">
+                                {{ form_start(form) }}
+                                <div class="row">
+
+                                    <div class="col col-12">
+                                        {{ form_label(form.xlsxFiles, "Fichiers Excel", {'label_attr': {'class': 'c_file_name_input_label','accept':'.csv'}}) }}
+                                        <div class="input-group mb-5">
+                                            {{ form_widget(form.xlsxFiles, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                        <div class="form-error" style="color: red">
+                                            {{ form_errors(form.xlsxFiles) }}
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="col col-12">
+                                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                            <div class="btn-group mr-4" role="group" aria-label="First group" style="margin-left: 2rem">
+                                                {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                                            </div>
+                                            <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
+                                                {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block bottom_js %}
+{% endblock %}
+
+
+
+

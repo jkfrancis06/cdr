@@ -1,0 +1,194 @@
+{# /templates/produit.html.twig #}
+{% extends '/nav.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock%}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock%}
+
+{% block content %}
+
+
+    <div class="row">
+        <div id="app">
+
+            <div class="row" style="margin-top: 3%">
+
+                <div class="col col-md-12">
+                    <h3 class="uk-margin-medium-top" style="text-align: center">
+                        ANALYSE CDR
+                    </h3>
+                </div>
+                <div class="col col-md-12">
+                    <p class="uk-text-meta " style="text-align: center">
+                        Bienvenue ! Cet assistant va vous guider dans l’insertion des données d’entrées pour effectuer
+                        l’analyse.
+                    </p>
+                </div>
+
+            </div>
+            <hr>
+
+            {% for message in app.session.flashbag.get('add_c_person') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}!</strong>
+                    <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.session.flashbag.get('remove_c_person') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}!</strong>
+                    <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+
+
+
+            <div class="row">
+                <div class="col col-md-12 col-lg-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            {% if is_new == true %}
+                                <h5 class="card-title text-center text-uppercase">AJOUTER UN SUJET</h5>
+                            {% else %}
+                                <h5 class="card-title text-center text-uppercase">MODIFIER {{ number }}</h5>
+                            {% endif %}
+                            <hr>
+                            <h6 class="card-subtitle mb-2 text-muted text-center"></h6>
+                            <div class="card-text">
+                                {{ form_start(form) }}
+                                <div class="row">
+
+                                    <div class="col col-12">
+                                        {{ form_label(form.c_file_name, "Fichier CDR", {'label_attr': {'class': 'c_file_name_input_label','accept':'.csv'}}) }}
+                                        <div class="input-group mb-5">
+                                            {{ form_widget(form.c_file_name, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col col-12">
+                                        {{ form_label(form.c_image_name, "Fichier Image", {'label_attr': {'class': 'c_image_name_input_label'}}) }}
+                                        <div class="input-group mb-5">
+                                            {{ form_widget(form.c_image_name, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="col col-12">
+                                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                            {% if is_new == false %}
+                                                <div class="btn-group mr-4" role="group" aria-label="Third group" style="margin-left: 2rem">
+                                                    <a href="{{ path('home_wizard') }}" class="btn btn-outline-info">Retour a l'ajout</a>
+                                                </div>
+                                            {% endif %}
+                                            <div class="btn-group mr-4" role="group" aria-label="First group" style="margin-left: 2rem">
+                                                {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                                            </div>
+                                            <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
+                                                {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-12 col-lg-8">
+                    <div class="card ">
+                        <div class="card-body">
+                            <h5 class="card-title text-uppercase text-center">Récap des infos saisies</h5>
+                            <hr>
+                            <div class="card-text">
+                                <div class="row">
+                                    <div class="col col-12">
+                                        <table class="table  table-responsive table-bordered table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 10%">Photo</th>
+                                                <th style="width: 30%">Nom</th>
+                                                <th style="width: 20%">Numéro de telephone</th>
+                                                <th>Operateur</th>
+                                                <th style="width: 25%">Fichier CDR</th>
+                                                <th style="width: 20%">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% if c_persons | length > 0 %}
+                                                {% for c_person in c_persons %}
+                                                    <tr>
+                                                        <td>
+                                                            <img  class="img-thumbnail" src="/img/{{c_person.cPicName}}">
+                                                        </td>
+                                                        {% if c_person.aNom == "" or c_person.aNom == "0" %}
+                                                            <td class="text-uppercase text-danger">NON INDENTIFIE</td>
+                                                        {% else %}
+                                                            <td class="text-uppercase">{{ c_person.aNom }}</td>
+                                                        {% endif %}
+                                                        <td>{{ c_person.cNumber }}</td>
+                                                        <td>{{ c_person.cOperator }}</td>
+                                                        <td>{{ c_person.cFileName }}</td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col col-lg-6">
+                                                                    <button class="btn btn-success">
+                                                                        <a style="color: white" href="{{ path('home_wizard',{c_number: c_person.cNumber}) }}">
+                                                                            <i class="fa fa-pen-fancy">
+                                                                            </i>
+                                                                        </a>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col col-lg-6">
+                                                                    <button class="btn btn-danger">
+                                                                        <a style="color: white" href="{{ path('remove_number_wizard',{c_number: c_person.cNumber}) }}">
+                                                                            <i class="fa fa-trash">
+                                                                            </i>
+                                                                        </a>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="text-center">Aucun numero n'a été ajouté pour l'instant</p>
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col col-lg-12">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-info" type="button">
+                                                <a style="color: inherit; text-decoration: inherit" href="{{ path('dump_data') }}">
+                                                    <span class="text-uppercase">j'ai terminé je passe au traitement</span>
+                                                </a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block bottom_js %}
+{% endblock %}
+
+
+
+

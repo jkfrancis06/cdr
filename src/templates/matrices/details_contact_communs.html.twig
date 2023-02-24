@@ -1,0 +1,91 @@
+
+
+0
+
+
+
+
+
+
+
+
+{% extends '/nav.html.twig' %}
+
+{% block titre %}Acceuil{% endblock%}
+
+
+{% block content %}
+
+    <nav aria-label="breadcrumb" style="margin-top: 4rem">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home') }}">Tableau de bord</a></li>
+            <li class="breadcrumb-item disabled">Matrice des contacts en commun</li>
+            <li class="breadcrumb-item active">Details</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col col-12">
+            <h4>
+                Contacts en commun entre le
+                {{ data.a_person.cNumber }} ( {{ data.a_person.aNom}}  ) et {{ data.b_person.cNumber }} ( {{ data.b_person.aNom}}  )
+            </h4>
+            <hr>
+        </div>
+        <div class="col col-12" style="margin-top: 1rem">
+            <p class="card-subtitle">
+                Date du {{ data.dates.start }} au {{ data.dates.end }}
+            </p>
+        </div>
+
+        <div class="col col-12" style="margin-top: 2rem">
+            <table class="table table-striped text-center table-justify table-bordered table-responsive">
+                <thead>
+                <tr>
+                    <th class="uk-table-expand">Numéro</th>
+                    <th class="uk-table-expand">Nom</th>
+                    <th class="uk-table-expand">CDR</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for common in data.commons %}
+                    <tr>
+                        <td class="uk-table-expand">
+                            <span class="">{{ common.num_b }}</span>
+                        </td>
+                        <td class="uk-table-expand">
+                            {% if common.b_nom == "" or common.b_nom == "0" or common.b_nom == null %}
+                                <span class="text-warning">PROBABLEMENT NON ID</span>
+                            {% elseif common.b_nom != "" and common.b_nom != "0" and common.b_nom != null%}
+                                <span class="text-uppercase"> {{ common.b_nom }}</span>
+                            {% else %}
+                                {{ common.b_nom }}
+                            {% endif %}
+                        </td>
+                        <td class="uk-table-expand">
+                            {% if common.has_cdr == true %}
+                                <span>Oui</span>
+                            {% else %}
+                                <span class="">Non</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col col-12">
+            <div class="row">
+                <div class="col col-3"></div>
+                <div class="col col-5">
+                    {{ knp_pagination_render(data.commons,'/paginator/paginator-uikit.html.twig') }}
+                </div>
+                <div class="col col-4"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

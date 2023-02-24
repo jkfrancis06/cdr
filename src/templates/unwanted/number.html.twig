@@ -1,0 +1,323 @@
+{% extends '/nav.html.twig' %}
+
+{% block titre %}{% endblock%}
+
+
+{% block content %}
+
+    <div class="container-fluid" style="margin-top: 2em">
+        <div class="row">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('home') }}">Tableau de bord</a></li>
+                    <li class="breadcrumb-item">Numéros indesirables</li>
+                </ol>
+            </nav>
+
+            <div id="app">
+                <hr>
+
+                {% for message in app.session.flashbag.get('unwanted_add') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}!</strong>
+                        <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+
+                {% for message in app.session.flashbag.get('restore_unwanted') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ message }}!</strong>
+                        <button type="button" class="btn-close"  data-bs-dismiss="alert"     aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-uppercase">FILTRES DE NUMEROS INDESIRABLES</h5>
+                                <hr>
+                                <h6 class="card-subtitle mb-2 text-muted text-center">
+                                    <p>
+                                        Ajouter ici les numéros indesirables qui seront filtrés durant le traitement des CDR
+                                    </p>
+                                    <p class="text-warning">Attention!! Les entrées  concernant les numéros affectés par ces filtres seront supprimées. </p>
+                                </h6>
+                                <div class="card-text">
+
+                                    {{ form_start(form) }}
+                                    <div class="row">
+
+                                        <div class="col col-12">
+                                            <div class="row mb-12">
+                                                {{ form_label(form.number, "Numéro a filtrer :", {'label_attr': {'class': 'number_label col-sm-4 col-form-label'}}) }}
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.number, {'attr': {'class': 'form-control','list':'numberlist'}}) }}
+                                                    <datalist id="numberlist">
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       <div class="col col-12" style="margin-top: 1.5rem">
+                                           <div class="row mb-12">
+                                               <label for="filter" class="col-sm-4 col-form-label">Fltres avancés : </label>
+                                               <div class="col-sm-8" id="accordionExample">
+                                                   <div class="accordion-item" id="filter">
+                                                       <h2 class="accordion-header" id="headingThree">
+                                                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                               Filtrage Avancé
+                                                           </button>
+                                                       </h2>
+                                                       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                           <div class="accordion-body">
+                                                               <div class="row">
+                                                                   <div class="col col-12">
+                                                                       <div class="form-check">
+                                                                           <input class="form-check-input" name="charcheck" type="checkbox" id="charcheck">
+                                                                           {{ form_label(form.char, "Contenant la chaine", {'label_attr': {'class': 'char_label'}}) }}
+                                                                       </div>
+                                                                       {{ form_widget(form.char, {'attr': {'class': 'form-control char'}}) }}
+                                                                   </div>
+
+
+                                                                   <div class="col col-12" style="margin-top: 1.5rem">
+                                                                       <div class="form-check">
+                                                                           <input class="form-check-input" name="rangecheck" type="checkbox" id="rangecheck">
+                                                                       </div>
+
+
+                                                                       {% if form_errors(form.rangeinf) != "" or form_errors(form.rangesup) != "" %}
+                                                                           <select name="rangeselect" class="form-select is-invalid" id="rangeselect">
+                                                                               <option value="0" selected>Selectionner un comparateur de longeur</option>
+                                                                               <option value="1"> Superieur à </option>
+                                                                               <option value="2">Inferieur à</option>
+                                                                               <option value="3">Compris entre</option>
+                                                                           </select>
+                                                                       {% else %}
+                                                                           <select name="rangeselect" class="form-select" id="rangeselect">
+                                                                               <option value="0" selected>Selectionner un comparateur de longeur</option>
+                                                                               <option value="1"> Superieur à </option>
+                                                                               <option value="2">Inferieur à</option>
+                                                                               <option value="3">Compris entre</option>
+                                                                           </select>
+                                                                       {% endif %}
+
+                                                                       <div class="row mb-12" style="margin-top: 1rem">
+                                                                           <div class="col-sm-8">
+                                                                               {{ form_widget(form.supto, {'attr': {'class': 'form-control','id': 'supto','placeholder':'Saisir la valeur','min': 1}}) }}
+                                                                           </div>
+                                                                       </div>
+
+                                                                       <div class="row mb-12" style="margin-top: 1rem">
+                                                                           <div class="col-sm-8">
+                                                                               {{ form_widget(form.infto, {'attr': {'class': 'form-control','id':'infto','placeholder':'Saisir la valeur','min': 1}}) }}
+                                                                           </div>
+                                                                       </div>
+
+                                                                       <div class="row">
+                                                                           <div class="col-sm-3">
+                                                                               {{ form_widget(form.rangeinf, {'attr': {'class': 'form-control','id':'rangeinf','placeholder':'Saisir la valeur','min': 1}}) }}
+                                                                           </div>
+                                                                           <div class="col-sm-3">
+                                                                               {{ form_widget(form.rangesup, {'attr': {'class': 'form-control','id':'rangesup','placeholder':'Saisir la valeur','min': 1}}) }}
+                                                                           </div>
+                                                                       </div>
+
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+
+                                        <div class="col col-12" style="margin-top: 1.5rem">
+                                            <div class="row mb-12">
+                                                {{ form_label(form.description, "Description : ", {'label_attr': {'class': 'description_label col-sm-4 col-form-label'}}) }}
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <hr style="margin-top: 2rem">
+                                        <div class="col col-12">
+                                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                                <div class="btn-group mu_r-4" role="group" aria-label="First group" style="margin-left: 2rem">
+                                                    {{ form_row(form.cancel,{'attr':{'class': 'btn btn-outline-secondary'}}) }}
+                                                </div>
+                                                <div class="btn-group mr-4" role="group" aria-label="Seconf group" style="margin-left: 2rem">
+                                                    {{ form_row(form.submit,{'attr':{'class': 'btn btn-outline-success'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ form_end(form) }}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h5 class="card-title text-uppercase text-center">Liste des numéros indésirables</h5>
+                                <hr>
+                                <div class="card-text">
+                                    <div class="row">
+                                        <div class="col col-12">
+                                            <table class="table  table-responsive table-bordered table-striped table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>Numéro</th>
+                                                    <th>Lignes concernées</th>
+                                                    <th>Description</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if unwanted_page | length == 0 %}
+                                                        <p class="text-center">Aucun numero n'a été ajouté pour l'instant</p>
+                                                    {% else %}
+                                                        {% for unwanted_number in unwanted_page%}
+                                                            <tr>
+                                                                <td>{{ unwanted_number.number }}</td>
+                                                                <td>{{ unwanted_number.unwantedRowsCount }}</td>
+                                                                <td>{{ unwanted_number.description }}</td>
+                                                                <td>
+                                                                    <a class="btn btn-outline-info" href="{{ path('restore_unwanted_number',{id: unwanted_number.id}) }}">
+                                                                        <i class="fa fa-reply"></i>
+                                                                        Restaurer
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col col-lg-12">
+                                            <div class="row">
+                                                <div class="col col-3"></div>
+                                                <div class="col col-5">
+                                                    {{ knp_pagination_render(unwanted_page,'/paginator/paginator-uikit.html.twig') }}
+                                                </div>
+                                                <div class="col col-4"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block bottom_js %}
+    <script>
+        $(document).ready(function (){
+
+            $(".char").attr("disabled",true);
+            $("#rangeselect").attr("disabled",true);
+            $('#unwanted_number_supto').hide();
+            $('#unwanted_number_supto').val(null);
+            $('#unwanted_number_infto').hide();
+            $('#unwanted_number_infto').val(null);
+            $('#unwanted_number_rangeinf').hide();
+            $('#unwanted_number_rangeinf').val(null);
+            $('#unwanted_number_rangesup').hide();
+            $('#unwanted_number_rangesup').val(null);
+
+
+            self = this
+            try {
+                axios.get('/unwanted-number/get-distinct-numbers')
+                    .then(function (response){
+                        for (var i = 0; i< response.data.length ; i++){
+                            var str = '<option value='+response.data[i].num_b+'>'
+                            $("#numberlist").append(str);
+                        }
+                        console.log(response)
+                    })
+            }catch (error){
+                console.log(error.response)
+            }
+
+            $('[name="charcheck"]').change(function(){
+                if($(this).is(":checked"))
+                {
+                    $(".char").attr("disabled",false);
+                }
+                else
+                {
+                    $(".char").attr("disabled",true);
+                }
+            });
+
+            $('[name="rangecheck"]').change(function(){
+
+                if($(this).is(":checked"))
+                {
+                    $("#rangeselect").attr("disabled",false);
+                }
+                else
+                {
+                    $("#rangeselect").attr("disabled",true);
+                    $('#rangeselect').prop('selectedIndex',0);
+                    $('#unwanted_number_supto').hide();
+                    $('#unwanted_number_supto').val(null);
+                    $('#unwanted_number_infto').val(null);
+                    $('#unwanted_number_infto').hide();
+                    $('#unwanted_number_rangeinf').hide();
+                    $('#unwanted_number_rangeinf').val(null);
+                    $('#unwanted_number_rangesup').hide();
+                    $('#unwanted_number_rangesup').val(null);
+                }
+            });
+
+            $("#rangeselect").change(function () {
+                var selected_option = $('#rangeselect').val();
+
+                if (selected_option === '1') {
+                    $('#unwanted_number_supto').show();
+                }else {
+                    $('#unwanted_number_supto').hide();
+                }
+                if (selected_option === '2') {
+                    $('#unwanted_number_infto').show();
+                }else {
+                    $('#unwanted_number_infto').hide();
+                }
+                if (selected_option === '3') {
+                    $('#unwanted_number_rangeinf').show();
+                    $('#unwanted_number_rangesup').show();
+                }else {
+                    $('#unwanted_number_rangeinf').hide();
+                    $('#unwanted_number_rangesup').hide();
+                }
+            })
+
+
+            $("#unwanted_number_rangeinf").change(function () {
+                var rangeinf = $('#unwanted_number_rangeinf').val();
+                $("#unwanted_number_rangesup").attr({
+                    "min" : parseInt(rangeinf)
+                });
+
+            })
+
+
+        });
+    </script>
+{% endblock %}
