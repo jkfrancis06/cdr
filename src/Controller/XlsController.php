@@ -22,10 +22,10 @@ use function Symfony\Component\Translation\t;
 
 class XlsController extends AbstractController
 {
-    /*private $spreadsheet;
+    private $spreadsheet;
     public function __construct(Factory $spreadsheetFactory) {
         $this->spreadsheet = $spreadsheetFactory;
-    }*/
+    }
 
 
     /**
