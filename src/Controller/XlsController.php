@@ -31,7 +31,7 @@ class XlsController extends AbstractController
     /**
      * @Route("/convert", name="convert")
      */
-    public function form(Request $request,FileUploader $fileUploader): Response
+    public function form(Request $request,FileUploader $fileUploader,Factory $spreadsheetFactory): Response
     {
 
         $form = $this->createForm(XlsxConvertType::class);
@@ -62,7 +62,7 @@ class XlsController extends AbstractController
 
                 $fileName = $fileUploader->upload($file,$dir);
 
-                $result = $this->convertCsv($dir.'/'.$fileName);
+                $result = $this->convertCsv($dir.'/'.$fileName,$spreadsheetFactory);
 
                $fp = fopen($dirCsv.'/'. pathinfo($fileName, PATHINFO_FILENAME).'.csv', 'w');
 
@@ -115,7 +115,7 @@ class XlsController extends AbstractController
     }
 
 
-    private function convertCsv($file,Factory $spreadsheetFactory){
+    private function convertCsv($file,$spreadsheetFactory){
 
         /* @var $readerXlsx Xlsx */
         $readerXlsx  = $spreadsheetFactory->createReader('Xlsx');
