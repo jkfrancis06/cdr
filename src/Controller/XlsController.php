@@ -31,7 +31,7 @@ class XlsController extends AbstractController
     /**
      * @Route("/convert", name="convert")
      */
-    public function form(Request $request,FileUploader $fileUploader,Factory $spreadsheetFactory): Response
+    public function form(Request $request,FileUploader $fileUploader): Response
     {
 
         $form = $this->createForm(XlsxConvertType::class);
@@ -62,7 +62,7 @@ class XlsController extends AbstractController
 
                 $fileName = $fileUploader->upload($file,$dir);
 
-                $result = $this->convertCsv($dir.'/'.$fileName,$spreadsheetFactory);
+                $result = $this->convertCsv($dir.'/'.$fileName,$this->get('phpoffice.spreadsheet'));
 
                $fp = fopen($dirCsv.'/'. pathinfo($fileName, PATHINFO_FILENAME).'.csv', 'w');
 
