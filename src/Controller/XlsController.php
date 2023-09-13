@@ -22,10 +22,10 @@ use function Symfony\Component\Translation\t;
 
 class XlsController extends AbstractController
 {
-    private $spreadsheet;
+   /* private $spreadsheet;
     public function __construct(Factory $spreadsheetFactory) {
         $this->spreadsheet = $spreadsheetFactory;
-    }
+    }*/
 
 
     /**
@@ -115,10 +115,10 @@ class XlsController extends AbstractController
     }
 
 
-    private function convertCsv($file){
+    private function convertCsv($file,Factory $spreadsheetFactory){
 
         /* @var $readerXlsx Xlsx */
-        $readerXlsx  = $this->spreadsheet->createReader('Xlsx');
+        $readerXlsx  = $spreadsheetFactory->createReader('Xlsx');
 
         // Load reader
         try {
