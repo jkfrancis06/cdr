@@ -22,7 +22,7 @@ use function Symfony\Component\Translation\t;
 
 class XlsController extends AbstractController
 {
-   /* private $spreadsheet;
+    /*private $spreadsheet;
     public function __construct(Factory $spreadsheetFactory) {
         $this->spreadsheet = $spreadsheetFactory;
     }*/
@@ -62,7 +62,7 @@ class XlsController extends AbstractController
 
                 $fileName = $fileUploader->upload($file,$dir);
 
-                $result = $this->convertCsv($dir.'/'.$fileName,$this->get('phpoffice.spreadsheet'));
+                $result = $this->convertCsv($dir.'/'.$fileName);
 
                $fp = fopen($dirCsv.'/'. pathinfo($fileName, PATHINFO_FILENAME).'.csv', 'w');
 
@@ -97,13 +97,7 @@ class XlsController extends AbstractController
 
             (new Filesystem())->remove($dir);
 
-
-
-
             return $response;
-
-
-
 
         }
 
@@ -115,10 +109,12 @@ class XlsController extends AbstractController
     }
 
 
-    private function convertCsv($file,$spreadsheetFactory){
+    private function convertCsv($file){
 
         /* @var $readerXlsx Xlsx */
-        $readerXlsx  = $spreadsheetFactory->createReader('Xlsx');
+
+        $readerXlsx = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        //$readerXlsx  = $this->spreadsheet->createReader('Xlsx');
 
         // Load reader
         try {
