@@ -48,7 +48,7 @@ class CPersonType extends AbstractType
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
-                        'maxSize' => '20M',
+                        'maxSize' => '100M',
                         'mimeTypes' => [
                             'text/plain'
                         ],
